@@ -1,0 +1,208 @@
+/* ================================
+   전체 헤더 (FULL WIDTH + 고급 그라데이션)
+================================ */
+#root {
+  padding: 0;
+}
+
+.nova-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  width: 100%;
+  background: linear-gradient(135deg, rgba(205, 234, 106, 0.45), rgba(255, 255, 255, 0.75));
+
+  backdrop-filter: blur(14px);
+  padding: 14px 48px;
+
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.06);
+}
+
+/* 내부 정렬 */
+.nova-header-inner {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ================================
+   로고 영역
+================================ */
+.header-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-img {
+  width: 150px;
+  height: 80px;
+}
+/* ================================
+   가운데 탭바
+================================ */
+.nova-nav {
+  display: flex;
+  gap: 32px;
+
+  background: #ffffffdd;
+  padding: 12px 28px;
+  border-radius: 28px;
+
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+
+  transition: 0.25s ease;
+}
+
+/* 기본 nav-item */
+.nav-item {
+  font-size: 16px;
+  font-weight: 600;
+  color: #253126;
+
+  padding: 8px 18px;
+  border-radius: 20px;
+
+  text-decoration: none;
+  transition: 0.25s ease;
+
+  display: flex;
+  align-items: center;
+}
+
+/* ★ hover 효과 업그레이드 (살짝 scale + shadow + 컬러 변화) */
+.nav-item:hover {
+  background: rgba(207, 234, 106, 0.55);
+  color: #2f3f22;
+
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: inset 0 0 6px rgba(172, 218, 0, 0.45);
+}
+
+/* ================================
+   우측 사용자 버튼
+================================ */
+.user-area {
+  position: relative;
+}
+
+.user-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: #ffffffdd;
+  padding: 8px 16px;
+  border-radius: 22px;
+  border: none;
+
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.07);
+  transition: 0.25s ease;
+}
+
+.user-dropdown-btn:hover {
+  background: rgba(207, 234, 106, 0.45);
+  transform: translateY(-1px);
+}
+
+.user-img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #253126;
+}
+
+.arrow {
+  font-size: 12px;
+}
+
+/* ================================
+   드롭다운 메뉴
+================================ */
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 54px;
+
+  background: #ffffffee;
+  border-radius: 16px;
+  padding: 12px;
+  width: 170px;
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(14px);
+
+  animation: dropdownFade 0.22s ease-out;
+}
+
+/* 부드러운 등장 애니메이션 */
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 메뉴 항목 */
+.dropdown-menu a {
+  display: block;
+  padding: 10px;
+  border-radius: 10px;
+
+  text-decoration: none;
+  color: #1a211a;
+  font-size: 14px;
+
+  transition: 0.2s ease;
+}
+
+/* 로그아웃 전용 스타일 */
+.dropdown-menu .logout-btn {
+  display: block;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+
+  cursor: pointer;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 14px;
+
+  background: rgba(14, 14, 14, 0.8);
+  transition: 0.2s ease;
+}
+
+/* 일반 메뉴 hover */
+.dropdown-menu a:not(.logout-btn):hover {
+  background: rgba(188, 213, 98, 0.5);
+  transform: translateX(2px);
+}
+
+/* 로그아웃 hover */
+.dropdown-menu .logout-btn:hover {
+  background: rgba(0, 0, 0, 1); /* 더 진한 블랙 */
+  transform: translateX(2px);
+  color: #fff;
+}
+
+/* 경계선 */
+.menu-divider {
+  height: 1px;
+  background: #e3e3e3;
+  margin: 8px 0;
+}

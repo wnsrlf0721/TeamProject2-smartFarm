@@ -1,0 +1,315 @@
+/* 전체 페이지 느낌 강화 */
+.home-container {
+  width: 100%;
+  overflow-x: hidden;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.06) 2px, transparent 2px) 0 0 / 40px 40px,
+    linear-gradient(180deg, #f5ffe8 0%, #ffffff 40%, #f3ffe0 100%);
+  padding-bottom: 140px;
+}
+
+/* --------------------------------------------- */
+/* 1. HERO SECTION */
+/* --------------------------------------------- */
+.hero-section {
+  height: 72vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(circle at 40% 20%, #e9ffbf 0%, #ffffff 70%),
+    linear-gradient(180deg, #f7ffe8 0%, #ffffff 60%);
+  border-radius: 0 0 40px 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+  position: relative; /* 추가! */
+}
+
+.hero-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--noise-texture);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0; /**/
+}
+
+.hero-title {
+  font-size: 54px;
+  font-weight: 800;
+  color: #253126;
+  letter-spacing: -1px;
+}
+
+.hero-sub {
+  margin-top: 14px;
+  font-size: 20px;
+  font-weight: 400;
+  color: #4f4f4f;
+}
+
+.hero-btn {
+  display: inline-block;
+  margin-top: 32px;
+  padding: 14px 36px;
+
+  background: #acda00;
+  color: #253126;
+  border-radius: 28px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s ease;
+  box-shadow: 0 6px 16px rgba(172, 218, 0, 0.35);
+}
+
+.hero-btn:hover {
+  background: #99c200;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(172, 218, 0, 0.45);
+}
+
+.hero-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* --------------------------------------------- */
+/* 2. 소개 섹션 */
+/* --------------------------------------------- */
+.intro-section {
+  padding: 120px 20px 80px;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.intro-section h2 {
+  font-size: 34px;
+  font-weight: 700;
+  color: #616e57;
+}
+
+.intro-desc {
+  margin-top: 18px;
+  color: #555;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------- */
+/* 3. 기능 카드 */
+/* --------------------------------------------- */
+.feature-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+
+  width: 88%;
+  margin: 40px auto 0;
+  overflow: visible;
+  /* opacity: 1; */
+}
+
+.feature-card {
+  background: linear-gradient(135deg, #ffffff, #f7fbe8 40%, #f4f2e1 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 40px 26px;
+  border-radius: 26px;
+  text-align: center;
+
+  transform: translateY(0) scale(1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+
+  transition-property: transform, box-shadow;
+  transition-duration: 0.35s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease;
+  transform-origin: center center;
+  will-change: transform;
+  z-index: 1;
+}
+
+.feature-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--noise-texture);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.feature-card:hover {
+  background: linear-gradient(135deg, hsl(0, 0%, 67%), #9ba47b 40%, #8c875d 100%);
+  z-index: 10;
+  transform: translateY(-10px) scale(1.05) !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.14);
+}
+
+.feature-card:hover h3 {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(12, 15, 6, 0.45);
+}
+
+.feature-card:hover p {
+  color: #e9f8eb;
+  text-shadow: 0 0 6px rgba(12, 15, 6, 0.45);
+}
+
+.feature-card h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #253126;
+  transition: color 0.3s ease;
+  transition: text-shadow 0.3s ease;
+}
+
+.feature-card p {
+  color: #555;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+.feature-icon {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 18px;
+  transition: transform 0.35s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.15);
+}
+
+/* --------------------------------------------- */
+/* 4. 히스토리 */
+/* --------------------------------------------- */
+.history-section {
+  text-align: center;
+  padding: 140px 20px;
+
+  background: linear-gradient(135deg, #f6ffd9, #ffffff);
+  border-radius: 30px;
+  width: 80%;
+  margin: 120px auto 0;
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+}
+
+.history-section h2 {
+  font-size: 30px;
+  color: #253126;
+  margin-bottom: 12px;
+}
+
+.history-section p {
+  margin-top: 10px;
+  color: #484848;
+  font-size: 17px;
+}
+
+/* --------------------------------------------- */
+/* 5. 기기 소개 */
+/* --------------------------------------------- */
+.device-section {
+  padding: 160px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.device-box {
+  width: 70%;
+  text-align: center;
+  padding: 70px 50px;
+  border-radius: 36px;
+
+  background: linear-gradient(135deg, #ffffff, #f5ffd2);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}
+
+.device-box h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.device-box p {
+  font-size: 17px;
+  color: #4f4f4f;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------- */
+/* 6. 마켓 */
+/* --------------------------------------------- */
+.market-section {
+  padding: 160px 20px;
+  text-align: center;
+}
+
+.market-section h2 {
+  font-size: 32px;
+  color: #253126;
+}
+
+.market-section p {
+  margin-top: 12px;
+  color: #555;
+  font-size: 17px;
+}
+
+.market-btn {
+  margin-top: 32px;
+  display: inline-block;
+  padding: 14px 32px;
+
+  background: #253126;
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: 0.25s ease;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.market-btn:hover {
+  background: #182018;
+  transform: translateY(-3px);
+}
+
+/* --------------------------------------------- */
+/* 7. CTA */
+/* --------------------------------------------- */
+.cta-section {
+  padding: 180px 20px;
+  text-align: center;
+
+  background: linear-gradient(135deg, #acda00a0, #ffffff);
+  border-radius: 40px;
+  width: 82%;
+  margin: 120px auto 0;
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+}
+
+.cta-section h2 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.cta-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 16px 40px;
+
+  background: #253126;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 30px;
+
+  font-weight: 600;
+  transition: 0.25s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+}
+
+.cta-btn:hover {
+  background: #101812;
+  transform: translateY(-3px);
+}

@@ -1,0 +1,50 @@
+.plants-page {
+  padding-top: 100px;
+  text-align: center;
+}
+
+.farm-grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.farm-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.farm-card:hover {
+  transform: translateY(-5px);
+}
+
+.plant-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.empty-farm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 160px;
+  color: #888;
+}
+
+.plus {
+  font-size: 48px;
+  font-weight: bold;
+  color: #007aff;
+  margin-bottom: 10px;
+}

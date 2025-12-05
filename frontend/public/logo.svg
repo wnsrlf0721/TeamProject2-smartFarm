@@ -1,0 +1,32 @@
+<svg width="180" height="60" viewBox="0 0 180 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+
+
+  <!-- 심볼 (왼쪽 아이콘) -->
+  <g transform="translate(0,5)">
+    <!-- 토양 레이어 -->
+    <path d="M10 35 C25 25, 45 25, 60 35" stroke="#88A750" stroke-width="4" stroke-linecap="round" />
+    <path d="M14 28 C28 20, 42 20, 56 28" stroke="#CFEA6A" stroke-width="4" stroke-linecap="round" />
+
+    <!-- 잎 -->
+    <path d="M35 6 C45 12, 48 22, 34 28 C20 22, 23 12, 35 6Z" 
+          fill="#ACDA00" stroke="#7BA300" stroke-width="1.5" />
+
+    <!-- 햇빛 아크 -->
+    <path d="M20 12 C35 -2, 50 -2, 65 12" 
+          stroke="#CFEA6A" stroke-width="3" stroke-linecap="round" />
+  </g>
+
+  <!-- NOVA 텍스트 -->
+  <text x="78" y="38" font-family="Nunito, Pretendard, sans-serif"
+        font-size="32" font-weight="700" letter-spacing="2" fill="#253126">
+    NOVA
+  </text>
+
+  <!-- “내 안의 스마트팜” 서브텍스트 -->
+  <text x="79" y="52" font-family="Inter, Pretendard, sans-serif" 
+        font-size="14" font-weight="400" fill="#4B4B4B">
+    내 안의 스마트팜
+  </text>
+
+</svg>
