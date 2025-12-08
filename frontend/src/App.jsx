@@ -1,74 +1,35 @@
-// =============================
-// 우영 App.jsx (로그인 + ID/PW 찾기 시스템 포함)
-// =============================
-
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import "./App.css";
 
-// -----------------------------
-// 팀장님 기존 페이지
-// -----------------------------
+import "./App.css";
+import Header from "./layouts/header/Header";
 import Home from "./pages/Home/Home";
 import PlantManage from "./pages/PlantManage/PlantManage";
 // import Market from "./pages/Market/Market";
 // import MyPage from "./pages/MyPage/MyPage";
-
-// -----------------------------
-// 우영 로그인/Auth 시스템
-// -----------------------------
-import { AuthProvider } from "./wooyoung_login/auth/AuthContext";
-
-// -----------------------------
-// 공통 헤더
-// -----------------------------
-import Header from "./wooyoung_login/layouts/header/Header";
-
-// -----------------------------
-// 로그인 / 회원가입
-// -----------------------------
-import Login from "./wooyoung_login/pages/Login";
-import Signup from "./wooyoung_login/pages/Signup";
-
-// -----------------------------
-// ID / PW 찾기 메인
-// -----------------------------
-import FindIdPw from "./wooyoung_login/pages/FindIdPw";
-
-// -----------------------------
-// ID 찾기 상세 / PW 찾기 단계 페이지
-// -----------------------------
-import IDFindPage from "./wooyoung_login/pages/IDFindPage";
-import PWFindVerify from "./wooyoung_login/pages/PWFindVerify";
-import PWFindReset from "./wooyoung_login/pages/PWFindReset"; // 🔥 반드시 필요!
-
-// -----------------------------
-// 테스트용 페이지
-// -----------------------------
-import TestHome from "./wooyoung_login/pages/TestHome";
+import Login from "./pages/Login/Login";
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  const mockUser = {
+    name: "테스트 유저",
+    role: "일반회원",
+    profileImg: "/test-user.png",
+  };
+
   return (
-    <AuthProvider>
-      {/* 🔥 로그인 상태가 자동 반영되는 헤더 */}
-      <Header />
+    <>
+      <Header user={mockUser} />
 
       <Routes>
-        {/* 팀장님 메인 페이지들 */}
         <Route path="/" element={<Home />} />
         <Route path="/plants" element={<PlantManage />} />
-        {/* 로그인 / 회원가입 */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        {/* ID/PW 찾기 메인 */}
-        <Route path="/find" element={<FindIdPw />} />
-        {/* ID/PW 세부 기능 */}
-        <Route path="/find/id" element={<IDFindPage />} />
-        <Route path="/find/pw/verify" element={<PWFindVerify />} />
-        <Route path="/find/pw/reset" element={<PWFindReset />} /> {/* 🔥 2단계 재설정 */}
-        {/* 테스트 페이지 */}
-        <Route path="/wootest" element={<TestHome />} />
+        {/* <Route path="/market" element={<Market />} />
+        <Route path="/mypage" element={<MyPage />} /> */}
+        <Route path="/login" element={<Login onLogin={setUser} />} />
       </Routes>
-    </AuthProvider>
+    </>
   );
 }
 
