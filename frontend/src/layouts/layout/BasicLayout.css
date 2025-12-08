@@ -1,0 +1,24 @@
+/* src/layouts/BasicLayout.css */
+/* 전체 화면 래퍼: 푸터를 바닥에 고정하기 위한 설정 */
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 화면 전체 높이 사용 */
+  min-width: 1280px;
+}
+/* 가운데 메인 콘텐츠 박스 스타일 */
+.main-content {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* shadow-sm */
+  flex-shrink: 0; /* ⭐ 박스 자체가 절대 눌리지 않게 */
+  width: 100%;
+}
+
+/* 반응형: 화면이 좁아지면(태블릿 이하) 세로로 쭉 나열 */
+@media (max-width: 992px) {
+  .content-grid {
+    grid-template-columns: 1fr; /* 1열로 변경 */
+  }
+}

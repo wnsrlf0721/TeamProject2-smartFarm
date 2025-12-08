@@ -1,0 +1,73 @@
+/* --- Range Slider Custom Styles --- */
+.range-slider-wrapper {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .rs-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #94a3b8; /* text-sub 색상 대체 */
+  }
+  
+  .rs-values {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  
+  .val-min { color: #60a5fa; }
+  .rs-separator { margin: 0 4px; color: #666; }
+  .val-max { color: #c084fc; }
+  
+  .rs-track-container {
+    position: relative;
+    height: 24px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .rs-track-bg {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background-color: #334155; /* border-color 대체 */
+    border-radius: 3px;
+  }
+  
+  .rs-track-active {
+    position: absolute;
+    height: 6px;
+    background: linear-gradient(to right, #3b82f6, #a855f7);
+    border-radius: 3px;
+    z-index: 1;
+  }
+  
+  .rs-thumb {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+    -webkit-appearance: none;
+    z-index: 2;
+    margin: 0;
+  }
+  
+  .rs-thumb::-webkit-slider-thumb {
+    pointer-events: auto;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #3b82f6; /* primary-blue */
+    cursor: pointer;
+    transform: translateY(-50%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .rs-thumb.max-thumb::-webkit-slider-thumb {
+    border-color: #a855f7; /* primary-purple */
+  }

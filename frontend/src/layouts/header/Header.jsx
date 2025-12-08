@@ -60,19 +60,19 @@ function Header({user}) {
         {/* 가운데 탭바 */}
         <nav className="nova-nav">
           <Link to="/" className="nav-item">
-            홈
+            <span>홈</span>
           </Link>
           <Link to="/plants" className="nav-item">
-            내 식물 관리
+            <span>내 식물 관리</span>
           </Link>
           <Link to="/mypage" className="nav-item" onMouseEnter={() => setActiveMenu("mypage")}>
             마이페이지
           </Link>
           <Link to="/market" className="nav-item">
-            팜 마켓
+            <span>팜 마켓</span>
           </Link>
           <Link to="/alerts" className="nav-item">
-            알림
+            <span>알림</span>
           </Link>
         </nav>
 
@@ -100,7 +100,7 @@ function Header({user}) {
           {user ? (
             <>
               <button className="user-dropdown-btn" onClick={() => setOpenMenu((prev) => !prev)}>
-                <img src={user.profileImg} alt="프로필" className="user-img" />
+                <img src="/mockups/profile-photo.svg" alt="프로필" className="user-img" />
                 <span className="user-name">{user.name}</span>
                 <span className="arrow">▾</span>
               </button>

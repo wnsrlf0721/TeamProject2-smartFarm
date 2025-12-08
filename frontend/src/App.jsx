@@ -11,6 +11,7 @@ import MyPageView from "./pages/MyPage/MyPageView";
 import MyPageEdit from "./pages/MyPage/MyPageEdit";
 import MyPageTimelapse from "./pages/MyPage/MyPageTimelapse";
 import Login from "./pages/Login/Login";
+import BasicLayout from "./layouts/layout/BasicLayout";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -24,12 +25,24 @@ function App() {
   return (
     <>
       <Header user={mockUser} />
-
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/plants" element={<PlantManage />} />
+        <Route
+          path="/"
+          element={
+            <BasicLayout>
+              <Home />
+            </BasicLayout>
+          }
+        />
+        <Route
+          path="/plants"
+          element={
+            <BasicLayout>
+              <PlantManage />
+            </BasicLayout>
+          }
+        />
         {/* <Route path="/market" element={<Market />} /> */}
-
         {/* 마이페이지 (부모) */}
         <Route path="/mypage" element={<MyPage />}>
           <Route index element={<MyPageView />} /> {/* 기본 페이지 */}
@@ -37,8 +50,14 @@ function App() {
           <Route path="edit" element={<MyPageEdit />} />
           <Route path="timelapse" element={<MyPageTimelapse />} />
         </Route>
-
-        <Route path="/login" element={<Login onLogin={setUser} />} />
+        <Route
+          path="/login"
+          element={
+            <BasicLayout>
+              <Login onLogin={setUser} />
+            </BasicLayout>
+          }
+        />
       </Routes>
     </>
   );
