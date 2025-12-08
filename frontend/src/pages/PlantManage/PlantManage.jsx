@@ -9,8 +9,8 @@ function PlantManage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false); // 추가 모달
 
   const farms = [
-    { id: 1, plant: "토마토", status: "좋음", img: "/basil.png" }, //우영 수정
-    { id: 2, plant: "바질", status: "보통", img: "/basil.png" }, //우영 수정
+    { id: 1, plant: "토마토", status: "좋음", img: "/tomato.jpg" },
+    { id: 2, plant: "바질", status: "보통", img: "/basil.jpg" },
     { id: 3, plant: null },
     { id: 4, plant: null },
   ];
