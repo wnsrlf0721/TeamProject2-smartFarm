@@ -108,7 +108,7 @@ function PlantModal({ data, onClose }) {
           {/*  메인 3열 레이아웃 */}
           <div className="modal-grid">
             {/* ========== LEFT COLUMN ========== */}
-            <div className="grid-left">
+            <div className="grid-1">
               {/* 1) 식물 사진 */}
               <div className="card plant-photo-card">
                 <img src="/basil.png" alt="plant" className="plant-photo" />
@@ -129,12 +129,27 @@ function PlantModal({ data, onClose }) {
             </div>
 
             {/* ========== MIDDLE COLUMN ========== */}
-            <div className="grid-middle">
+            <div className="grid-2">
               {/* 2) 프리셋 */}
               <div className="card preset-card">
                 <PresetInfo preset_step={preset_step} />
               </div>
+            </div>
 
+            <div className="grid-3">
+              <div className="sensor-status-top">
+                <WaterLevelCard value={current_sensor.water_level} />
+              </div>
+
+              {/* 4) 장치 작동 상태 */}
+              <div className="card actu-box">
+                <ActuStatus
+                  logs={actuator_log}
+                  current_sensor={{ ...current_sensor, preset_step }}
+                />
+              </div>
+            </div>
+            <div className="grid-4">
               {/* 3) 최근 활동 */}
               <div className="card history-card">
                 <PlantHistoryCard
@@ -146,14 +161,6 @@ function PlantModal({ data, onClose }) {
                   ]}
                 />
               </div>
-
-              {/* 4) 장치 작동 상태 */}
-              <div className="card actu-card">
-                <ActuStatus
-                  logs={actuator_log}
-                  current_sensor={{ ...current_sensor, preset_step }}
-                />
-              </div>
             </div>
 
             {/* ========== RIGHT COLUMN ========== */}
@@ -162,9 +169,6 @@ function PlantModal({ data, onClose }) {
               <div className="card sensor-status-card">
                 <div className="sensor-status-main">
                   <SensorBar sensor={current_sensor} preset_step={preset_step} />
-                </div>
-                <div className="sensor-status-top">
-                  <WaterLevelCard value={current_sensor.water_level} />
                 </div>
               </div>
             </div>

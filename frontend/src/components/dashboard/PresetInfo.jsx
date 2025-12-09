@@ -37,7 +37,7 @@ export default function PresetInfo({ preset = {}, preset_step = {} }) {
   ].filter((i) => i.min != null && i.max != null);
 
   return (
-    <div className="preset-card">
+    <div className="preset-box">
       {/* <h3 className="preset-title">Preset Range</h3> */}
       <div className="preset-name">{preset.preset_name || "이름 없는 프리셋"}</div>
 

@@ -40,21 +40,21 @@ export default function ActuStatus({ logs = [], current_sensor = {} }) {
       <h2 className="actu-title">장치 작동 상태</h2>
 
       <Swiper
+        className="actu-swiper"
         modules={[EffectCoverflow, Pagination]}
         effect="coverflow"
         grabCursor={true}
         centeredSlides={true}
-        slidesPerView={1.4}
-        spaceBetween={-40}
+        slidesPerView={2}
+        spaceBetween={-100}
         coverflowEffect={{
           rotate: 0,
-          stretch: 20,
-          depth: 120,
+          stretch: 0,
+          depth: 80,
           modifier: 1,
           slideShadows: false,
         }}
         pagination={{ clickable: true }}
-        className="actu-swiper"
       >
         {Object.entries(SENSORS).map(([key, label]) => {
           const sensorValue = current_sensor[key];

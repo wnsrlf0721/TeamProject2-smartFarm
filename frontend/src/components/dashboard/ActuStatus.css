@@ -1,28 +1,57 @@
 .actu-wrapper {
-  margin-top: 40px;
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 290px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: visible;
+
+  position: relative;
+}
+.actu-swiper {
+  width: 310px;
+  height: 180px;
+  margin: auto 0;
+  overflow: visible !important;
+}
+.swiper-slide {
+  overflow: visible !important;
 }
 
 .actu-title {
   text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 24px;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
   color: #2a3b24;
 }
 
 /* 개별 카드 */
 .actu-card {
+  width: 230px;
+  height: 140px;
+  box-sizing: border-box;
+  overflow: hidden;
   background: linear-gradient(180deg, #f6faec, #edf5e1);
   border-radius: 18px;
-  padding: 18px 20px;
+  padding: 10px;
   box-shadow: 0 4px 12px rgba(120, 140, 110, 0.12);
-  min-height: 120px; /* ⬅ 기존보다 확 줄임 */
-  max-height: 150px;
-  margin-bottom: 24px;
   transition: transform 0.3s ease;
+}
+
+.swiper-slide {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.actu-wrapper .swiper-pagination {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /* 헤더 라인 (센서명 + pill) */
@@ -34,37 +63,24 @@
 }
 
 .actu-label {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
   color: #26341e;
 }
 
-/* 상태 pill */
 .actu-pill {
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 12px;
   font-weight: 600;
-  color: white;
-}
-
-.actu-pill.normal {
-  background: #8cc57c;
-}
-
-.actu-pill.high {
-  background: #e7a94d;
-}
-
-.actu-pill.low {
-  background: #d96f6f;
 }
 
 /* 로그 영역 */
 .log-item {
   display: flex;
-  gap: 14px;
-  font-size: 14px;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
   padding: 10px 12px;
   background: rgba(255, 255, 255, 0.7);
   border-radius: 10px;
@@ -80,34 +96,16 @@
 }
 
 .log-time {
-  margin-left: auto;
   opacity: 0.7;
-  font-size: 13px;
+  font-size: 11px;
+  color: #6f7a6c;
 }
 
 .log-empty {
-  padding: 12px 0;
+  font-size: 13px;
+  color: #717e6d;
+  opacity: 0.8;
   text-align: center;
-  color: #7d8c72;
-  opacity: 0.7;
-}
-
-.actu-slider-wrapper {
-  width: 100%;
-  padding: 10px 0;
-}
-
-/* Swiper 전체 */
-.actu-swiper {
-  width: 100%;
-  padding-bottom: 26px;
-}
-
-.actu-pill {
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 600;
 }
 
 .actu-pill.normal {
@@ -121,25 +119,4 @@
 .actu-pill.high {
   background: #fff2d4;
   color: #b06a00;
-}
-
-/* 로그 내용 */
-.log-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 13px;
-  color: #485744;
-}
-
-.log-time {
-  font-size: 11px;
-  color: #6f7a6c;
-}
-
-.log-empty {
-  font-size: 13px;
-  color: #717e6d;
-  opacity: 0.8;
-  text-align: center;
 }
