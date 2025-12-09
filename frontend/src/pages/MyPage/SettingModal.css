@@ -1,0 +1,185 @@
+/* 전체 레이아웃 */
+.timelapse-layout {
+  display: flex;
+  gap: 20px;
+  align-items: stretch; /* 모든 영역 높이를 동일하게 */
+  width: 100%;
+  height: 100%;
+}
+
+/* 모달 */
+.modal-box {
+  width: 900px;
+  height: 700px; /* ← 고정 세로 길이 */
+  overflow-y: auto;
+  background: white;
+  border-radius: 16px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 제목 */
+.modal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #6da800;
+  margin-bottom: 24px;
+}
+
+/* 공통 아이콘 카드 */
+.icon-card {
+  width: 90px;
+  height: 90px;
+  border-radius: 14px;
+  background: #f2f9e6;
+  border: 1px solid #c7df9b;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  cursor: grab;
+  transition: 0.25s;
+}
+
+.icon-card:hover {
+  background: #eaf4d4;
+}
+
+.icon-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4e662b;
+}
+
+/* 아이콘 목록 */
+.icon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center; /* ← 가운데 정렬 */
+}
+
+/* 좌측/선택/설정 영역 */
+.available-section,
+.selected-section,
+.settings-section {
+  padding: 18px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.1);
+  height: 100%; /* ← 모달 높이에 맞춤 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* 좌측/선택 영역 너비 고정 */
+.available-section,
+.selected-section {
+  width: 150px; /* ← 고정 너비 */
+  gap: 12px;
+}
+
+/* 설정 영역 너비 고정 */
+.settings-section {
+  width: 100%; /* ← 고정 너비 */
+  gap: 12px;
+}
+
+/* 가운데 버튼 */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  justify-content: center; /* ← 세로 중앙 */
+  align-items: center; /* ← 가로 중앙 */
+}
+
+.action-buttons button {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.right-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 설정 */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 양쪽으로 깔끔하게 */
+  gap: 12px;
+  width: 100%;
+}
+
+.setting-row label {
+  white-space: nowrap; /* label 줄바꿈 방지 */
+  font-weight: 600;
+}
+
+.setting-row select {
+  flex: 1; /* 오른쪽 요소가 넓게 차지 */
+}
+.settings-section select,
+.settings-section input {
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid #d0d0d0;
+}
+
+/* 영상 이름 입력 */
+.video-name-title {
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.video-setting-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.video-setting-label {
+  width: 70px; /* 라벨 고정 */
+  font-weight: 600;
+}
+
+.video-name-input {
+  flex: 2; /* 이름이 조금 더 넓게 */
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+}
+
+.video-duration-input {
+  width: 80px; /* 숫자 입력은 좁게 */
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+}
+
+/* 모달 버튼 */
+.modal-buttons {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.save-btn {
+  background: #a6c94a;
+  color: white;
+  font-weight: bold;
+}
