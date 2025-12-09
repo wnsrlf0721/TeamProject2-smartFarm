@@ -1,0 +1,24 @@
+.farm-grid-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .farm-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    padding: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .farm-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (min-width: 1400px) {
+    .farm-grid {
+      gap: 32px;
+    }
+  }
+  

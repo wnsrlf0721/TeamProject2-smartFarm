@@ -1,0 +1,163 @@
+/* 페이지 제목 */
+.timelapse-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+/* NOVA 기기 박스 */
+.device-box {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.device-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* 팜 박스 */
+.farm-box {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.farm-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* 타임랩스 목록 */
+.timelapse-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* 타임랩스 카드 */
+.timelapse-card {
+  width: 220px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+.tl-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* DONE 상태 */
+.status-done {
+  background: #e9f7ff;
+}
+
+.tl-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.view-btn,
+.download-btn {
+  padding: 7px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.view-btn:hover {
+  background: #d0ebff;
+}
+
+.download-btn:hover {
+  background: #dff3ff;
+}
+
+.tl-size {
+  font-size: 13px;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* PROGRESS 상태 */
+.status-progress {
+  background: #fff8e1;
+}
+
+.progress-box {
+  width: 100%;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 8px;
+  background: #ffa726;
+  border-radius: 5px;
+}
+
+.progress-text {
+  font-size: 13px;
+  color: #8a6d3b;
+}
+
+/* PENDING 상태 */
+.status-pending {
+  background: #f0f0f0;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.pending-text {
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+}
+
+/* 타임랩스 없음 */
+.no-timelapse {
+  font-size: 14px;
+  color: #888;
+  padding: 8px 0;
+}
+
+/*------------------------------------*/
+.timelapse-page {
+  padding: 24px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.create-timelapse-btn {
+  background-color: #4a90e2;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.create-timelapse-btn:hover {
+  background-color: #367bc1;
+}
