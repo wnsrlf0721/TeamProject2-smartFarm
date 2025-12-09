@@ -1,12 +1,12 @@
-import {useState} from "react";
+import { useState } from "react";
 import "./PlantManage.css";
 import PlantModal from "./PlantModal";
 import farmFullData from "./farmFullData";
 
-import {FarmGrid} from "../../components/PlantManage/FarmGrid";
-import {FarmCreateModal} from "../../components/PlantManage/FarmCreateModal";
+import { FarmGrid } from "../../components/PlantManage/FarmGrid";
+import { FarmCreateModal } from "../../components/PlantManage/FarmCreateModal";
 import TimeLapseModal from "../../components/TimeLapse/TimeLapseModal";
-import {TimeCreateModal} from "../../components/TimeLapse/TimeCreateModal";
+import { TimeCreateModal } from "../../components/TimeLapse/TimeCreateModal";
 
 // 예시 데이터
 const initialFarms = [
@@ -80,6 +80,35 @@ function PlantManage() {
         onSelectFarm={() => setSelectedFarm(farmFullData)}
         onTimeLapse={setTimeLapseDetail} // ⬅ 여기만 수정!!
       />
+      {/* <div className="farm-grid">
+        {farms.map((farm) => (
+          <div
+            key={farm.id}
+            className="farm-card"
+            onClick={() => {
+              if (farm.plant) {
+                setSelectedFarm(farmFullData); // 🔥 farmFullData 전달
+              } else {
+                setIsAddModalOpen(true);
+              }
+            }}
+          >
+            {farm.plant ? (
+              <>
+                <img src={farm.img} alt={farm.plant} className="plant-img" />
+                <h3>팜 #{farm.id}</h3>
+                <p>식물: {farm.plant}</p>
+                <p>상태: {farm.status}</p>
+              </>
+            ) : (
+              <div className="empty-farm">
+                <span className="plus">+</span>
+                <p>클릭하여 팜을 생성하세요</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div> */}
 
       {selectedFarm && <PlantModal data={selectedFarm} onClose={() => setSelectedFarm(null)} />}
 

@@ -3,14 +3,9 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./wooyoung_login/auth/AuthContext";
 
-ReactDOM.createRoot(
-  document.getElementById("root")
-).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <App />
   </BrowserRouter>
 );
