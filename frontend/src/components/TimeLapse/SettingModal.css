@@ -164,22 +164,74 @@
 }
 
 .video-duration-input {
-  width: 80px; /* 숫자 입력은 좁게 */
+  width: 60px !important;
   padding: 6px 8px;
   border-radius: 8px;
   border: 1px solid #d0d0d0;
+  flex-shrink: 0;
 }
 
 /* 모달 버튼 */
 .modal-buttons {
-  margin-top: auto;
+  margin-top: 10px;
   display: flex;
   justify-content: flex-end;
   gap: 12px;
 }
 
+/* 공통 버튼 스타일 */
+.btn-cancel,
+.save-btn {
+  padding: 10px 0;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.15s;
+  box-sizing: border-box;
+}
+
+/* 너비 강제 — flex 영향 차단 */
+.modal-buttons .btn-cancel,
+.modal-buttons .save-btn {
+  flex: 0 0 110px;
+  width: 110px;
+}
+
+/* 취소 버튼 */
+.btn-cancel {
+  background: #e5e5e5;
+  color: #555;
+  border: 1px solid #cfcfcf;
+}
+.btn-cancel:hover {
+  background: #d6d6d6;
+}
+.btn-cancel:active {
+  transform: scale(0.96);
+}
+
+/* 저장 버튼 */
 .save-btn {
   background: #a6c94a;
   color: white;
-  font-weight: bold;
+  border: none;
+}
+.save-btn:hover {
+  background: #94b63f;
+}
+.save-btn:active {
+  transform: scale(0.96);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
 }

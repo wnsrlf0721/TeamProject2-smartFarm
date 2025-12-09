@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./MyPageTimelapse.css"; // 타임랩스 전용 CSS
 import "../MyPage/MyPage.css"; // 부모 CSS도 함께 적용되도록
-import TimelapseSettingsModal from "./TimelapseSettingsModal";
+// import TimelapseSettingsModal from "./TimelapseSettingsModal";
 
 function MyPageTimelapse() {
   // 예시 데이터 (추후 API로 대체)
@@ -103,7 +103,7 @@ function MyPageTimelapse() {
       </button>
 
       {/* 모달 */}
-      <TimelapseSettingsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {/* <TimelapseSettingsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> */}
     </div>
   );
 }

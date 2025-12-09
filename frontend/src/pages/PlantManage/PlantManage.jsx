@@ -5,7 +5,7 @@ import farmFullData from "./farmFullData";
 
 import {FarmGrid} from "../../components/PlantManage/FarmGrid";
 import {FarmCreateModal} from "../../components/PlantManage/FarmCreateModal";
-import {TimeLapseModal} from "../../components/TimeLapse/TimeLapseModal";
+import TimeLapseModal from "../../components/TimeLapse/TimeLapseModal";
 import {TimeCreateModal} from "../../components/TimeLapse/TimeCreateModal";
 
 // 예시 데이터
@@ -78,7 +78,7 @@ function PlantManage() {
         maxCards={4}
         onAddFarm={() => setIsFarmCreateOpen(true)}
         onSelectFarm={() => setSelectedFarm(farmFullData)}
-        onTimeLapse={(farm) => setTimeLapseDetail(farm)}
+        onTimeLapse={setTimeLapseDetail} // ⬅ 여기만 수정!!
       />
 
       {selectedFarm && <PlantModal data={selectedFarm} onClose={() => setSelectedFarm(null)} />}

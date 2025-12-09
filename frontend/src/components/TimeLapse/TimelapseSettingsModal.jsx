@@ -221,6 +221,7 @@ export default function TimelapseSettingsModal({isOpen, onClose}) {
 
                   <input
                     type="text"
+                    className="video-name-input"
                     placeholder="영상 이름"
                     value={videoSettings[item.id]?.name || ""}
                     onChange={(e) => handleSettingChange(item.id, "name", e.target.value)}
@@ -228,6 +229,7 @@ export default function TimelapseSettingsModal({isOpen, onClose}) {
 
                   <input
                     type="number"
+                    className="video-duration-input"
                     placeholder="초"
                     min="1"
                     value={videoSettings[item.id]?.duration || ""}

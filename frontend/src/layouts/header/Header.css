@@ -80,15 +80,11 @@
   white-space: nowrap; /* 텍스트 줄바꿈 금지 */
 }
 
-<<<<<<< HEAD
 .nav-item:visited {
   color: #253126;
 }
 
 /* ★ hover 효과 업그레이드 (살짝 scale + shadow + 컬러 변화) */
-=======
-/* ★ hover 효과 */
->>>>>>> origin/develop
 .nav-item:hover {
   background: rgba(207, 234, 106, 0.55);
   color: #2f3f22;
