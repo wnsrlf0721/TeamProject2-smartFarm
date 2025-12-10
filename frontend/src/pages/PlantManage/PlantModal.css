@@ -1,315 +1,292 @@
-/* ============================
-   GLOBAL — Noise Texture
-============================ */
-:root {
-  --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
-}
-
-/* ============================
-   MODAL BACKDROP
-============================ */
+/* ============================================================
+   MODAL BACKGROUND
+============================================================ */
 .modal-bg {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 60;
+  z-index: 9000;
 }
 
-/* ============================
-   MODAL
-============================ */
-.modal.smart-modal {
-  width: 94vw;
-  height: 90vh;
-  background: linear-gradient(145deg, #f7ffe8, #ffffff);
-  border-radius: 20px;
-  padding: 28px 34px;
+/* ============================================================
+   MODAL FRAME (전체 틀)
+============================================================ */
+.modal-frame {
+  width: 1200px;
+  max-height: 92vh;
+  background: #ffffff;
+  border-radius: 26px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
 
-  display: flex;
-  flex-direction: column;
+/* 내부 스크롤 영역 */
+.modal-content {
+  padding: 28px 32px;
+  height: calc(92vh - 20px);
   overflow-y: auto;
-  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.25);
-  animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* 스크롤바 */
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+  background: #bcd3b5;
+  border-radius: 8px;
+}
+.modal-content::-webkit-scrollbar-track {
+  background: #f3f7f0;
 }
 
-.close-x {
+/* ============================================================
+   CLOSE BUTTON
+============================================================ */
+.modal-close-btn {
   position: absolute;
-  right: 28px;
-  top: 24px;
-  font-size: 26px;
-  cursor: pointer;
-  border: none;
+  right: 20px;
+  top: 18px;
+  font-size: 22px;
   background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.65;
+}
+.modal-close-btn:hover {
+  opacity: 1;
 }
 
-/* ============================
+/* ============================================================
    HEADER
-============================ */
+============================================================ */
 .modal-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-bottom: 10px;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
 }
 
 .modal-header h2 {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
+  color: #2f3b27;
+  margin: 0;
 }
 
-.dday-badge {
-  background: #d1fae5;
-  color: #065f46;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 14px;
+.updated {
+  font-size: 13px;
+  color: #7a8a72;
+  margin-top: 4px;
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+}
+
+.dday-tag,
+.status-tag {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
   font-weight: 600;
 }
 
-.status-badge {
-  background: #16a34a;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 40px;
-  font-size: 13px;
+.dday-tag {
+  background: #efffd8;
+  color: #4a6c35;
+}
+.status-tag {
+  background: #dcebd3;
+  color: #3d5331;
 }
 
-.update-time {
-  margin-left: auto;
-  font-size: 13px;
-  color: #6b7280;
-  padding-right: 30px;
-}
-
-/* ============================
-   TOP SECTION (IMAGE + INFO)
-============================ */
-.modal-body {
+/* ============================================================
+   MAIN 3-COLUMN LAYOUT
+============================================================ */
+.modal-grid {
   display: grid;
-  grid-template-columns: 33% 1fr;
-  gap: 24px;
-  margin-bottom: 10px;
+  grid-template-columns: 330px 1fr 380px; /* 왼쪽-중간-오른쪽 */
+  gap: 22px;
+  margin-bottom: 32px;
 }
 
-.plant-img {
-  width: 100%;
-  height: 340px;
-  object-fit: cover;
+/* card 기본 스타일 */
+.card {
+  background: #f7f9f3;
   border-radius: 18px;
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.25);
+  padding: 18px;
+  box-shadow: 0 4px 14px rgba(120, 140, 120, 0.12);
 }
 
-/* 오른쪽 컬럼 */
-.right-column {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* PRESET CHIPS */
-.preset-chip-row {
-  display: flex;
-  gap: 16px;
-}
-
-.preset-chip {
-  flex: 1;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-  position: relative;
-  overflow: hidden;
-}
-
-.preset-chip::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--noise-texture);
-  opacity: 0.25;
-}
-
-.chip-icon {
-  width: 44px;
-  height: 44px;
-  background: radial-gradient(circle at 20% 20%, #ffffff, #def49b);
-  border-radius: 50%;
+/* ============================================================
+   LEFT COLUMN
+============================================================ */
+.plant-photo-card {
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 22px;
 }
 
-/* DATE CARDS */
-.date-card-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+.plant-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.date-card {
-  padding: 18px;
+.log-chart-card {
+  margin-top: 18px;
+  height: 360px; /* SensorTrendSlider 안정 높이 */
+}
+
+/* ============================================================
+   MIDDLE COLUMN
+============================================================ */
+.date-card-wrap {
   display: flex;
-  gap: 14px;
-  border-radius: 20px;
-  background: #ffffff;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  position: relative;
-  overflow: hidden;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.date-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--noise-texture);
-  opacity: 0.22;
-}
-
-/* ============================
-   SENSOR BOX GRID (Tetris)
-============================ */
-.sensor-widget-grid {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
-/* 센서 카드 */
-.sensor-widget {
-  padding: 18px 20px;
-  background: #ffffff;
-  border-radius: 22px;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
-  position: relative;
+.date-item {
+  flex: 1;
+  background: #f2f4ee;
+  padding: 14px;
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  gap: 4px;
 }
 
-.sensor-widget::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--noise-texture);
-  opacity: 0.2;
+.date-item label {
+  font-size: 12px;
+  color: #6f7a6d;
+}
+.date-item span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #36452f;
 }
 
-/* BAR */
-.sensor-bar {
-  height: 14px;
-  width: 100%;
-  margin-top: 14px;
-  background: rgba(180, 210, 120, 0.25);
-  border-radius: 12px;
-  overflow: hidden;
+/* 프리셋카드 */
+.preset-card {
+  margin-top: 18px;
 }
 
-.sensor-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #d7f28e, #b6e25e, #9dd843);
-  border-radius: 12px;
+/* 최근 활동 */
+.history-card {
+  margin-top: 18px;
 }
 
-/* ============================
-   CHART BOX (깨짐 해결)
-============================ */
-.chart-box {
-  margin-top: 25px;
-  padding: 24px;
-  height: 260px; /* ✔︎ 고정 height */
-  min-height: 260px;
-  background: linear-gradient(145deg, #f0ffd0, #eaffc2);
-  border-radius: 22px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  position: relative;
+/* 장치 작동 상태 */
+.actu-card {
+  margin-top: 18px;
+  min-height: 250px;
 }
 
-.chart-box::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--noise-texture);
-  pointer-events: none;
-  opacity: 0.15;
+/* ============================================================
+   RIGHT COLUMN
+============================================================ */
+.sensor-status-card {
+  height: 500px;
 }
 
-/* ============================
-   ALARMS
-============================ */
+.sensor-status-top {
+  margin-bottom: 18px;
+}
+
+/* ============================================================
+   ALARM SECTION (전체 폭)
+============================================================ */
+.alarm-section-wide {
+  margin-top: 40px;
+}
+
 .section-title {
-  margin-top: 24px;
-  text-align: center;
-  font-size: 20px;
+  margin-bottom: 12px;
+  font-size: 18px;
   font-weight: 700;
+  color: #2f3b2e;
+}
+
+.alarm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .alarm-item {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  border-left: 6px solid #facc15;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  padding: 14px;
+  background: #fafcf9;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
 }
 
-/* ============================
-   ACTION BUTTONS (Premium)
-============================ */
-.bottom-actions {
+.alarm-time {
+  font-size: 12px;
+  color: #7c8a75;
+}
+
+/* ============================================================
+   FOOTER BUTTONS
+============================================================ */
+.modal-actions {
+  margin-top: 28px;
   display: flex;
-  justify-content: flex-end;
-  gap: 14px;
-  margin-top: 24px;
+  justify-content: space-between;
 }
 
 .action-btn {
-  padding: 10px 26px;
-  border-radius: 12px;
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: none;
   font-size: 15px;
   font-weight: 600;
-  color: #fff;
-  border: none;
+  color: white;
   cursor: pointer;
-  transition: 0.2s ease;
 }
 
-/* 버튼 3종 고급 버전 */
-.action-edit {
-  background: linear-gradient(135deg, #5f9bff, #3b73e6);
-  box-shadow: 0 4px 12px rgba(90, 130, 255, 0.4);
-}
-.action-water {
-  background: linear-gradient(135deg, #9edc35, #7cb820);
-  box-shadow: 0 4px 12px rgba(140, 200, 60, 0.4);
-}
-.action-delete {
-  background: linear-gradient(135deg, #ff7777, #e94b4b);
-  box-shadow: 0 4px 12px rgba(255, 90, 90, 0.4);
+.action-btn + .action-btn {
+  margin-left: 12px;
 }
 
-.action-btn:hover {
-  transform: translateY(-2px);
-  opacity: 0.95;
+.action-btn.green {
+  background: #72a85a;
+}
+.action-btn.green:hover {
+  background: #6c9f55;
+}
+
+.action-btn.blue {
+  background: #4fa4d8;
+}
+.action-btn.blue:hover {
+  background: #4699ca;
+}
+
+.action-btn.red {
+  background: #e7645a;
+}
+.action-btn.red:hover {
+  background: #d7554a;
+}
+
+/* ============================================================
+   TOAST CONTAINER
+============================================================ */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
 }

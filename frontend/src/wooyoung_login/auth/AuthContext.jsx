@@ -7,7 +7,17 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   // 더미 유저 저장 배열
-  const [users, setUsers] = useState([{ id: "1", pw: "1", name: "1", phone: "1", email: "1" }]);
+  const [users, setUsers] = useState([
+    { id: "1", pw: "1", name: "1", phone: "1", email: "1", role: "USER" },
+    {
+      id: "admin",
+      pw: "1234",
+      name: "관리자",
+      phone: "010-0000-0000",
+      email: "admin@test.com",
+      role: "ADMIN",
+    },
+  ]);
 
   // 회원가입
   const signup = (newUser) => {

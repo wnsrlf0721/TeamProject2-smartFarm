@@ -1,0 +1,77 @@
+.history-card {
+  width: 300px;
+  background: linear-gradient(180deg, #f5f9e9, #eef5dd);
+  border-radius: 18px;
+  padding: 18px 22px;
+  box-shadow: 0 4px 14px rgba(120, 140, 110, 0.15);
+  margin-bottom: 26px;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.history-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3a28;
+}
+
+.more-btn {
+  font-size: 13px;
+  color: #3d5731;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.more-btn:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f9fcf4;
+  padding: 10px 12px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(130, 150, 120, 0.1);
+}
+
+.history-icon {
+  font-size: 20px;
+}
+
+.history-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334029;
+}
+
+.history-date {
+  font-size: 12px;
+  color: #60705a;
+  margin-top: 2px;
+}
+
+.history-empty {
+  text-align: center;
+  color: #7d8a72;
+  padding: 18px 0;
+  font-size: 14px;
+}

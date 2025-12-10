@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import BackButton from "../components/BackButton"; // 🔥 추가
 import "./Find.css";
 
 export default function FindIdPw() {
@@ -20,6 +21,9 @@ export default function FindIdPw() {
         <button className="find-option" onClick={() => navigate("/find/pw/verify")}>
           비밀번호 찾기
         </button>
+
+        {/* 🔥 공통 뒤로가기 버튼 */}
+        <BackButton />
       </div>
     </div>
   );

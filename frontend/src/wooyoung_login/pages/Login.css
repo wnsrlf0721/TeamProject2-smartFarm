@@ -44,6 +44,11 @@
   cursor: pointer;
   margin-top: 10px;
 }
+/* 로그인 버튼 Hover */
+.login-btn:hover {
+  background: #6ba114;
+  transition: 0.2s ease;
+}
 
 /* 회원가입 / 아이디 찾기 링크 */
 .login-links {
@@ -55,8 +60,10 @@
   font-size: 14px;
 }
 
-.login-links span {
-  cursor: pointer;
+.login-links span:hover {
+  color: #7cab19; /* 연두색 텍스트 */
+  font-weight: 500;
+  transition: 0.2s ease;
 }
 
 /* ================================

@@ -1,0 +1,291 @@
+/* 전체 센서 UI 축소 */
+.sensor-scale {
+  transform: scale(0.75); /* 0.70 ~ 0.90 정도로 조절 가능 */
+  transform-origin: top left;
+  width: 100%; /* 축소해도 레이아웃이 깨지지 않도록 */
+}
+
+.sensor-box {
+  width: 100%;
+  max-width: 760px;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #f5f9e9, #eef5dd);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  margin-bottom: 20px;
+}
+
+.sensor-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sensor-box-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  border: none;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(120, 140, 110, 0.15);
+  cursor: pointer;
+  font-size: 20px;
+  transition: 0.2s ease;
+}
+
+/* 텍스트 미세 조정 */
+.sensor-box-btns .icon-btn:nth-child(1) span {
+  position: relative;
+  left: 1px;
+  bottom: 0.5px;
+}
+
+.sensor-box-btns .icon-btn:nth-child(2) span {
+  position: relative;
+  top: 2px;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(100, 140, 90, 0.28), 0 0 14px rgba(180, 220, 150, 0.35);
+  transform: scale(1.05);
+}
+
+.icon-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 4px rgba(60, 80, 60, 0.2);
+}
+
+.sensor-row {
+  margin-top: 5px;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.sensor-title-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.sensor-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #283521;
+}
+
+/* 가운데 얇은 divider 라인 */
+.title-divider {
+  flex: 1;
+  height: 1px;
+  background: rgba(130, 150, 120, 0.25);
+  margin: 0 12px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+
+  background: #eef2ea;
+  color: #374b32;
+
+  box-shadow: 0 2px 4px rgba(80, 100, 80, 0.15);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* pill 안의 아이콘 */
+.status-icon {
+  font-size: 11px;
+  transform: translateY(-0.5px);
+}
+
+/* 상태별 색 */
+.status-pill.status-normal {
+  background: #e6f5dd;
+  color: #3b6b36;
+}
+
+.status-pill.status-high {
+  background: #fff1d6;
+  color: #b0721e;
+}
+
+.status-pill.status-low {
+  background: #fbe4e4;
+  color: #c04d4d;
+}
+
+/* 상태 바뀔 때 살짝 튀는 애니메이션 */
+.sensor-row.sensor-high .status-pill,
+.sensor-row.sensor-low .status-pill {
+  animation: statusPop 0.25s ease;
+}
+
+@keyframes statusPop {
+  from {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(80, 100, 80, 0.18);
+    opacity: 1;
+  }
+}
+
+.bar-group {
+  position: relative;
+  width: 100%;
+}
+
+.bar-bg {
+  height: 20px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #e3ecd8, #cfdac1);
+  position: relative;
+  overflow: visible;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 12px;
+  /* transition: width 0.4s ease; */
+  transition: width 0.4s ease, background 0.35s ease;
+  background: linear-gradient(90deg, #bad8a2, #6ba155);
+}
+
+/* ------------ NORMAL 상태 ------------ */
+.bar-fill-normal {
+  background: linear-gradient(90deg, #cfe7c1, #6ba155);
+}
+
+.bar-fill-high {
+  background: linear-gradient(90deg, #fce4bd, #e6a84b);
+}
+
+.bar-fill-low {
+  background: linear-gradient(90deg, #efc7c7, #d66767);
+}
+
+/* 자연스러운 색 변화 */
+.bar-bg,
+.bar-fill {
+  transition: background 0.35s ease, width 0.4s ease;
+}
+
+.value-bubble {
+  position: absolute;
+  z-index: 15;
+  top: 32px;
+  transform: translateX(-50%);
+
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  padding: 10px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3a28;
+
+  box-shadow: 0 8px 16px rgba(90, 110, 90, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+
+  white-space: nowrap;
+}
+
+/* ▼ 위로 향한 꼬리 (삼각형) */
+.value-bubble::after {
+  content: "";
+  position: absolute;
+
+  top: -8px; /* 말풍선 border 와 정확히 맞물리게 */
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.9);
+
+  /* 꼬리 모양 */
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+
+  /* 동일 shadow */
+  box-shadow: 0 6px 10px rgba(90, 110, 90, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+
+  /* 말풍선 border 색과 동일해야 경계선이 사라짐 */
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* 애니메이션 */
+@keyframes bubbleIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* preset Min/Max "|" 표시 */
+.preset-line {
+  position: absolute;
+  top: 50%;
+  height: 13px;
+  width: 1.5px;
+  border-radius: 2px;
+  background: #485c37;
+  transform: translate(-50%, -50%);
+}
+
+/* 눈금 */
+.tick-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.tick {
+  width: 2px;
+  height: 8px;
+  background: #c4cfb7;
+  border-radius: 2px;
+  opacity: 0.9;
+}
+
+.status-text {
+  text-align: right;
+  margin-top: -18px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.status-text.normal {
+  color: #4f7a3b;
+}
+.status-text.low {
+  color: #c04d4d;
+}
+.status-text.high {
+  color: #d6902f;
+}

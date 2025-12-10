@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import BackButton from "../components/BackButton"; // 🔥 추가됨
 import "./Signup.css";
 
 export default function Signup() {
@@ -67,7 +68,6 @@ export default function Signup() {
 
         <input name="phone" className="input" placeholder="전화번호" onChange={handleChange} />
 
-        {/* 주소 */}
         <div className="row-flex">
           <input
             name="zipcode"
@@ -81,7 +81,6 @@ export default function Signup() {
         <input name="addr1" className="input" placeholder="기본주소" onChange={handleChange} />
         <input name="addr2" className="input" placeholder="상세주소" onChange={handleChange} />
 
-        {/* 이메일 */}
         <div className="row-flex">
           <input
             name="email"
@@ -102,6 +101,9 @@ export default function Signup() {
         <button className="signup-btn" onClick={handleSubmit}>
           가입하기
         </button>
+
+        {/* 🔥 공통 뒤로가기 버튼 */}
+        <BackButton />
       </div>
     </div>
   );

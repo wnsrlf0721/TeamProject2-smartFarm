@@ -1,0 +1,74 @@
+/* ToastAlert.css */
+
+.toast-alert {
+  position: relative;
+  width: 260px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.35s ease forwards;
+  color: white;
+}
+
+/* 색상 테마 */
+.toast-sensor {
+  background: #76a74f;
+}
+
+.toast-water {
+  background: #3fa9f5;
+}
+
+.toast-light {
+  background: #f1c40f;
+  color: #4a3c00;
+}
+
+.toast-error {
+  background: #e74c3c;
+}
+
+/* 내용 */
+.toast-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.toast-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.toast-message {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* close button */
+.toast-close {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.toast-close:hover {
+  opacity: 1;
+}
+
+/* 등장 애니메이션 */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px) translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}

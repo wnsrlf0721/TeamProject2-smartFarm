@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import BackButton from "../components/BackButton";
 import "./Find.css";
 
 export default function PWFindReset() {
@@ -20,9 +21,9 @@ export default function PWFindReset() {
       <div className="find-container">
         <div className="find-box">
           <h2>잘못된 접근입니다.</h2>
-          <div className="back-text" onClick={() => navigate("/find")}>
-            ID/PW 찾기로 돌아가기
-          </div>
+
+          {/* 변경됨: 기존의 텍스트 뒤로가기 삭제 → BackButton 컴포넌트 사용 */}
+          <BackButton to="/find" />
         </div>
       </div>
     );
@@ -32,7 +33,6 @@ export default function PWFindReset() {
     if (pw !== pw2) return alert("비밀번호가 일치하지 않습니다.");
 
     const updated = users.map((u) => (u.id === userId ? { ...u, pw } : u));
-
     setUsers(updated);
 
     alert("비밀번호가 성공적으로 변경되었습니다!");
@@ -64,9 +64,8 @@ export default function PWFindReset() {
           비밀번호 변경하기
         </button>
 
-        <div className="back-text" onClick={() => navigate(-1)}>
-          뒤로가기
-        </div>
+        {/* 변경됨: 텍스트 형태 뒤로가기 삭제 → 공통 버튼 적용 */}
+        <BackButton />
       </div>
     </div>
   );

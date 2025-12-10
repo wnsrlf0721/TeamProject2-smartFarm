@@ -1,0 +1,78 @@
+.preset-card {
+  background: linear-gradient(180deg, #f7faef, #edf4e1);
+  padding: 20px 22px;
+  border-radius: 22px;
+  box-shadow: 0 8px 20px rgba(100, 120, 80, 0.12);
+  backdrop-filter: blur(6px);
+  width: 300px;
+}
+
+.preset-title {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2f3d27;
+}
+
+.preset-name {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #283521;
+}
+
+.preset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.preset-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 12px;
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  box-shadow: 0 2px 4px rgba(80, 100, 80, 0.13);
+
+  transition: 0.2s ease;
+}
+
+.preset-item:hover {
+  background: rgba(255, 255, 255, 0.75);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(80, 100, 80, 0.2);
+}
+
+.preset-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preset-icon {
+  font-size: 18px;
+}
+
+.preset-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3a5031;
+}
+
+.preset-range {
+  font-size: 15px;
+  font-weight: 700;
+  color: #516b45;
+}
+
+.preset-card.empty {
+  padding: 30px;
+  text-align: center;
+  color: #61745a;
+}

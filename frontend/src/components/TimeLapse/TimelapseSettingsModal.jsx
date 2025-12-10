@@ -2,12 +2,13 @@ import React, {useState, useMemo, useEffect} from "react";
 import {Video, Film} from "lucide-react";
 import {DndProvider, useDrag, useDrop} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
-import {createPortal} from "react-dom";
 import "./SettingModal.css";
 
 const ItemTypes = {ICON: "icon"};
 
-/* DraggableIcon (unchanged) */
+/* ============================
+    Draggable Icon
+============================= */
 function DraggableIcon({item, from, onClickMove}) {
   const [{isDragging}, drag] = useDrag({
     type: ItemTypes.ICON,
@@ -30,7 +31,9 @@ function DraggableIcon({item, from, onClickMove}) {
   );
 }
 
-/* DropZone (unchanged) */
+/* ============================
+    Drop Zone
+============================= */
 function DropZone({children, acceptDrop}) {
   const [, drop] = useDrop({
     accept: ItemTypes.ICON,
@@ -40,59 +43,55 @@ function DropZone({children, acceptDrop}) {
   return <div ref={drop}>{children}</div>;
 }
 
-/* TimeCreateModal with Portal (replace your existing component with this) */
-export const TimeCreateModal = ({farm, onClose, onCreate}) => {
-  useEffect(() => {
-    console.log("🔥 넘어온 farm 데이터:", farm);
-  }, [farm]);
+/* ============================
+    Main Modal Component
+============================= */
+export default function TimelapseSettingsModal({isOpen, onClose}) {
+  if (!isOpen) return null;
 
-  const baseOrder = useMemo(() => {
-    if (!farm || !farm.stages) return [1];
-    return [1, ...farm.stages.map((s) => s.id)];
-  }, [farm]);
+  /** 원래 순서를 유지할 기준 */
+  const baseOrder = useMemo(() => [1, 2, 3, 4], []);
 
-  const [availableList, setAvailableList] = useState([]);
-  useEffect(() => {
-    if (!farm || !farm.stages) return;
+  const [availableList, setAvailableList] = useState([
+    {id: 1, label: "전체 영상", type: "video"},
+    {id: 2, label: "단계1", type: "film"},
+    {id: 3, label: "단계2", type: "film"},
+    {id: 4, label: "단계3", type: "film"},
+  ]);
 
-    const dynamicList = [
-      {id: 1, label: "전체 영상", type: "video"},
-      ...farm.stages.map((step) => ({
-        id: step.id,
-        label: step.name,
-        type: "film",
-      })),
-    ];
-
-    setAvailableList(dynamicList);
-  }, [farm]);
   const [selectedList, setSelectedList] = useState([]);
+
+  /*==============================
+    DB 구조에 맞춘 단일 JSON 객체
+  ================================*/
   const [videoSettings, setVideoSettings] = useState({});
 
+  /* ============================
+      selectedList 변경 시 JSON 자동 생성
+  ============================== */
   useEffect(() => {
     const newSettings = {};
+
     selectedList.forEach((item) => {
       newSettings[item.id] = {
-        setting_id: null,
-        farm_id: null,
+        setting_id: null, // DB auto increment
+        farm_id: null, // 나중에 서버에서 자동 주입 가능
         preset_step_id: item.id,
         fps: 30,
         duration: 10,
         interval: null,
         resolution: "1920x1080",
         state: "PENDING",
-        name: "",
+        name: "", // 영상 이름
       };
     });
+
     setVideoSettings(newSettings);
   }, [selectedList]);
 
-  const sortByOriginalOrder = (list) =>
-    [...list].sort((a, b) => {
-      const ai = baseOrder.indexOf(a.id);
-      const bi = baseOrder.indexOf(b.id);
-      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
-    });
+  const sortByOriginalOrder = (list) => {
+    return [...list].sort((a, b) => baseOrder.indexOf(a.id) - baseOrder.indexOf(b.id));
+  };
 
   const moveToSelected = (item) => {
     setSelectedList(sortByOriginalOrder([...selectedList, item]));
@@ -107,8 +106,19 @@ export const TimeCreateModal = ({farm, onClose, onCreate}) => {
   const handleDropToSelected = (item) => {
     if (item.from === "available") moveToSelected(item);
   };
+
   const handleDropToAvailable = (item) => {
     if (item.from === "selected") moveToAvailable(item);
+  };
+
+  const addAll = () => {
+    setSelectedList(sortByOriginalOrder([...selectedList, ...availableList]));
+    setAvailableList([]);
+  };
+
+  const removeAll = () => {
+    setAvailableList(sortByOriginalOrder([...availableList, ...selectedList]));
+    setSelectedList([]);
   };
 
   const handleSettingChange = (id, field, value) => {
@@ -121,44 +131,14 @@ export const TimeCreateModal = ({farm, onClose, onCreate}) => {
     });
   };
 
-  const handleSubmit = () => {
-    const finalData = {
-      ...farm,
-      timelapseSettings: videoSettings,
-    };
-    console.log("🔥 최종 저장 데이터:", finalData);
-    onCreate(finalData);
-  };
-
-  // 안전한 inline overlay style (우선순위를 높여 부모 제약 회피)
-  const overlayStyle = {
-    position: "fixed",
-    inset: 0,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "rgba(0,0,0,0.45)",
-    zIndex: 9999,
-    // ensure pointer events pass through overlay except the modal itself
-  };
-
-  // inline modal-box override to ensure correct dimensions if something overrides CSS
-  const modalBoxInline = {
-    width: "900px",
-    height: "700px",
-    maxWidth: "calc(100% - 40px)",
-    maxHeight: "calc(100vh - 40px)",
-    boxSizing: "border-box",
-  };
-
-  // Build the modal element (same structure as your original)
-  const modalElement = (
-    <div style={overlayStyle} onClick={onClose}>
+  return (
+    <div className="modal-overlay" onClick={onClose}>
       <DndProvider backend={HTML5Backend}>
-        <div className="modal-box" style={modalBoxInline} onClick={(e) => e.stopPropagation()}>
+        <div className="modal-box" onClick={(e) => e.stopPropagation()}>
           <h2 className="modal-title">타임랩스 설정</h2>
 
           <div className="timelapse-layout">
+            {/* Left */}
             <DropZone acceptDrop={handleDropToAvailable}>
               <div className="available-section">
                 <h3>생성 가능</h3>
@@ -168,45 +148,31 @@ export const TimeCreateModal = ({farm, onClose, onCreate}) => {
                       key={item.id}
                       item={item}
                       from="available"
-                      onClickMove={() => moveToSelected(item)}
+                      onClickMove={(i) => moveToSelected(i)}
                     />
                   ))}
                 </div>
               </div>
             </DropZone>
 
+            {/* Center Buttons */}
             <div className="action-buttons">
-              <button
-                type="button"
-                onClick={() => {
-                  setAvailableList(sortByOriginalOrder([...availableList, ...selectedList]));
-                  setSelectedList([]);
-                }}
-              >
-                &lt;
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedList(sortByOriginalOrder([...selectedList, ...availableList]));
-                  setAvailableList([]);
-                }}
-              >
-                &gt;
-              </button>
+              <button onClick={removeAll}>&lt;</button>
+              <button onClick={addAll}>&gt;</button>
             </div>
 
+            {/* Right */}
             <DropZone acceptDrop={handleDropToSelected}>
               <div className="selected-section">
                 <h3>생성 예정</h3>
                 <div className="icon-list">
-                  {selectedList.length === 0 && <p>추가된 설정 없음</p>}
+                  {selectedList.length === 0 && <p>추가된 타임랩스 없음</p>}
                   {selectedList.map((item) => (
                     <DraggableIcon
                       key={item.id}
                       item={item}
                       from="selected"
-                      onClickMove={() => moveToAvailable(item)}
+                      onClickMove={(i) => moveToAvailable(i)}
                     />
                   ))}
                 </div>
@@ -277,10 +243,17 @@ export const TimeCreateModal = ({farm, onClose, onCreate}) => {
           </div>
 
           <div className="modal-buttons">
-            <button className="btn-cancel" onClick={onClose}>
+            <button className="cancel-btn" onClick={onClose}>
               취소
             </button>
-            <button className="save-btn" onClick={handleSubmit}>
+
+            <button
+              className="save-btn"
+              onClick={() => {
+                console.log("🎬 저장되는 JSON:", videoSettings);
+                onClose();
+              }}
+            >
               저장
             </button>
           </div>
@@ -288,11 +261,4 @@ export const TimeCreateModal = ({farm, onClose, onCreate}) => {
       </DndProvider>
     </div>
   );
-
-  // createPortal -> body 에 붙여서 부모 제약을 완전히 피함
-  if (typeof document !== "undefined" && document.body) {
-    return createPortal(modalElement, document.body);
-  }
-  // fallback (서버 사이드나 document가 없을 때)
-  return modalElement;
-};
+}

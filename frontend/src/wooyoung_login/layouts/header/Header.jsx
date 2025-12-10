@@ -1,56 +1,124 @@
 // ==============================
-// 우영 - Header.jsx (최종수정본)
+// 통합 Header.jsx (마이페이지 + Auth + 드롭다운 + 서브메뉴)
 // ==============================
-import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
-import { useAuth } from "../../auth/AuthContext";
+import {Link, useLocation} from "react-router-dom";
+import {useState, useEffect, useRef} from "react";
+import {useAuth} from "../../auth/AuthContext";
 import "./Header.css";
 
 export default function Header() {
-  const { user, logout } = useAuth();
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef();
+  const {user, logout} = useAuth();
+  const [openUserMenu, setOpenUserMenu] = useState(false);
+  // const [activeMenu, setActiveMenu] = useState(null);
 
-  useEffect(() => {
-    function close(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
-  }, []);
+  const dropdownRef = useRef();
+  const navRef = useRef();
+  // const location = useLocation();
+
+  // ============================
+  // URL 기반 활성 메뉴 자동 적용
+  // ============================
+  // useEffect(() => {
+  //   if (location.pathname.startsWith("/mypage")) setActiveMenu("mypage");
+  //   else if (location.pathname.startsWith("/plants")) setActiveMenu("plants");
+  //   else if (location.pathname.startsWith("/market")) setActiveMenu("market");
+  //   else if (location.pathname.startsWith("/alerts")) setActiveMenu("alerts");
+  //   else setActiveMenu(null);
+  // }, [location.pathname]);
+
+  // ============================
+  // 드롭다운 외부 클릭 시 닫기
+  // ============================
+  // useEffect(() => {
+  //   function close(e) {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+  //       setOpenUserMenu(false);
+  //     }
+  //   }
+  //   document.addEventListener("mousedown", close);
+  //   return () => document.removeEventListener("mousedown", close);
+  // }, []);
+
+  // ============================
+  // 메뉴 Hover 외부 클릭 시 서브메뉴 닫기
+  // ============================
+  // useEffect(() => {
+  //   function closeNav(e) {
+  //     if (navRef.current && !navRef.current.contains(e.target)) {
+  //       setActiveMenu(null);
+  //     }
+  //   }
+  //   document.addEventListener("mouseover", closeNav);
+  //   return () => document.removeEventListener("mouseover", closeNav);
+  // }, []);
 
   return (
     <header className="nova-header">
       <div className="nova-header-inner">
-        {/* 로고 */}
+        {/* -------------------------
+            로고
+        -------------------------- */}
         <Link to="/" className="header-logo">
           <img src="/logo.svg" alt="logo" className="logo-img" />
         </Link>
 
-        {/* 네비게이션 */}
-        <nav className="nova-nav">
+        {/* -------------------------
+            네비게이션
+        -------------------------- */}
+        <nav className="nova-nav" ref={navRef}>
           <Link to="/" className="nav-item">
-            홈
+            <span>홈</span>
           </Link>
+
           <Link to="/plants" className="nav-item">
-            내 식물 관리
+            <span>내 식물 관리</span>
           </Link>
+
+          {/* <Link to="/mypage" className="nav-item" onMouseEnter={() => setActiveMenu("mypage")}>
+            <span>마이페이지</span>
+          </Link> */}
+
           <Link to="/market" className="nav-item">
-            팜 마켓
+            <span>팜 마켓</span>
           </Link>
+
           <Link to="/alerts" className="nav-item">
-            알림
+            <span>알림</span>
           </Link>
         </nav>
 
-        {/* 우측 사용자 */}
+        {/* -------------------------
+            마이페이지 서브메뉴
+        -------------------------- */}
+        {/* <div className="submenu-zone">
+          {activeMenu === "mypage" && (
+            <div
+              className="submenu"
+              onMouseEnter={() => setActiveMenu("mypage")}
+              onMouseLeave={() => {
+                if (!location.pathname.startsWith("/mypage")) {
+                  setActiveMenu(null);
+                }
+              }}
+            >
+              <Link to="/mypage/view">프로필 관리</Link>
+              <Link to="/mypage/edit">프로필 수정</Link>
+              <Link to="/mypage/timelapse">타임 랩스</Link>
+            </div>
+          )}
+        </div> */}
+
+        {/* -------------------------
+            우측 사용자 메뉴
+        -------------------------- */}
         <div className="user-area" ref={dropdownRef}>
           {user ? (
             <>
-              {/* 로그인 후 메뉴 */}
-              <button className="user-dropdown-btn" onClick={() => setOpen((p) => !p)}>
+              {/* 로그인 후 드롭다운 */}
+              <button
+                className="user-dropdown-btn"
+                onClick={() => setOpenUserMenu((prev) => !prev)}
+              >
                 <img
                   src={user.profileImg || "/mockups/woo-default-profile.svg"}
                   alt="프로필"
@@ -60,17 +128,12 @@ export default function Header() {
                 <span className="arrow">▾</span>
               </button>
 
-              {open && (
+              {openUserMenu && (
                 <div className="dropdown-menu">
-                  <Link to="/profile" className="dropdown-item">
-                    프로필 보기
-                  </Link>
-                  <Link to="/settings" className="dropdown-item">
-                    설정
-                  </Link>
-                  <Link to="/history" className="dropdown-item">
-                    나의 히스토리
-                  </Link>
+                  <Link to="/mypage/view">프로필 보기</Link>
+                  <Link to="/mypage/timelapse">타임 랩스</Link>
+                  <Link to="/settings">설정</Link>
+                  <Link to="/history">나의 히스토리</Link>
 
                   <div className="menu-divider"></div>
 
@@ -82,12 +145,14 @@ export default function Header() {
             </>
           ) : (
             <>
-              {/* 로그인 전 아이콘 */}
-              <button className="user-icon-btn" onClick={() => setOpen((p) => !p)}>
-                <img src="/mockups/woo-user-icon.svg" alt="로그인" className="user-icon" />
+              {/* 로그인 전 */}
+              <button className="user-dropdown-btn" onClick={() => setOpenUserMenu((p) => !p)}>
+                <img src="/mockups/woo-user-icon.svg" alt="" className="user-img" />
+                <span className="user-name">로그인</span>
+                <span className="arrow">▾</span>
               </button>
 
-              {open && (
+              {openUserMenu && (
                 <div className="dropdown-menu login-dropdown">
                   <Link to="/login" className="dropdown-item">
                     로그인

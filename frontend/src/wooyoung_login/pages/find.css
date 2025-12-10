@@ -51,9 +51,13 @@
   transition: 0.2s ease;
 }
 
+/* ID 찾기, PW 찾기 버튼 */
 .find-option:hover {
-  background: #f7f7f7;
-  border-color: #ccc;
+  background: rgba(207, 234, 106, 0.45); /* 연두 hover */
+  border-color: rgba(207, 234, 106, 0.6);
+  transform: translateY(-2px); /*  살짝 위로 뜨는 효과 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12); /*  그림자 추가 */
+  transition: 0.2s ease;
 }
 
 /* ================================
@@ -131,6 +135,11 @@
   border-radius: 10px;
   cursor: pointer;
   margin-bottom: 8pt;
+}
+/* 인증요청 버튼 Hover */
+.auth-btn:hover {
+  background: #6ba114; /* 로그인 버튼 hover와 같은 계열의 짙은 초록 */
+  transition: 0.2s ease;
 }
 
 /* ================================

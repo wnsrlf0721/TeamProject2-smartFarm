@@ -1,12 +1,56 @@
+// src/pages/PlantModal/PlantModal.jsx
+import { useState, useEffect } from "react";
+import { transformSensorLog } from "../../api/utils/sensorTransform";
 import "./PlantModal.css";
-import SensorLineChart from "./SensorLineChart";
+
+import SensorBar from "../../components/dashboard/SensorBar";
+import WaterLevelCard from "../../components/dashboard/WaterLevelCard";
+import SensorTrendSlider from "../../components/dashboard/SensorTrendSlider";
+import ToastAlert from "../../components/dashboard/ToastAlert";
+import ActuStatus from "../../components/dashboard/ActuStatus";
+import PresetInfo from "../../components/dashboard/PresetInfo";
+import PlantHistoryCard from "../../components/dashboard/PlantHistoryCard";
 
 function PlantModal({ data, onClose }) {
-  if (!data) return null;
+  /* ------------------- 팝업 알림 ------------------- */
+  const [alerts, setAlerts] = useState([]);
 
-  const { farm, preset, preset_step, current_sensor, sensor_history, alarms } = data;
+  function pushAlert(alert) {
+    setAlerts((prev) => [...prev, { id: Date.now(), ...alert }]);
+  }
 
-  // D-day 계산
+  function removeAlert(id) {
+    setAlerts((prev) => prev.filter((a) => a.id !== id));
+  }
+
+  const {
+    farm = {},
+    // preset = {},
+    preset_step = {},
+    plant_alarm = [],
+    sensor_log = [],
+    actuator_log = [],
+  } = data ?? {};
+
+  const { current_sensor, sensor_history } = transformSensorLog(sensor_log);
+
+  useEffect(() => {
+    if (!plant_alarm?.length) return;
+
+    const latest = data.plant_alarm[0];
+
+    const t = setTimeout(() => {
+      pushAlert({
+        type: "sensor",
+        title: latest.title,
+        message: latest.message,
+      });
+    }, 0);
+    // cleanup
+    return () => clearTimeout(t);
+  }, [plant_alarm]);
+
+  /* ------------------- D-DAY 계산 ------------------- */
   const dday = (() => {
     const today = new Date();
     const harvest = new Date(farm.expected_harvest_at);
@@ -14,216 +58,155 @@ function PlantModal({ data, onClose }) {
     return diff >= 0 ? diff : 0;
   })();
 
+  /* ------------------- UI ------------------- */
+
   return (
     <div className="modal-bg" onClick={onClose}>
-      <div className="modal smart-modal" onClick={(e) => e.stopPropagation()}>
-        {/* X 버튼 */}
-        <button className="close-x" onClick={onClose}>
+      <div className="modal-frame" onClick={(e) => e.stopPropagation()}>
+        {/* 닫기 버튼 */}
+        <button className="modal-close-btn" onClick={onClose}>
           ✕
         </button>
 
-        {/* HEADER */}
-        <div className="modal-header">
-          <h2>
-            팜 #{farm.farm_id} - {farm.plant_name}
-          </h2>
+        {/* 스크롤 가능한 전체 콘텐츠 래퍼 */}
+        <div className="modal-content">
+          {/* 🔶 HEADER */}
+          <div className="modal-header">
+            <div className="header-left">
+              <h2>
+                팜 #{farm.farm_id} — {farm.plant_nickname} ({farm.plant_type})
+              </h2>
+              <p className="updated">업데이트: {current_sensor.logged_at}</p>
+            </div>
 
-          <span className="dday-badge">D-{dday}</span>
-          <span className="status-badge">{farm.status}</span>
-
-          <span className="update-time">업데이트: {current_sensor.logged_at}</span>
-        </div>
-
-        {/* ========== 상단 layout 전체 ========== */}
-        <div className="modal-body">
-          {/* LEFT : PLANT IMAGE */}
-          <div className="left-column">
-            <img src="/basil.png" alt={farm.plant_name} className="plant-img" />
+            <div className="header-right">
+              <span className="dday-tag">D-{dday}</span>
+              <span className="status-tag">{farm.status}</span>
+            </div>
           </div>
 
-          {/* RIGHT : 프리셋, 성장단계, 날짜 */}
-          <div className="right-column">
-            {/* 프리셋/성장단계 칩 라인 */}
-            <div className="preset-chip-row">
-              <div className="preset-chip">
-                <div className="chip-icon">🌿</div>
-                <div className="chip-text">
-                  <span className="chip-label">프리셋</span>
-                  <span className="chip-value">{preset.preset_name}</span>
+          {/* 🟩 토스트는 모달 내부에 둠 */}
+          <div className="toast-container">
+            {alerts.map((a) => (
+              <ToastAlert key={a.id} {...a} onClose={removeAlert} />
+            ))}
+          </div>
+
+          {/* 🔷 메인 3열 레이아웃 */}
+          <div className="modal-grid">
+            {/* ========== LEFT COLUMN ========== */}
+            <div className="grid-left">
+              {/* 1) 식물 사진 */}
+              <div className="card plant-photo-card">
+                <img src="/basil.png" alt="plant" className="plant-photo" />
+              </div>
+
+              {/* 2) 로그 변화 그래프 */}
+              <div className="card log-chart-card">
+                <SensorTrendSlider
+                  charts={[
+                    { title: "온도 변화", unit: "℃", data: sensor_history.temperature || [] },
+                    { title: "습도 변화", unit: "%", data: sensor_history.humidity || [] },
+                    { title: "토양 수분 변화", unit: "%", data: sensor_history.soil || [] },
+                    { title: "광량 변화", unit: "lx", data: sensor_history.light || [] },
+                    { title: "CO₂ 변화", unit: "ppm", data: sensor_history.co2 || [] },
+                  ]}
+                />
+              </div>
+            </div>
+
+            {/* ========== MIDDLE COLUMN ========== */}
+            <div className="grid-middle">
+              {/* 1) 재배 시작 / 예상 수확 */}
+              <div className="card date-card-wrap">
+                <div className="date-item">
+                  <label>재배 시작</label>
+                  <span>{farm.started_at}</span>
+                </div>
+                <div className="date-item">
+                  <label>예상 수확일</label>
+                  <span>{farm.expected_harvest_at}</span>
                 </div>
               </div>
 
-              <div className="preset-chip">
-                <div className="chip-icon">🌱</div>
-                <div className="chip-text">
-                  <span className="chip-label">성장 단계</span>
-                  <span className="chip-value">{preset_step.growth_step_name}</span>
-                </div>
+              {/* 2) 프리셋 */}
+              <div className="card preset-card">
+                <PresetInfo preset_step={preset_step} />
+              </div>
+
+              {/* 3) 최근 활동 */}
+              <div className="card history-card">
+                <PlantHistoryCard
+                  history={[
+                    { type: "water", title: "물주기", date: "2024-12-08 15:30" },
+                    { type: "repot", title: "분갈이", date: "2024-12-05 12:10" },
+                    { type: "trim", title: "가지치기", date: "2024-12-03 09:50" },
+                    { type: "light", title: "LED 조정", date: "2024-12-02 18:44" },
+                  ]}
+                />
+              </div>
+
+              {/* 4) 장치 작동 상태 */}
+              <div className="card actu-card">
+                <ActuStatus
+                  logs={actuator_log}
+                  current_sensor={{ ...current_sensor, preset_step }}
+                />
               </div>
             </div>
 
-            {/* 날짜 2개 */}
-            <div className="date-card-row">
-              <div className="date-card">
-                <div className="date-icon">📅</div>
-                <div className="date-text">
-                  <span className="date-label">재배 시작</span>
-                  <span className="date-value">{farm.started_at}</span>
+            {/* ========== RIGHT COLUMN ========== */}
+            <div className="grid-right">
+              {/* 1) 센서 상태 요약 */}
+              <div className="card sensor-status-card">
+                <div className="sensor-status-top">
+                  <WaterLevelCard value={current_sensor.water_level} />
                 </div>
-              </div>
 
-              <div className="date-card">
-                <div className="date-icon">🌾</div>
-                <div className="date-text">
-                  <span className="date-label">예상 수확일</span>
-                  <span className="date-value">{farm.expected_harvest_at}</span>
+                <div className="sensor-status-main">
+                  <SensorBar sensor={current_sensor} preset_step={preset_step} />
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* ========== 센서 위젯 4개 (막대바) ========== */}
-        <div className="sensor-widget-grid">
-          {/* 온도 */}
-          <div className="sensor-widget advanced">
-            <div className="sensor-top">
-              <div className="sensor-icon">🌡️</div>
-              <div className="sensor-title">온도</div>
+          {/* 🔶 하단 — 최근 알람 */}
+          <div className="card alarm-section-wide">
+            <h3 className="section-title">최근 알람</h3>
+
+            <div className="alarm-list">
+              {plant_alarm.slice(0, 5).map((a) => (
+                <div key={a.p_alarm_id} className="alarm-item">
+                  <strong>{a.title}</strong>
+                  <p>{a.message}</p>
+                  <span className="alarm-time">{a.created_at}</span>
+                </div>
+              ))}
             </div>
 
-            <div className="sensor-bar">
-              <div
-                className="sensor-bar-fill"
-                style={{
-                  width: `${
-                    ((current_sensor.temperature - preset_step.temp.min) /
-                      (preset_step.temp.max - preset_step.temp.min)) *
-                    100
-                  }%`,
-                }}
-              ></div>
-            </div>
-
-            <div className="sensor-bottom">
-              <span className="sensor-value">{current_sensor.temperature}℃</span>
-              <span className="sensor-range">
-                {preset_step.temp.min}~{preset_step.temp.max}℃
-              </span>
-            </div>
+            <button className="more-btn">더보기</button>
           </div>
 
-          {/* 습도 */}
-          <div className="sensor-widget advanced">
-            <div className="sensor-top">
-              <div className="sensor-icon">💧</div>
-              <div className="sensor-title">습도</div>
-            </div>
-
-            <div className="sensor-bar">
-              <div
-                className="sensor-bar-fill"
-                style={{
-                  width: `${
-                    ((current_sensor.humidity - preset_step.humidity.min) /
-                      (preset_step.humidity.max - preset_step.humidity.min)) *
-                    100
-                  }%`,
-                }}
-              ></div>
-            </div>
-
-            <div className="sensor-bottom">
-              <span className="sensor-value">{current_sensor.humidity}%</span>
-              <span className="sensor-range">
-                {preset_step.humidity.min}~{preset_step.humidity.max}%
-              </span>
-            </div>
+          {/* 🔶 FOOTER 버튼 */}
+          <div className="modal-actions">
+            <button className="action-btn green">편집</button>
+            <button
+              className="action-btn blue"
+              onClick={() =>
+                pushAlert({
+                  type: "water",
+                  title: "물 주기 실행",
+                  message: "자동 물 공급 동작이 실행되었습니다.",
+                })
+              }
+            >
+              물 주기
+            </button>
+            <button className="action-btn red">삭제</button>
           </div>
-
-          {/* 조도 */}
-          <div className="sensor-widget advanced">
-            <div className="sensor-top">
-              <div className="sensor-icon">💡</div>
-              <div className="sensor-title">조도</div>
-            </div>
-
-            <div className="sensor-bar">
-              <div
-                className="sensor-bar-fill"
-                style={{
-                  width: `${
-                    ((current_sensor.lightPower - preset_step.lightPower.min) /
-                      (preset_step.lightPower.max - preset_step.lightPower.min)) *
-                    100
-                  }%`,
-                }}
-              ></div>
-            </div>
-
-            <div className="sensor-bottom">
-              <span className="sensor-value">{current_sensor.lightPower} lux</span>
-              <span className="sensor-range">
-                {preset_step.lightPower.min}~{preset_step.lightPower.max} lux
-              </span>
-            </div>
-          </div>
-
-          {/* 토양 수분 */}
-          <div className="sensor-widget advanced">
-            <div className="sensor-top">
-              <div className="sensor-icon">🪴</div>
-              <div className="sensor-title">토양 수분</div>
-            </div>
-
-            <div className="sensor-bar">
-              <div
-                className="sensor-bar-fill"
-                style={{
-                  width: `${
-                    ((current_sensor.soil_moisture - preset_step.soil_moisture.min) /
-                      (preset_step.soil_moisture.max - preset_step.soil_moisture.min)) *
-                    100
-                  }%`,
-                }}
-              ></div>
-            </div>
-
-            <div className="sensor-bottom">
-              <span className="sensor-value">{current_sensor.soil_moisture}%</span>
-              <span className="sensor-range">
-                {preset_step.soil_moisture.min}~{preset_step.soil_moisture.max}%
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* ========== 차트 ========== */}
-        <div className="chart-box">
-          <SensorLineChart title="온도 변화 그래프" data={sensor_history.temperature} />
-        </div>
-
-        {/* ========== 알람 ========== */}
-        <h3 className="section-title">최근 알람</h3>
-
-        <div className="alarm-list">
-          {alarms.map((a, i) => (
-            <div key={i} className="alarm-item">
-              <strong>{a.title}</strong>
-              <p>{a.message}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* ========== 하단 버튼 ========== */}
-        <div className="bottom-actions">
-          <button className="action-btn action-edit">편집</button>
-          <button className="action-btn action-water">물 주기</button>
-          <button className="action-btn action-delete">삭제</button>
         </div>
       </div>
     </div>
   );
 }
-
 export default PlantModal;

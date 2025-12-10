@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
+import BackButton from "../components/BackButton";
 import "./Find.css";
 
 export default function IDFindPage() {
@@ -57,6 +58,9 @@ export default function IDFindPage() {
         <button className="green-btn" onClick={findId}>
           ID 찾기
         </button>
+
+        {/*  통일된 뒤로가기 버튼 */}
+        <BackButton />
       </div>
     </div>
   );

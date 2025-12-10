@@ -1,0 +1,46 @@
+/* SensorTrendChart.css */
+
+.trend-card {
+  width: 100%;
+  max-width: 500px;
+  background: linear-gradient(180deg, #f4f8e8, #eef5dd);
+  border-radius: 22px;
+  padding: 18px 22px;
+  margin-bottom: 26px;
+
+  box-shadow: 0 6px 18px rgba(150, 170, 140, 0.15);
+}
+
+.trend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.trend-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3a28;
+}
+
+.trend-stats {
+  font-size: 12.5px;
+  color: #4c5c4c;
+  display: flex;
+  gap: 12px;
+  opacity: 0.9;
+}
+
+.trend-chart {
+  width: 100%;
+  height: 200px;
+}
+
+.no-data {
+  padding: 40px 0;
+  text-align: center;
+  color: #6d7b6d;
+  font-size: 14px;
+  opacity: 0.8;
+}
