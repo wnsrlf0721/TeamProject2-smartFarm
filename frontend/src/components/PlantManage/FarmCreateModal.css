@@ -1,0 +1,414 @@
+/* --- 변수 정의 (다크 테마 색상) --- */
+:root {
+  --bg-dark: #0f172a; /* Slate 900 */
+  --bg-card: #1e293b; /* Slate 800 */
+  --bg-input: #0f172a;
+  --border-color: #334155; /* Slate 700 */
+  --text-main: #f8fafc; /* Slate 50 */
+  --text-sub: #94a3b8; /* Slate 400 */
+  --primary-blue: #3b82f6;
+  --primary-purple: #a855f7;
+  --danger: #ef4444;
+}
+
+/* --- 모달 레이아웃 & 애니메이션 --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background-color: var(--bg-card);
+  width: 900px; /* 와이드 모달 */
+  max-width: 95%;
+  max-height: 90vh;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  position: relative; /* z-index 등 관리 */
+  color: var(--text-main);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-content > form {
+  display: flex; /* Form 내부도 Flex로 */
+  flex-direction: column;
+  flex: 1; /* 남은 공간을 모두 차지함 */
+  overflow: hidden; /* Form 자체가 넘치지 않게 */
+  min-height: 0; /* Flex 자식의 스크롤 버그 방지 (중요) */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- 헤더 --- */
+.modal-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.icon-box {
+  background-color: #22c55e;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  cursor: pointer;
+}
+.close-btn:hover {
+  color: white;
+}
+
+/* --- 바디 (스크롤) --- */
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  display: block;
+  text-align: left;
+}
+
+/* 스크롤바 커스텀 */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+.modal-body::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* --- 폼 요소 공통 --- */
+.form-section {
+  margin-bottom: 32px;
+}
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: white;
+}
+.label {
+  font-size: 0.875rem;
+  color: var(--text-sub);
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+}
+
+/* --- 프리셋 선택 영역 --- */
+.preset-selector {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-input);
+  overflow: hidden;
+}
+
+.preset-placeholder-btn {
+  width: 100%;
+  padding: 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  cursor: pointer;
+}
+
+.preset-selected-box {
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.preset-selector-trigger {
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.preset-info {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid var(--primary-blue);
+  border-radius: 8px;
+  background-color: rgba(59, 130, 246, 0.1);
+}
+.change-btn {
+  padding: 10px 16px;
+  background-color: var(--border-color);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+/* 프리셋 리스트 */
+.preset-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 8px;
+  background-color: var(--bg-input);
+  position: absolute;
+  top: 100%; /* 박스 바로 아래 */
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 4px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-height: 200px; /* 너무 길어지면 스크롤 */
+  overflow-y: auto;
+}
+.preset-item {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  background-color: lightgreen;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.preset-item:hover {
+  border-color: var(--primary-blue);
+}
+.preset-meta {
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+
+.create-new-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(
+    to right,
+    var(--primary-blue),
+    var(--primary-purple)
+  );
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* --- 성장 단계 (Accordion) --- */
+.stage-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.add-stage-btn {
+  background: linear-gradient(
+    to right,
+    var(--primary-blue),
+    var(--primary-purple)
+  );
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stage-card {
+  background-color: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.stage-top {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.stage-name-edit {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  width: 200px;
+}
+.stage-name-edit:focus {
+  outline: none;
+  border-bottom: 1px solid var(--primary-blue);
+}
+
+.stage-controls {
+  padding: 0 20px 20px 20px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 8px;
+  padding-top: 20px;
+}
+
+/* --- Range Slider Custom --- */
+.range-slider-wrapper {
+  margin-bottom: 20px;
+}
+.rs-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: var(--text-sub);
+}
+.rs-values {
+  font-weight: 600;
+}
+.val-min {
+  color: #60a5fa;
+}
+.val-max {
+  color: #c084fc;
+}
+
+.rs-track-container {
+  position: relative;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+.rs-track-bg {
+  position: absolute;
+  width: 100%;
+  height: 6px;
+  background-color: var(--border-color);
+  border-radius: 3px;
+}
+.rs-track-active {
+  position: absolute;
+  height: 6px;
+  background: linear-gradient(to right, #3b82f6, #a855f7);
+  border-radius: 3px;
+  z-index: 1;
+}
+.rs-thumb {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+  -webkit-appearance: none;
+  z-index: 2;
+  margin: 0;
+}
+.rs-thumb::-webkit-slider-thumb {
+  pointer-events: auto;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--primary-blue);
+  cursor: pointer;
+  transform: translateY(-50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.rs-thumb.max-thumb::-webkit-slider-thumb {
+  border-color: var(--primary-purple);
+}
+
+/* --- 푸터 --- */
+.modal-footer {
+  padding: 24px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 12px;
+}
+.btn-cancel {
+  flex: 1;
+  padding: 14px;
+  background: var(--border-color);
+  border: none;
+  border-radius: 8px;
+  color: var(--text-sub);
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-submit {
+  flex: 1;
+  padding: 14px;
+  background: linear-gradient(
+    to right,
+    var(--primary-blue),
+    var(--primary-purple)
+  );
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
