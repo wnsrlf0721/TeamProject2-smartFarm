@@ -1,0 +1,39 @@
+# 1. Python 필수 무시 파일 (컴파일된 바이트코드)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 2. 가상환경 (Virtual Environment) - 가장 중요!
+# venv 폴더는 용량이 크고 시스템마다 다르므로 절대 올리지 않습니다.
+venv/
+env/
+.venv/
+
+# 3. 환경설정 및 비밀 정보 (보안)
+# MQTT IP나 비밀번호 등을 별도 파일로 관리할 경우를 대비해 미리 추가합니다.
+.env
+config.py
+secrets.py
+*.key
+*.pem
+
+# 4. IDE 및 에디터 설정 파일
+# VS Code나 PyCharm 설정 파일은 개인별로 다르므로 올리지 않는 게 좋습니다.
+.vscode/
+.idea/
+*.swp
+
+# 5. OS 생성 파일
+.DS_Store
+Thumbs.db
+
+# 6. 런타임/로그 파일
+# 실행 중 발생하는 로그나 테스트용으로 찍힌 사진 등
+*.log
+*.jpg
+*.png
+*.mp4
+nohup.out
+
+# 7. 라즈베리파이/리눅스 관련 임시 파일
+*~
