@@ -6,10 +6,10 @@ spring:
     client-id: spring-boot-app   # 기본 클라이언트 ID
 
     # 토픽 설정
-    topic:
+    topic:  
       command: server/command   # 발행(Publish)할 토픽
       #      sensor: farm/+/sensor/+        # 구독(Subscribe)할 토픽
-      sensor: home/sensor/dht11
+      sensor: home/sensor/+
 
   application:
     name: backend
