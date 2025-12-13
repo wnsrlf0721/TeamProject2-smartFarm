@@ -1,5 +1,6 @@
 package com.nova.backend.preset.dto;
 
+import com.nova.backend.preset.entity.EnvRange;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,11 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StepRequestDTO {
+    private PresetResponseDTO preset;
     private int growthStep;
     private int periodDays;
-    private Float temp;
-    private Float humidity;
-    private Float lightPower;
-    private Float co2;
-    private Float soilMoisture;
+    private EnvRange temp;
+    private EnvRange humidity;
+    private EnvRange lightPower;
+    private EnvRange co2;
+    private EnvRange soilMoisture;
+    private Integer waterLevel;
 }
