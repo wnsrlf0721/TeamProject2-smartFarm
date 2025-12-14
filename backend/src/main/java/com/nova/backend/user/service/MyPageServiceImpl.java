@@ -42,6 +42,7 @@ public class MyPageServiceImpl implements MyPageService {
         if (user == null) {
             throw new IllegalArgumentException("존재하지 않는 유저입니다. userId=" + userId);
         }
+        UsersResponseDTO usersResponseDTO = modelMapper.map(user, UsersResponseDTO.class);
 
         List<NovaResponseDTO> novaResponseDTOList = novaDAO.getNovaEntity(userId).stream()
                 .map(nova -> modelMapper.map(nova, NovaResponseDTO.class))

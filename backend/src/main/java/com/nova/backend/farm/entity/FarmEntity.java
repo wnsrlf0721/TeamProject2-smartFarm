@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"nova","presetStepEntity"})
+@ToString(exclude = {"nova","presetStep"})
 public class FarmEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
