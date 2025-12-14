@@ -26,7 +26,8 @@ public class PresetStepDAOImpl implements PresetStepDAO {
 
     @Override
     public List<PresetStep> findAllByPresetId(int presetId) {
-        return presetStepRepository.findByPreset_PresetId(presetId);
+//        return presetStepRepository.findByPreset_PresetId(presetId);
+        return null;
     }
 
     @Override

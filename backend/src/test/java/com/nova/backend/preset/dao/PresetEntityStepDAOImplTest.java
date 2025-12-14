@@ -1,7 +1,7 @@
 package com.nova.backend.preset.dao;
 
 import com.nova.backend.preset.entity.EnvRange;
-import com.nova.backend.preset.entity.Preset;
+import com.nova.backend.preset.entity.PresetEntity;
 import com.nova.backend.preset.entity.PresetStep;
 import com.nova.backend.preset.repository.PresetRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -11,11 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class PresetStepDAOImplTest {
+class PresetEntityStepDAOImplTest {
     @Autowired
     private PresetStepDAO presetStepDAO;
 
@@ -26,14 +25,14 @@ class PresetStepDAOImplTest {
     @DisplayName("Create & Read: JSON 데이터가 포함된 PresetStep 저장 및 조회 테스트")
     void saveAndFindTest() {
         // 1. Given: 부모 데이터(Preset) 먼저 생성
-        Preset preset = new Preset();
-        preset.setPresetName("테스트용 프리셋");
-        preset.setPlantType("Leafy");
-        Preset savedPreset = presetRepository.save(preset);
+        PresetEntity presetEntity = new PresetEntity();
+        presetEntity.setPresetName("테스트용 프리셋");
+        presetEntity.setPlantType("Leafy");
+        PresetEntity savedPresetEntity = presetRepository.save(presetEntity);
 
         // 2. Given: JSON 객체(EnvRange)를 포함한 Step 데이터 생성
         PresetStep step = new PresetStep();
-        step.setPreset(savedPreset);
+        step.setPresetEntity(savedPresetEntity);
         step.setGrowthStep(1);
         step.setPeriodDays(10);
         step.setWaterLevel(50);

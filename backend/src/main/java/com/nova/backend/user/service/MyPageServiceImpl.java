@@ -61,7 +61,7 @@ public class MyPageServiceImpl implements MyPageService {
                 .filter(nova -> nova.getStatus().equals("create"))
                 .map(nova -> {
                     NovaEntity entity = new NovaEntity(
-                            nova.getUserId(),
+                            modelMapper.map(nova.getUser(),UsersEntity.class),
                             nova.getNovaSerialNumber(),
                             "default"
                     );

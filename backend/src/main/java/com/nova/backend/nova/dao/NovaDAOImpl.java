@@ -12,7 +12,7 @@ public class NovaDAOImpl implements NovaDAO {
     private final NovaRepository novaRepository;
     @Override
     public List<NovaEntity> getNovaEntity(int userId) {
-        return novaRepository.findByUserId(userId);
+        return novaRepository.findByUser_UserId(userId);
     }
 
     @Override

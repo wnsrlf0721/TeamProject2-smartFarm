@@ -107,8 +107,8 @@ class FarmDAOImplTest {
             System.out.println("    ㄴ 기간(Days): " + farm.getPresetStep().getPeriodDays());
 
             // Farm -> PresetStep -> Preset 접근
-            System.out.println("    ㄴ 작물 종류: " + farm.getPresetStep().getPreset().getPlantType());
-            System.out.println("    ㄴ 프리셋 이름: " + farm.getPresetStep().getPreset().getPresetName());
+            System.out.println("    ㄴ 작물 종류: " + farm.getPresetStep().getPresetEntity().getPlantType());
+            System.out.println("    ㄴ 프리셋 이름: " + farm.getPresetStep().getPresetEntity().getPresetName());
             System.out.println("-----------------------------------------");
         }
         System.out.println("=========================================");

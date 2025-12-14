@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PresetStepRepository extends JpaRepository<PresetStep, Integer> {
-    List<PresetStep> findByPreset_PresetId(int presetId);
+    List<PresetStep> findByPresetEntity_PresetId(int presetId);
 }

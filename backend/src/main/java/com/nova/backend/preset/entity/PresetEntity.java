@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Preset {
+public class PresetEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int presetId;

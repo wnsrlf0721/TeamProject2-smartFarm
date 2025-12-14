@@ -1,6 +1,6 @@
 package com.nova.backend.preset.dao;
 
-import com.nova.backend.preset.entity.Preset;
+import com.nova.backend.preset.entity.PresetEntity;
 import com.nova.backend.preset.repository.PresetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -12,12 +12,12 @@ public class PresetDAOImpl implements PresetDAO {
     private final PresetRepository presetRepository;
 
     @Override
-    public void insertPreset(Preset preset) {
-        presetRepository.save(preset);
+    public void insertPreset(PresetEntity presetEntity) {
+        presetRepository.save(presetEntity);
     }
 
     @Override
-    public List<Preset> findPresetListByUserId(int userId) {
+    public List<PresetEntity> findPresetListByUserId(int userId) {
         return presetRepository.findByUserIdOrUserIdIsNull(userId);
     }
 

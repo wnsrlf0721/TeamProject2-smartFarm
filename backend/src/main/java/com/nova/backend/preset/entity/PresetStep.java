@@ -17,7 +17,7 @@ public class PresetStep {
     private int stepId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "preset_id")
-    private Preset preset;
+    private PresetEntity presetEntity;
     private int growthStep;
     private int periodDays;
 
