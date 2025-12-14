@@ -1,5 +1,6 @@
 package com.nova.backend.preset.dto;
 
+import com.nova.backend.user.dto.UsersResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PresetResponseDTO {
-    private int presetId;
+    private Long presetId;
     private String plantType;
     private String presetName;
-    private Integer userId;
+    private UsersResponseDTO user;
 }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class NovaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int novaId;
+    private Long novaId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",  nullable = false)
     private UsersEntity user;

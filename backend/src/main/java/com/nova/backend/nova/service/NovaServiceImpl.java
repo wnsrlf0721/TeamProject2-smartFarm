@@ -17,12 +17,7 @@ public class NovaServiceImpl implements NovaService{
     private final UsersDAO usersDAO;
     @Override
     public List<NovaResponseDTO> getNovaListByUserId(Long userId) {
-        // 유저 엔티티 조회
-        UsersEntity user = usersDAO.findByUserId(userId);
-        if (user == null) {
-            return List.of();
-        }
-        return novaDAO.getNovaEntity(user).stream()
+        return novaDAO.getNovaEntity(userId).stream()
                 .map(novaEntity -> mapper.map(novaEntity, NovaResponseDTO.class))
                 .toList();
     }

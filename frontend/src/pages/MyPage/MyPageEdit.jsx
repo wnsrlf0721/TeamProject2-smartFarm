@@ -1,7 +1,7 @@
 import {useNavigate, useOutletContext} from "react-router-dom";
 import {useEffect, useState} from "react";
 import "./MyPage.css"; // 기존 CSS 유지
-import {updateUserInfo} from "../../api/mypage/mypageAPI";
+// import {updateUserInfo} from "../../api/mypage/mypageAPI";
 
 function MyPageEdit() {
   const navigate = useNavigate();

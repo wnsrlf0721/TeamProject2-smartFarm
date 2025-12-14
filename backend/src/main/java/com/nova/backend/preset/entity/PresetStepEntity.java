@@ -1,9 +1,11 @@
 package com.nova.backend.preset.entity;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "preset_step")
@@ -19,19 +21,25 @@ public class PresetStepEntity {
     private int growthStep;
     private int periodDays;
 
-    // 기준값은 JSON
+    @Type(JsonType.class)
     @Column(columnDefinition = "json")
-    private String temp;
+    private EnvRange temp;
 
+    @Type(JsonType.class)
     @Column(columnDefinition = "json")
-    private String humidity;
+    private EnvRange humidity;
 
+    @Type(JsonType.class)
     @Column(columnDefinition = "json")
-    private String soilMoisture;
+    private EnvRange lightPower;
 
+    @Type(JsonType.class)
     @Column(columnDefinition = "json")
-    private String lightPower;
+    private EnvRange co2;
 
+    @Type(JsonType.class)
     @Column(columnDefinition = "json")
-    private String co2;
+    private EnvRange soilMoisture;
+
+    private Integer waterLevel;
 }

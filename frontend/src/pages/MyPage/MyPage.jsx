@@ -2,7 +2,7 @@ import "./MyPage.css";
 
 import {Outlet} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getUserInfo} from "../../api/mypage/mypageAPI";
+// import {getUserInfo} from "../../api/mypage/mypageAPI";
 
 function MyPage(userId) {
   // userId 상위에서 받아오는 값

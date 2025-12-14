@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface FarmRepository extends JpaRepository<FarmEntity,Long> {
     List<FarmEntity> findByNova_NovaId(Long novaId);
     @Query("SELECT f FROM FarmEntity f " +
-            "JOIN FETCH f.presetStepEntity s " +
+            "JOIN FETCH f.presetStep s " +
             "JOIN FETCH s.preset p " +
             "WHERE f.nova.novaId = :novaId")
     List<FarmEntity> findFarmsWithDetailsByNovaId(@Param("novaId") Long novaId);

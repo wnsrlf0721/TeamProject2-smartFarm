@@ -137,10 +137,10 @@ public class SensorServiceImpl implements SensorService {
     private void checkThreshold(SensorLogEntity log) {
         FarmEntity farm = log.getFarm();
         if (farm == null) return;
-        PresetStepEntity step = farm.getPresetStepEntity();
+        PresetStepEntity step = farm.getPresetStep();
         if (step == null) return;
         // 온도
-        if (log.getTemp() < getMin(step.getTemp()) || log.getTemp() > getMax(step.getTemp())) {
+        if (log.getTemp() < step.getTemp().getMin() || log.getTemp() > step.getTemp().getMax()) {
             alarmService.createSensorAlarm(
                     farm,
                     "SENSOR",
@@ -149,7 +149,7 @@ public class SensorServiceImpl implements SensorService {
             );
         }
         // 습도
-        if (log.getHumidity() < getMin(step.getHumidity()) || log.getHumidity() > getMax(step.getHumidity())) {
+        if (log.getHumidity() < step.getTemp().getMin() || log.getHumidity() > step.getTemp().getMax()) {
             alarmService.createSensorAlarm(
                     farm,
                     "SENSOR",
@@ -158,7 +158,7 @@ public class SensorServiceImpl implements SensorService {
             );
         }
         // 토양 수분
-        if (log.getSoilMoisture() < getMin(step.getSoilMoisture()) || log.getSoilMoisture() > getMax(step.getSoilMoisture())) {
+        if (log.getSoilMoisture() < step.getSoilMoisture().getMin() || log.getSoilMoisture() > step.getSoilMoisture().getMax()) {
             alarmService.createSensorAlarm(
                     farm,
                     "SENSOR",
@@ -167,7 +167,7 @@ public class SensorServiceImpl implements SensorService {
             );
         }
         // 광량
-        if (log.getLightPower() < getMin(step.getLightPower()) || log.getLightPower() > getMax(step.getLightPower())) {
+        if (log.getLightPower() < step.getLightPower().getMin() || log.getLightPower() > step.getLightPower().getMax()) {
             alarmService.createSensorAlarm(
                     farm,
                     "SENSOR",
@@ -176,7 +176,7 @@ public class SensorServiceImpl implements SensorService {
             );
         }
         // CO2
-        if (log.getCo2() < getMin(step.getCo2()) || log.getCo2() > getMax(step.getCo2())) {
+        if (log.getCo2() < step.getCo2().getMin() || log.getCo2() > step.getCo2().getMax()) {
             alarmService.createSensorAlarm(
                     farm,
                     "SENSOR",

@@ -92,7 +92,7 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void createSensorAlarm(FarmEntity farm, String alarmType, String title, String message) {
-        PresetStepEntity step = farm.getPresetStepEntity();
+        PresetStepEntity step = farm.getPresetStep();
         if (step == null || step.getPreset() == null) {
             // preset 없는 상태에서는 알람 생성 안 함
             return;

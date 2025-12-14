@@ -9,22 +9,30 @@ export function FarmGrid({
   onSelectFarm,
   onTimeLapse,
 }) {
-  const emptySlots = maxCards - farms.length;
+  const slots = Array.from({ length: maxCards }, (_, i) => i + 1);
 
   return (
     <div className={styles["farm-grid-container"]}>
       <div className={styles["farm-grid"]}>
-        {farms.map((farm) => (
-          <FarmCard
-            key={farm.slot}
-            farm={farm}
-            onClick={onSelectFarm}
-            onTimeLapse={onTimeLapse} // farm을 전달하지 않음
-          />
-        ))}
-        {Array.from({ length: emptySlots }).map((_, index) => (
-          <EmptyFarmCard key={farms.length + (index + 1)} onClick={onAddFarm} />
-        ))}
+        {slots.map((index) => {
+          const isFarm = farms.find((f) => f.slot === index);
+
+          if (isFarm) {
+            return (
+              <FarmCard
+                key={index}
+                farm={isFarm}
+                onClick={onSelectFarm}
+                onTimeLapse={onTimeLapse}
+              />
+            );
+          } else {
+            // 해당 위치에 Farm이 없다면 EmptyFarmCard 렌더링
+            return (
+              <EmptyFarmCard key={index} onClick={() => onAddFarm(index)} />
+            );
+          }
+        })}
       </div>
     </div>
   );

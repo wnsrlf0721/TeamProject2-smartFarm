@@ -2,7 +2,6 @@ package com.nova.backend.nova.dao;
 
 import com.nova.backend.nova.entity.NovaEntity;
 import com.nova.backend.nova.repository.NovaRepository;
-import com.nova.backend.user.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +11,8 @@ import java.util.List;
 public class NovaDAOImpl implements NovaDAO {
     private final NovaRepository novaRepository;
     @Override
-    public List<NovaEntity> getNovaEntity(UsersEntity user) {
-        return novaRepository.findByUser(user);
+    public List<NovaEntity> getNovaEntity(Long userId) {
+        return novaRepository.findByUser_UserId(userId);
     }
 
     @Override
