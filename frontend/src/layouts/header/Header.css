@@ -180,7 +180,78 @@
   font-size: 14px;
   transition: 0.2s ease;
 }
+.nav-item span {
+  position: relative;
+  display: inline-block; /* 텍스트 너비만큼 box 생성 */
+}
 
+.nav-item span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+
+  width: calc(100% + 7px); /* ← 항상 6px씩 양쪽 확장 */
+  height: 1.5px;
+  background: #2f3f22;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+
+  border-radius: 2px;
+  transition: transform 0.15s ease;
+}
+
+.nav-item:hover span::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ==========================
+   서브 메뉴
+=========================== */
+.submenu-zone {
+  position: absolute;
+  top: 110px; /* 네비 바로 아래 */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+}
+
+.submenu {
+  display: flex;
+  gap: 28px;
+  background: #ffffffdd;
+  padding: 14px 24px;
+  border-radius: 18px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+  animation: fadeDown 0.22s ease;
+}
+
+.submenu a {
+  text-decoration: none;
+  color: #2f3f22;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: 0.25s ease;
+}
+
+.submenu a:hover {
+  background: rgba(207, 234, 106, 0.55);
+  transform: translateY(-1px) scale(1.03);
+}
+
+/* 등장 애니메이션 */
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .dropdown-menu a:hover,
 .dropdown-item:hover {
   background: rgba(188, 213, 98, 0.5);

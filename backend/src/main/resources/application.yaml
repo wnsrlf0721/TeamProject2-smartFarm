@@ -6,7 +6,7 @@ spring:
     client-id: spring-boot-app   # 기본 클라이언트 ID
 
     # 토픽 설정
-    topic:  
+    topic:
       command: server/command   # 발행(Publish)할 토픽
       #      sensor: farm/+/sensor/+        # 구독(Subscribe)할 토픽
       sensor: home/sensor/+
@@ -20,7 +20,7 @@ spring:
     username: sample
     password: 1234
 
-#    password: tnalsdlchlrhdi!
+  #    password: tnalsdlchlrhdi!
 
   sql:
     init:
@@ -52,4 +52,4 @@ spring:
 solapi:
   api-key:  # 빈칸처리
   api-secret:  # 빈칸처리
-  from-number:  # 발신번호 인증한 번호, 빈칸처리
+  from-number:    # 발신번호 인증한 번호, 빈칸처리
