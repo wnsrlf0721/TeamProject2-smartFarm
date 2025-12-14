@@ -5,6 +5,7 @@ import com.nova.backend.farm.dto.FarmResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import com.nova.backend.farm.entity.FarmEntity;
 
 import java.util.List;
 

@@ -4,6 +4,9 @@ const requests = {
   myPageEdit: "/mypage/edit",
   novaList: "/nova/list",
   farmCardList: "/farm/list",
+  myPageTimelapse: "/maypage/timelapse",
+  timelapseCreate: "/timelapse/create",
+  timelapseInfo: "/timelapse/info",
 };
 
 export default requests;

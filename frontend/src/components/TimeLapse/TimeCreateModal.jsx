@@ -3,6 +3,7 @@ import {Video, Film} from "lucide-react";
 import {DndProvider, useDrag, useDrop} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {createPortal} from "react-dom";
+import {timelapseCreate} from "../../api/timelapse/timelapseAPI";
 import styles from "./TimeCreateModal.module.css";
 
 const ItemTypes = {ICON: "icon"};
@@ -146,12 +147,40 @@ export const TimeCreateModal = ({farm, onClose, onCreate}) => {
     });
   };
 
-  const handleSubmit = () => {
-    const finalData = {
-      ...farm,
-      timelapseSettings: videoSettings,
-    };
-    onCreate(finalData);
+  // const handleSubmit = () => {
+  //   const finalData = {
+  //     ...farm,
+  //     timelapseSettings: videoSettings,
+  //   };
+  //   onCreate(finalData);
+  // };
+
+  const handleSubmit = async () => {
+    try {
+      const timelapseRequestDTOList = selectedList.map((item) => {
+        const setting = videoSettings[item.id];
+
+        return {
+          farmId: 1,
+          stepId: 1,
+          timelapseName: setting.name,
+          fps: setting.fps,
+          duration: setting.duration,
+          captureInterval: setting.interval ?? 0,
+          resolution: setting.resolution,
+          state: setting.state,
+        };
+      });
+
+      console.log("🔥 서버로 보낼 데이터", timelapseRequestDTOList);
+
+      await timelapseCreate(timelapseRequestDTOList);
+
+      alert("타임랩스 생성 완료");
+      onClose();
+    } catch (error) {
+      console.error("❌ 타임랩스 생성 실패", error);
+    }
   };
 
   const overlayStyle = {
