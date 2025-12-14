@@ -1,48 +1,42 @@
 import { createContext, useContext, useState } from "react";
+import { signupAPI, loginAPI } from "../../api/user/userAPI";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-
-  // 더미 유저 저장 배열
-  const [users, setUsers] = useState([
-    { id: "1", pw: "1", name: "1", phone: "1", email: "1", role: "USER" },
-    {
-      id: "admin",
-      pw: "1234",
-      name: "관리자",
-      phone: "010-0000-0000",
-      email: "admin@test.com",
-      role: "ADMIN",
-    },
-  ]);
+  // 새로고침해도 로그인 유지
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   // 회원가입
-  const signup = (newUser) => {
-    const exists = users.some((u) => u.id === newUser.id);
-    if (exists) return { ok: false, msg: "이미 존재하는 아이디입니다." };
-
-    setUsers([...users, newUser]);
-    return { ok: true };
+  const signup = async (form) => {
+    return await signupAPI(form);
   };
 
   // 로그인
-  const login = (id, pw) => {
-    const found = users.find((u) => u.id === id && u.pw === pw);
-    if (!found) return { ok: false };
+  const login = async (id, pw) => {
+    const result = await loginAPI(id, pw);
 
-    setUser(found);
-    return { ok: true };
+    if (result.ok) {
+      // user 객체 그대로 저장
+      console.log(result.data);
+      setUser(result.data);
+      localStorage.setItem("user", JSON.stringify(result.data));
+    }
+
+    return result;
   };
 
   // 로그아웃
-  const logout = () => setUser(null);
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+  };
 
   return (
-    <AuthContext.Provider value={{ user, signup, login, logout, users, setUsers }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ user, signup, login, logout }}>{children}</AuthContext.Provider>
   );
 }

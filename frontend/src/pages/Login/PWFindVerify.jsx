@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../api/auth/AuthContext";
 import BackButton from "../../components/loginBackButton/BackButton";
+import {
+  sendPwEmailAuthAPI,
+  verifyPwEmailAuthAPI,
+  sendPwPhoneAuthAPI,
+  verifyPwPhoneAuthAPI,
+} from "../../api/user/userAPI";
 import "./Find.css";
 
 export default function PWFindVerify() {
-  const { users } = useAuth();
   const navigate = useNavigate();
 
   const [tab, setTab] = useState("phone");
@@ -14,16 +18,9 @@ export default function PWFindVerify() {
 
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [authCode, setAuthCode] = useState("");
-  const [randomCode, setRandomCode] = useState("");
   const [timeLeft, setTimeLeft] = useState(0);
-  const [matchedUser, setMatchedUser] = useState(null);
 
-  // 랜덤 인증번호 생성
-  const generateCode = () => {
-    return String(Math.floor(100000 + Math.random() * 900000));
-  };
-
-  // 타이머 작동
+  // 타이머
   useEffect(() => {
     if (timeLeft <= 0) return;
     const timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
@@ -36,37 +33,42 @@ export default function PWFindVerify() {
     return `${m}:${s}`;
   };
 
-  // 인증 요청
-  const sendCode = () => {
-    if (!name || !value) return alert("정보를 모두 입력해주세요.");
-
-    const found =
-      tab === "phone"
-        ? users.find((u) => u.name === name && u.phone === value)
-        : users.find((u) => u.name === name && u.email === value);
-
-    if (!found) return alert("일치하는 사용자가 없습니다!");
-
-    const code = generateCode();
-    setRandomCode(code);
-    setShowCodeInput(true);
-    setTimeLeft(180);
-    setMatchedUser(found);
-
-    alert(`임시 인증번호(테스트): ${code}`);
-  };
-
-  // 인증번호 검증 후 PWReset으로 이동
-  const verifyCode = () => {
-    if (authCode !== randomCode) {
-      alert("인증번호가 일치하지 않습니다.");
+  // 인증번호 요청
+  const sendCode = async () => {
+    if (!name || !value) {
+      alert("정보를 모두 입력해주세요.");
       return;
     }
 
-    alert("인증 완료! 다음 단계로 이동합니다.");
+    const result =
+      tab === "email" ? await sendPwEmailAuthAPI(value) : await sendPwPhoneAuthAPI(value);
+
+    if (!result.ok) {
+      alert(result.msg);
+      return;
+    }
+
+    setShowCodeInput(true);
+    setTimeLeft(180);
+    alert(result.msg);
+  };
+
+  // 인증 확인
+  const verifyCode = async () => {
+    const result =
+      tab === "email"
+        ? await verifyPwEmailAuthAPI(value, authCode)
+        : await verifyPwPhoneAuthAPI(value, authCode);
+
+    if (!result.ok) {
+      alert(result.msg);
+      return;
+    }
+
+    alert("인증 완료!");
 
     navigate("/find/pw/reset", {
-      state: { userId: matchedUser.id },
+      state: tab === "email" ? { email: value } : { phoneNumber: value },
     });
   };
 
@@ -100,7 +102,6 @@ export default function PWFindVerify() {
           </span>
         </div>
 
-        {/* 이름 */}
         <input
           className="input"
           placeholder="이름"
@@ -108,7 +109,6 @@ export default function PWFindVerify() {
           onChange={(e) => setName(e.target.value)}
         />
 
-        {/* 전화번호/이메일 + 인증 요청 */}
         <div className="auth-row">
           <input
             className="input flex-1"
@@ -122,7 +122,6 @@ export default function PWFindVerify() {
           </button>
         </div>
 
-        {/* 인증번호 입력 */}
         {showCodeInput && (
           <div className="auth-section">
             <div className="auth-row">
@@ -148,7 +147,6 @@ export default function PWFindVerify() {
           </div>
         )}
 
-        {/* 🔥 통일된 뒤로가기 버튼 */}
         <BackButton />
       </div>
     </div>

@@ -1,42 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../api/auth/AuthContext";
 import BackButton from "../../components/loginBackButton/BackButton";
+import { resetPasswordByEmailAPI, resetPasswordByPhoneAPI } from "../../api/user/userAPI";
 import "./Find.css";
 
 export default function PWFindReset() {
   const navigate = useNavigate();
-  const { users, setUsers } = useAuth();
   const location = useLocation();
 
-  const userId = location.state?.userId;
-  const foundUser = users.find((u) => u.id === userId);
+  const email = location.state?.email;
+  const phoneNumber = location.state?.phoneNumber;
 
   const [pw, setPw] = useState("");
   const [pw2, setPw2] = useState("");
 
-  // 잘못된 접근 방지
-  if (!userId || !foundUser) {
-    return (
-      <div className="find-container">
-        <div className="find-box">
-          <h2>잘못된 접근입니다.</h2>
+  // 🚨 잘못된 접근 방지 (렌더링 중 navigate ❌)
+  useEffect(() => {
+    if (!email && !phoneNumber) {
+      alert("잘못된 접근입니다.");
+      navigate("/login", { replace: true });
+    }
+  }, [email, phoneNumber, navigate]);
 
-          {/* 변경됨: 기존의 텍스트 뒤로가기 삭제 → BackButton 컴포넌트 사용 */}
-          <BackButton to="/find" />
-        </div>
-      </div>
-    );
-  }
+  const handleReset = async () => {
+    if (!pw || !pw2) {
+      alert("비밀번호를 모두 입력해주세요.");
+      return;
+    }
 
-  const handleReset = () => {
-    if (pw !== pw2) return alert("비밀번호가 일치하지 않습니다.");
+    if (pw !== pw2) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
 
-    const updated = users.map((u) => (u.id === userId ? { ...u, pw } : u));
-    setUsers(updated);
+    const result = email
+      ? await resetPasswordByEmailAPI(email, pw)
+      : await resetPasswordByPhoneAPI(phoneNumber, pw);
 
+    // ❌ object alert 방지
+    if (!result.ok) {
+      alert(typeof result.msg === "string" ? result.msg : "비밀번호 변경에 실패했습니다.");
+      return;
+    }
+
+    // ✅ 성공 메시지는 프론트에서 고정
     alert("비밀번호가 성공적으로 변경되었습니다!");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -51,7 +60,11 @@ export default function PWFindReset() {
           value={pw}
           onChange={(e) => setPw(e.target.value)}
         />
-
+        {/*  비밀번호 조건 힌트 */}
+        <div className="pw-hint">
+          <p className={pw.length >= 8 && pw.length <= 16 ? "ok" : ""}>• 8~16자 이내</p>
+          <p className={pw && pw === pw2 ? "ok" : ""}>• 비밀번호 확인 일치</p>
+        </div>
         <input
           type="password"
           className="input"
@@ -64,7 +77,6 @@ export default function PWFindReset() {
           비밀번호 변경하기
         </button>
 
-        {/* 변경됨: 텍스트 형태 뒤로가기 삭제 → 공통 버튼 적용 */}
         <BackButton />
       </div>
     </div>
