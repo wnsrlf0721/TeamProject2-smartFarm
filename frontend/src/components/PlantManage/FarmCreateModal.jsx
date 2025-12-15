@@ -304,13 +304,21 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
           : selectedPreset.presetName
         : null,
       stepList: isCreatingNew ? stepList : [],
-      imageUrl: previewUrl
-        ? previewUrl
-        : "https://images.unsplash.com/photo-1708975477420-907fd5691ce7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmVlbmhvdXNlJTIwcGxhbnRzfGVufDF8fHx8MTc2NDA3NTk2M3ww&ixlib=rb-4.1.0&q=80&w=1080",
     };
 
-    console.log("Submit Payload:", payload);
-    onCreate(payload);
+    // 2. FormData 생성 및 데이터 포장
+    const formData = new FormData();
+    // 일반 JSON 데이터 추가
+    const jsonBlob = new Blob([JSON.stringify(payload)], {
+      type: "application/json",
+    });
+    formData.append("request", jsonBlob);
+    if (selectedFile) {
+      formData.append("image", selectedFile);
+    }
+
+    console.log("Submit FormData:", formData);
+    onCreate(formData);
   };
 
   return (
@@ -360,31 +368,60 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                   </label>
                   {/* 새로운 식물 만들기 (직접 입력) */}
                   {isCreatingNew ? (
-                    <div className={styles["preset-selected-box"]}>
-                      <input
-                        className={styles["input-field"]}
-                        placeholder="원하는 식물 종 입력"
-                        value={newPlantName}
-                        autoFocus
-                        onChange={(e) => setNewPlantName(e.target.value)}
-                      />
-                      <input
-                        className={styles["input-field"]}
-                        placeholder="새 프리셋 이름 입력"
-                        value={newPresetName}
-                        autoFocus
-                        onChange={(e) => setNewPresetName(e.target.value)}
-                      />
-                      <button
-                        type="button"
-                        className={styles["change-btn"]}
-                        onClick={() => {
-                          setIsCreatingNew(false);
-                          setNewPlantName("");
-                        }}
-                      >
-                        취소
-                      </button>
+                    <div>
+                      <div className={styles["preset-selected-box"]}>
+                        <input
+                          className={styles["input-field"]}
+                          placeholder="원하는 식물 종 입력"
+                          value={newPlantName}
+                          autoFocus
+                          onChange={(e) => setNewPlantName(e.target.value)}
+                        />
+                        <input
+                          className={styles["input-field"]}
+                          placeholder="새 프리셋 이름 입력"
+                          value={newPresetName}
+                          autoFocus
+                          onChange={(e) => setNewPresetName(e.target.value)}
+                        />
+                        <button
+                          type="button"
+                          className={styles["change-btn"]}
+                          onClick={() => {
+                            setIsCreatingNew(false);
+                            setNewPlantName("");
+                          }}
+                        >
+                          취소
+                        </button>
+                      </div>
+                      <div>
+                        <div className={styles["section-title"]}>
+                          식물 사진 업로드
+                        </div>
+                        <div className={styles["modal-content"]}>
+                          <input
+                            type="file"
+                            className={styles["hidden-input"]}
+                            id="file-upload"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                          />
+                          {/* 이미지 출력 영역 */}
+                          <div style={{ marginTop: "20px" }}>
+                            {previewUrl ? (
+                              <div>
+                                <p>미리보기:</p>
+                                <img
+                                  src={previewUrl}
+                                  alt="Preview"
+                                  style={{ width: "300px", opacity: 0.5 }}
+                                />
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ) : (
                     /* 드롭다운 선택 모드 */
@@ -487,33 +524,6 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
             {/* 성장 단계 설정 (트랙바) */}
             {(selectedPreset || isCreatingNew) && (
               <div>
-                <div>
-                  <div className={styles["section-title"]}>
-                    식물 사진 업로드
-                  </div>
-                  <div className={styles["modal-content"]}>
-                    <input
-                      type="file"
-                      className={styles["hidden-input"]}
-                      id="file-upload"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                    />
-                    {/* 이미지 출력 영역 */}
-                    <div style={{ marginTop: "20px" }}>
-                      {previewUrl ? (
-                        <div>
-                          <p>미리보기:</p>
-                          <img
-                            src={previewUrl}
-                            alt="Preview"
-                            style={{ width: "300px", opacity: 0.5 }}
-                          />
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
                 <div className={styles["stage-header-row"]}>
                   <div
                     className={styles["section-title"]}

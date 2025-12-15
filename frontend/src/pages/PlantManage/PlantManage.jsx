@@ -100,10 +100,10 @@ function PlantManage() {
   };
 
   // 팜 생성 → 타임랩스 생성 연결
-  const controlNextStep = async (farmData) => {
+  const controlNextStep = async (formData) => {
     try {
-      console.log(farmData);
-      const result = await createFarm(farmData);
+      console.log(formData);
+      const result = await createFarm(formData);
       console.log(result);
     } catch (e) {
       console.error(e);
