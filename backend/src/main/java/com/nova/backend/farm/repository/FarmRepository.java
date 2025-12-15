@@ -23,4 +23,5 @@ public interface FarmRepository extends JpaRepository<FarmEntity,Long> {
     //    // slot만으로 찾고 싶다면 (기기에 슬롯이 unique라면)
 //    Optional<FarmEntity> findBySlot(int slot);
 
+
 }

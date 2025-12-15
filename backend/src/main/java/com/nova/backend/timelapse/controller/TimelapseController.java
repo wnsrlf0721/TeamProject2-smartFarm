@@ -15,9 +15,9 @@ import java.util.List;
 public class TimelapseController {
     private final TimelapseService timelapseService;
 
-    @GetMapping("/info")
+    @GetMapping("/view")
     public List<TimelapseResponseDTO> getTimelapseListByFarmId(@RequestParam("farmId") String farmId) {
-        return timelapseService.getTimelapseListByFarmId(Integer.parseInt(farmId));
+        return timelapseService.getTimelapseListByFarmId(Long.parseLong(farmId));
     }
 
     @PostMapping("/create")

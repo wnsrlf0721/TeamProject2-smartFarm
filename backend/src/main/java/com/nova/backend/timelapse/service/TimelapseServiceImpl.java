@@ -2,6 +2,7 @@ package com.nova.backend.timelapse.service;
 
 import com.nova.backend.farm.dao.FarmDAO;
 import com.nova.backend.farm.repository.FarmRepository;
+import com.nova.backend.farm.service.FarmService;
 import com.nova.backend.preset.entity.PresetStepEntity;
 import com.nova.backend.preset.repository.PresetRepository;
 import com.nova.backend.preset.repository.PresetStepRepository;
@@ -27,10 +28,11 @@ public class TimelapseServiceImpl implements TimelapseService {
     private final TimelapseDAO timelapseDAO;
     private final FarmRepository farmRepository;
     private final PresetStepRepository presetStepRepository;
+    private final FarmDAO farmDAO;
     private final ModelMapper modelMapper;
 
-    public List<TimelapseResponseDTO> getTimelapseListByFarmId(int farmId) {
-        List<TimelapseEntity> timelapseList = timelapseDAO.findWithVideosByFarmId(farmId);
+    public List<TimelapseResponseDTO> getTimelapseListByFarmId(long farmId) {
+        List<TimelapseEntity> timelapseList = timelapseDAO.findByFarmEntity_FarmId(farmId);
 
         return timelapseList.stream()
                 .map(timelapse -> {

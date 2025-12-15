@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MyPageTimelapseResponseDTO {
-    private int novaId;
-    private List<TimelapseVideoResponseDTO> timelapseVideoResponseDTOList;
+    private long novaId;
+    private String novaSerialNumber;
+    private List<TimelapseResponseDTO> timelapseResponseDTOList;
 }

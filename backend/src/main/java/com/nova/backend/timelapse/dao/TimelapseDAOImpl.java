@@ -1,5 +1,6 @@
 package com.nova.backend.timelapse.dao;
 
+import com.nova.backend.farm.entity.FarmEntity;
 import com.nova.backend.timelapse.dto.TimelapseRequestDTO;
 import com.nova.backend.timelapse.entity.TimelapseEntity;
 import com.nova.backend.timelapse.entity.TimelapseVideoEntity;
@@ -16,20 +17,18 @@ public class TimelapseDAOImpl implements TimelapseDAO {
     private final TimelapseRepository timelapseRepository;
     private final TimelapseVideoRepository timelapseVideoRepository;
     @Override
-    public List<TimelapseEntity> findByFarmId(int farmId) {
+    public List<TimelapseEntity> findByFarmEntity_FarmId(long farmId) {
         return timelapseRepository.findByFarmEntity_FarmId(farmId);
     }
+
+//    @Override
+//    public List<TimelapseEntity> findByFarm(FarmEntity farmEntity) {
+//        return timelapseRepository.findByFarmEntity(farmEntity);
+//    }
 
     @Override
     public List<TimelapseVideoEntity> findBySettingId(int settingId) {
         return timelapseVideoRepository.findByTimelapseEntity_SettingId(settingId);
-    }
-
-    @Override
-    public List<TimelapseEntity> findWithVideosByFarmId(int farmId) {
-        List<TimelapseEntity> timelapseList =
-                timelapseRepository.findWithVideosByFarmId(farmId);
-        return timelapseList;
     }
 
     @Override
