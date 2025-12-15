@@ -2,7 +2,6 @@ package com.nova.backend.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,11 +29,12 @@ public class UsersEntity {
     private String name;
 
     // 이메일
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
+
     // 전화번호
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", nullable = false,  unique = true)
     private String phoneNumber;
 
     // 우편번호 → DB에서는 postal_code

@@ -85,7 +85,13 @@ export default function Header() {
 
                   <div className="menu-divider"></div>
 
-                  <button className="logout-btn" onClick={logout}>
+                  <button
+                    className="logout-btn"
+                    onClick={() => {
+                      logout();
+                      setOpenUserMenu(false);
+                    }}
+                  >
                     로그아웃 ﹥
                   </button>
                 </div>

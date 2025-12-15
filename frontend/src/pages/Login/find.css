@@ -175,3 +175,23 @@
 .back-text:hover {
   color: #333;
 }
+
+/* ================================
+   비밀번호 조건 힌트
+================================ */
+.pw-hint {
+  text-align: left;
+  font-size: 13px;
+  margin: 6px 0 12px 4px; /* ← 살짝만 들여쓰기 */
+  color: #999;
+}
+
+.pw-hint p {
+  margin: 4px 0;
+}
+
+/* 조건 만족 시 */
+.pw-hint .ok {
+  color: #7cab19; /* 초록 */
+  font-weight: 600;
+}

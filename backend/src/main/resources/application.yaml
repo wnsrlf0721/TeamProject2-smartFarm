@@ -6,7 +6,7 @@ spring:
     client-id: spring-boot-app   # 기본 클라이언트 ID
 
     # 토픽 설정
-    topic:  
+    topic:
       command: server/command   # 발행(Publish)할 토픽
       #      sensor: farm/+/sensor/+        # 구독(Subscribe)할 토픽
       sensor: home/sensor/+
@@ -19,7 +19,9 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/project2?serverTimezone=Asia/Seoul
     username: sample
     password: 1234
+
 #    password: tnalsdlchlrhdi!
+
   sql:
     init:
       encoding: UTF-8
@@ -35,3 +37,19 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
+  # 이메일 인증 설정
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:  # 빈칸처리
+    password:  # 빈칸처리
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+solapi:
+  api-key:  # 빈칸처리
+  api-secret:  # 빈칸처리
+  from-number:  # 발신번호 인증한 번호, 빈칸처리

@@ -1,27 +1,32 @@
 import { useState } from "react";
-import { useAuth } from "../../api/auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 import BackButton from "../../components/loginBackButton/BackButton";
+import { findIdAPI } from "../../api/user/userAPI";
 import "./Find.css";
 
 export default function IDFindPage() {
-  const { users } = useAuth();
-  const [tab, setTab] = useState("email");
+  const navigate = useNavigate();
 
+  const [tab, setTab] = useState("email");
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
 
-  const findId = () => {
-    let found;
-
-    if (tab === "email") {
-      found = users.find((u) => u.name === name && u.email === value);
-    } else {
-      found = users.find((u) => u.name === name && u.phone === value);
+  const handleFindId = async () => {
+    if (!name || !value) {
+      alert("정보를 모두 입력해주세요.");
+      return;
     }
 
-    if (!found) return alert("해당 정보로 가입된 ID가 없습니다!");
+    const result =
+      tab === "email" ? await findIdAPI(name, value, null) : await findIdAPI(name, null, value);
 
-    alert(`✔ 찾은 ID: ${found.id}`);
+    if (!result.ok) {
+      alert(result.msg);
+      return;
+    }
+
+    alert(`아이디는 "${result.loginId}" 입니다.`);
+    navigate("/login");
   };
 
   return (
@@ -29,7 +34,6 @@ export default function IDFindPage() {
       <div className="find-box">
         <h2>ID 찾기</h2>
 
-        {/* 탭 */}
         <div className="find-tabs">
           <span className={tab === "email" ? "active" : ""} onClick={() => setTab("email")}>
             이메일로 찾기
@@ -39,7 +43,6 @@ export default function IDFindPage() {
           </span>
         </div>
 
-        {/* 이름 입력 */}
         <input
           className="input"
           placeholder="이름"
@@ -47,7 +50,6 @@ export default function IDFindPage() {
           onChange={(e) => setName(e.target.value)}
         />
 
-        {/* 이메일 또는 전화번호 */}
         <input
           className="input"
           placeholder={tab === "email" ? "이메일" : "전화번호"}
@@ -55,11 +57,10 @@ export default function IDFindPage() {
           onChange={(e) => setValue(e.target.value)}
         />
 
-        <button className="green-btn" onClick={findId}>
+        <button className="green-btn" onClick={handleFindId}>
           ID 찾기
         </button>
 
-        {/*  통일된 뒤로가기 버튼 */}
         <BackButton />
       </div>
     </div>
