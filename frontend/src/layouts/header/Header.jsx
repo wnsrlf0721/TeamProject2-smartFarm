@@ -1,13 +1,13 @@
 // ==============================
 // 공통 Header.jsx (Auth + 드롭다운 메뉴 + 기본 네비게이션)
 // ==============================
-import { NavLink } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
-import { useAuth } from "../../api/auth/AuthContext"; // 로그인 상태 가져오기
+import {NavLink, Link} from "react-router-dom";
+import {useState, useRef, useEffect} from "react";
+import {useAuth} from "../../api/auth/AuthContext"; // 로그인 상태 가져오기
 import "./Header.css";
 
 export default function Header() {
-  const { user, logout } = useAuth();
+  const {user, logout} = useAuth();
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
   const dropdownRef = useRef();

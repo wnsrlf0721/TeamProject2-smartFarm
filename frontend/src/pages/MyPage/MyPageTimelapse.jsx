@@ -1,12 +1,19 @@
 import React, {useEffect, useState} from "react";
 import styles from "./MyPageTimelapse.module.css";
 import {getTimeLapse} from "../../api/mypage/mypageAPI";
+import {useAuth} from "../../api/auth/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 function MyPageTimelapse() {
   const [myPageTimelapseList, setMyPageTimelapseList] = useState([]);
+  const {user} = useAuth();
+  const navigate = useNavigate();
   useEffect(() => {
-    // userId 대신 목업 데이터 사용
-    getTimeLapse(1)
+    if (!user) {
+      navigate("/");
+      return;
+    }
+    getTimeLapse(user.userId)
       .then((data) => {
         setMyPageTimelapseList(data);
         console.log(data);
@@ -14,7 +21,7 @@ function MyPageTimelapse() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [user, navigate]);
 
   return (
     <div className={styles.timelapsePage}>

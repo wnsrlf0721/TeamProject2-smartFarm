@@ -13,4 +13,5 @@ public interface MyPageService {
     MyPageResponseDTO findByUserId(Long userId);
     void updateMyPage(MyPageRequestDTO myPageRequestDTO);
     List<MyPageTimelapseResponseDTO> getTimelapseVideoResponseDTO(long userId);
+    boolean checkPassword(Long userId, String password);
 }

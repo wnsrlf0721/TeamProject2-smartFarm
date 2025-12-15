@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 
 // =============================
 // 공통 CSS / 레이아웃
@@ -13,15 +13,15 @@ import Header from "./layouts/header/Header";
 import Home from "./pages/Home/Home";
 import PlantManage from "./pages/PlantManage/PlantManage";
 
-// import MyPage from "./pages/MyPage/MyPage";
-// import MyPageView from "./pages/MyPage/MyPageView";
-// import MyPageEdit from "./pages/MyPage/MyPageEdit";
-// import MyPageTimelapse from "./pages/MyPage/MyPageTimelapse";
+import MyPage from "./pages/MyPage/MyPage";
+import MyPageView from "./pages/MyPage/MyPageView";
+import MyPageEdit from "./pages/MyPage/MyPageEdit";
+import MyPageTimelapse from "./pages/MyPage/MyPageTimelapse";
 
 // =============================
 // 우영 로그인/회원가입 + 인증
 // =============================
-import { AuthProvider } from "./api/auth/AuthContext";
+import {AuthProvider} from "./api/auth/AuthContext";
 
 // 로그인 / 회원가입
 import Login from "./pages/Login/Login";
@@ -66,12 +66,12 @@ function App() {
         />
 
         {/* 마이페이지 */}
-        {/* <Route path="/mypage" element={<MyPage />}>
+        <Route path="/mypage" element={<MyPage />}>
           <Route index element={<MyPageView />} />
           <Route path="view" element={<MyPageView />} />
           <Route path="edit" element={<MyPageEdit />} />
           <Route path="timelapse" element={<MyPageTimelapse />} />
-        </Route> */}
+        </Route>
 
         {/* 로그인 관련 */}
         <Route path="/login" element={<Login />} />

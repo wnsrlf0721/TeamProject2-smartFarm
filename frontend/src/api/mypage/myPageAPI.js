@@ -39,3 +39,13 @@ export const getTimeLapse = async (userId) => {
     console.log("에러 발생: ", error);
   }
 };
+
+export const myPageCheckPassword = async (checkUser) => {
+  try {
+    const response = await backendServer.post(requests.myPageCheckPassword, checkUser);
+    return response;
+  } catch (error) {
+    console.log("에러 발생: ", error);
+    throw error;
+  }
+};

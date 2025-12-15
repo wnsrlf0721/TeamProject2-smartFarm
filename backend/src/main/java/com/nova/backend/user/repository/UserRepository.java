@@ -26,4 +26,6 @@ public interface UserRepository extends JpaRepository<UsersEntity, Long> {
 
     //  비밀번호 재설정 (전화번호)
     UsersEntity findByPhoneNumber(String phoneNumber);
+
+    UsersEntity findByUserId(Long userId);
 }

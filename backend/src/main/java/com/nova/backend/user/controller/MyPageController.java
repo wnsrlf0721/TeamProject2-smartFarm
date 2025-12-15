@@ -5,6 +5,7 @@ import com.nova.backend.nova.dto.NovaResponseDTO;
 import com.nova.backend.timelapse.dto.TimelapseResponseDTO;
 import com.nova.backend.timelapse.dto.TimelapseVideoResponseDTO;
 import com.nova.backend.user.dao.MyPageDAO;
+import com.nova.backend.user.dto.CheckPasswordDTO;
 import com.nova.backend.user.dto.MyPageRequestDTO;
 import com.nova.backend.user.dto.MyPageResponseDTO;
 import com.nova.backend.user.dto.MyPageTimelapseResponseDTO;
@@ -36,5 +37,10 @@ public class MyPageController {
     @GetMapping("/timelapse")
     public List<MyPageTimelapseResponseDTO> getTimelapseVideoResponseDTO(@RequestParam("userId") String userId) {
         return myPageService.getTimelapseVideoResponseDTO(Long.parseLong(userId));
+    }
+
+    @PostMapping("/checkpassword")
+    public boolean checkPassword(@RequestBody CheckPasswordDTO checkPasswordDTO) {
+        return myPageService.checkPassword(checkPasswordDTO.getUserId(), checkPasswordDTO.getPassword());
     }
 }

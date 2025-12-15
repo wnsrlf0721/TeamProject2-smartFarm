@@ -14,12 +14,14 @@ import com.nova.backend.timelapse.entity.TimelapseEntity;
 import com.nova.backend.timelapse.entity.TimelapseVideoEntity;
 import com.nova.backend.timelapse.repository.TimelapseRepository;
 import com.nova.backend.timelapse.repository.TimelapseVideoRepository;
+import com.nova.backend.user.dao.MyPageDAO;
 import com.nova.backend.user.dao.UsersDAO;
 import com.nova.backend.user.dto.*;
 import com.nova.backend.user.entity.UsersEntity;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,9 +37,9 @@ public class MyPageServiceImpl implements MyPageService {
     private final UsersDAO usersDAO;
     private final NovaDAO novaDAO;
     private final FarmDAO farmDAO;
-    private final TimelapseVideoRepository timelapseVideoRepository;
+    private final MyPageDAO myPageDAO;
     private final TimelapseRepository timelapseRepository;
-    private final TimelapseDAO timelapseDAO;
+    private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
     @Override
@@ -65,6 +67,7 @@ public class MyPageServiceImpl implements MyPageService {
             throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
         }
         modelMapper.map(usersRequestDTO, usersEntity);
+        usersEntity.setPassword(passwordEncoder.encode(usersRequestDTO.getPassword()));
         usersDAO.update(usersEntity);
 
         List<NovaRequestDTO> novaRequestDTOList = myPageRequestDTO.getNovaRequestDTOList();
@@ -168,4 +171,12 @@ public class MyPageServiceImpl implements MyPageService {
         return result;
     }
 
+    @Override
+    public boolean checkPassword(Long userId, String password) {
+        UsersEntity user = myPageDAO.findByUserId(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
+        }
+        return passwordEncoder.matches(password, user.getPassword());
+    }
 }

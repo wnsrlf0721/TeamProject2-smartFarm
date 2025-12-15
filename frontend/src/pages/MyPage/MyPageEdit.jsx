@@ -1,7 +1,7 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useNavigate, useOutletContext} from "react-router-dom";
+import {useEffect, useState} from "react";
 import "./MyPage.css"; // 기존 CSS 유지
-import {updateUserInfo} from "../../api/mypage/mypageAPI";
+import {updateUserInfo, myPageCheckPassword} from "../../api/mypage/mypageAPI";
 
 function MyPageEdit() {
   const navigate = useNavigate();
@@ -18,19 +18,13 @@ function MyPageEdit() {
   // 🔹 비밀번호 확인 모달
   const [showPasswordModal, setShowPasswordModal] = useState(true);
   const [passwordInput, setPasswordInput] = useState("");
+  const [passwordCheckLoading, setPasswordCheckLoading] = useState(false);
 
   /** 부모에서 받은 API 데이터 그대로 복사 */
   useEffect(() => {
     if (!userInfo) return;
 
-<<<<<<< HEAD
-    // ✅ usersResponseDTO 그대로
-    setEditUser({...userInfo});
-
-    // ✅ novaList를 그대로 사용
-=======
-    setEditUser({ ...userInfo.usersResponseDTO });
->>>>>>> a668be41027dcf08be5da17d4c8d039100f99b38
+    setEditUser(userInfo);
     setEditNovaList(
       novaList.map((nova) => ({
         ...nova,
@@ -39,16 +33,30 @@ function MyPageEdit() {
     );
   }, [userInfo, novaList]);
 
-  /** 아직 데이터 준비 안 됐으면 렌더링 중단 */
-  if (!editUser) return null;
-
   /** 비밀번호 확인 */
-  const handlePasswordCheck = () => {
-    if (passwordInput === editUser.password) {
-      setShowPasswordModal(false);
-    } else {
-      alert("비밀번호가 틀렸습니다.");
-      setPasswordInput("");
+  const handlePasswordCheck = async () => {
+    if (!passwordInput.trim()) {
+      alert("비밀번호를 입력해주세요.");
+      return;
+    }
+
+    try {
+      setPasswordCheckLoading(true);
+      const response = await myPageCheckPassword({
+        userId: editUser.userId,
+        password: passwordInput,
+      });
+      if (response.data === true) {
+        setShowPasswordModal(false); // 확인 성공 시 폼 보여주기
+      } else {
+        alert("비밀번호가 틀렸습니다.");
+        setPasswordInput("");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("비밀번호 확인 중 오류가 발생했습니다.");
+    } finally {
+      setPasswordCheckLoading(false);
     }
   };
 
@@ -75,7 +83,7 @@ function MyPageEdit() {
   /** NOVA 시리얼 삭제 (실제 삭제 ❌ → status만 변경) */
   const handleSerialRemove = (index) => {
     setEditNovaList((prev) =>
-      prev.map((nova, i) => (i === index ? { ...nova, status: "delete" } : nova))
+      prev.map((nova, i) => (i === index ? {...nova, status: "delete"} : nova))
     );
   };
 
@@ -150,8 +158,8 @@ function MyPageEdit() {
               className="edit-input"
               type="password"
               placeholder="새 비밀번호 입력"
-              value={editUser.password || ""}
-              onChange={(e) => setEditUser({ ...editUser, password: e.target.value })}
+              // value={editUser.password || ""}
+              onChange={(e) => setEditUser({...editUser, password: e.target.value})}
             />
           </div>
 
@@ -161,7 +169,7 @@ function MyPageEdit() {
             <input
               className="edit-input"
               value={editUser.name}
-              onChange={(e) => setEditUser({ ...editUser, name: e.target.value })}
+              onChange={(e) => setEditUser({...editUser, name: e.target.value})}
             />
           </div>
 
@@ -172,7 +180,7 @@ function MyPageEdit() {
               className="edit-input"
               type="tel"
               value={editUser.phoneNumber}
-              onChange={(e) => setEditUser({ ...editUser, phoneNumber: e.target.value })}
+              onChange={(e) => setEditUser({...editUser, phoneNumber: e.target.value})}
             />
           </div>
 
@@ -183,7 +191,7 @@ function MyPageEdit() {
               className="edit-input"
               type="email"
               value={editUser.email}
-              onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
+              onChange={(e) => setEditUser({...editUser, email: e.target.value})}
             />
           </div>
 
@@ -193,7 +201,7 @@ function MyPageEdit() {
             <input
               className="edit-input"
               value={editUser.postalCode}
-              onChange={(e) => setEditUser({ ...editUser, postalCode: e.target.value })}
+              onChange={(e) => setEditUser({...editUser, postalCode: e.target.value})}
             />
           </div>
 
@@ -203,7 +211,7 @@ function MyPageEdit() {
             <input
               className="edit-input"
               value={editUser.address}
-              onChange={(e) => setEditUser({ ...editUser, address: e.target.value })}
+              onChange={(e) => setEditUser({...editUser, address: e.target.value})}
             />
           </div>
 
@@ -213,7 +221,7 @@ function MyPageEdit() {
             <input
               className="edit-input"
               value={editUser.addressDetail}
-              onChange={(e) => setEditUser({ ...editUser, addressDetail: e.target.value })}
+              onChange={(e) => setEditUser({...editUser, addressDetail: e.target.value})}
             />
           </div>
 
