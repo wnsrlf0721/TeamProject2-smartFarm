@@ -28,7 +28,7 @@
 .alert-list {
   flex: 1;
   overflow-y: auto;
-  padding-right: 6px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -46,16 +46,16 @@
 ========================================= */
 
 .alert-card {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(167, 189, 147, 0.55);
   border-radius: 16px;
   padding: 16px 18px;
 
-  box-shadow: 0 3px 10px rgba(110, 130, 100, 0.12);
+  box-shadow: 0 3px 10px rgba(72, 81, 67, 0.383);
   transition: 0.25s ease;
 }
 
 .alert-card:hover {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(207, 233, 190, 0.85);
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(90, 110, 90, 0.2);
 }

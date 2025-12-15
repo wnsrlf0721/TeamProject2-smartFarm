@@ -1,7 +1,20 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import {timelapseView} from "../../api/timelapse/timelapseAPI";
 import styles from "./TimeLapseModal.module.css";
 
 export default function TimeLapseModal({farm, onClose}) {
+  const [timelapseList, setTimelpaseList] = useState([]);
+  useEffect(() => {
+    // timelapseView(farm.farmId)
+    timelapseView(1) // 목데이터 사용
+      .then((data) => {
+        setTimelpaseList(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
   const mockTimelapseList = [
     {
       id: 1,
@@ -51,7 +64,7 @@ export default function TimeLapseModal({farm, onClose}) {
         <h2 className={styles.title}>📽 {farm?.farmName} 타임랩스 목록</h2>
 
         <div className={styles.list}>
-          {mockTimelapseList.map((item) => (
+          {timelapseList.map((item) => (
             <div className={styles.item} key={item.id}>
               <div className={styles.infoRow}>
                 <span className={styles.label}>이름:</span>

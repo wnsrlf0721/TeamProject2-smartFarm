@@ -5,7 +5,7 @@ import {useOutletContext} from "react-router-dom";
 
 function MyPageView() {
   const navigate = useNavigate();
-  const {userInfo} = useOutletContext();
+  const {userInfo, novaList} = useOutletContext();
 
   return (
     <div className={styles.mypageCard}>
@@ -13,35 +13,35 @@ function MyPageView() {
 
       <div className={styles.infoRow}>
         <div className={styles.infoLabel}>아이디</div>
-        <div className={styles.infoValue}>{userInfo.usersResponseDTO.loginId}</div>
+        <div className={styles.infoValue}>{userInfo.loginId}</div>
       </div>
 
       <div className={styles.infoRow}>
         <div className={styles.infoLabel}>이름</div>
-        <div className={styles.infoValue}>{userInfo.usersResponseDTO.name}</div>
+        <div className={styles.infoValue}>{userInfo.name}</div>
       </div>
 
       <div className={styles.infoRow}>
         <div className={styles.infoLabel}>전화번호</div>
-        <div className={styles.infoValue}>{userInfo.usersResponseDTO.phoneNumber}</div>
+        <div className={styles.infoValue}>{userInfo.phoneNumber}</div>
       </div>
 
       <div className={styles.infoRow}>
         <div className={styles.infoLabel}>주소</div>
         <div
           className={styles.infoValue}
-        >{`(${userInfo.usersResponseDTO.postalCode}) ${userInfo.usersResponseDTO.address} ${userInfo.usersResponseDTO.addressDetail}`}</div>
+        >{`(${userInfo.postalCode}) ${userInfo.address} ${userInfo.addressDetail}`}</div>
       </div>
 
       <div className={styles.infoRow}>
         <div className={styles.infoLabel}>이메일</div>
-        <div className={styles.infoValue}>{userInfo.usersResponseDTO.email}</div>
+        <div className={styles.infoValue}>{userInfo.email}</div>
       </div>
 
       <div className={styles.infoRow}>
         <div className={styles.infoLabel}>NOVA 시리얼 번호</div>
         <div className={styles.serialList}>
-          {userInfo.novaResponseDTOList.map((novaResponseDTO, i) => (
+          {novaList.map((novaResponseDTO, i) => (
             <div key={i} className={styles.serialItemView}>
               {novaResponseDTO.novaSerialNumber}
             </div>

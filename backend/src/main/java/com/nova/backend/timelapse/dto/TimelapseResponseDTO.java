@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TimelapseResponseDTO {
     private int settingId;
-    private int farmId;
+    private FarmResponseDTO farm;
     private int stepId;
     private String timelapseName;
     private int fps;
@@ -23,4 +23,11 @@ public class TimelapseResponseDTO {
     private String state;
 
     private List<TimelapseVideoResponseDTO> videoList;
+
+    public TimelapseResponseDTO(int settingId, FarmResponseDTO farm, String timelapseName, List<TimelapseVideoResponseDTO> videoList) {
+        this.settingId = settingId;
+        this.farm = farm;
+        this.timelapseName = timelapseName;
+        this.videoList = videoList;
+    }
 }

@@ -33,13 +33,8 @@ public class MyPageController {
         myPageService.updateMyPage(myPageRequestDTO);
     }
 
-    @GetMapping("/timela")
-    public List<TimelapseVideoResponseDTO> getTimeLapseDTOList(@RequestParam("userId") String userId) {
-        return null;
-    }
-
     @GetMapping("/timelapse")
-    public List<TimelapseResponseDTO> getTimelapseDTOList(@RequestParam("farmId") String farmId) {
-        return myPageServiceImpl.getByFarm(Integer.parseInt(farmId));
+    public List<MyPageTimelapseResponseDTO> getTimelapseVideoResponseDTO(@RequestParam("userId") String userId) {
+        return myPageService.getTimelapseVideoResponseDTO(Long.parseLong(userId));
     }
 }

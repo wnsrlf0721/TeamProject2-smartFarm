@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 public interface TimelapseService {
-    List<TimelapseResponseDTO> getTimelapseListByFarmId(int farmId);
+    List<TimelapseResponseDTO> getTimelapseListByFarmId(long farmId);
     void createTimelapse(List<TimelapseRequestDTO> timelapseRequestDTOList);
 }

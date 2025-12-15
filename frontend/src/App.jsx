@@ -13,10 +13,10 @@ import Header from "./layouts/header/Header";
 import Home from "./pages/Home/Home";
 import PlantManage from "./pages/PlantManage/PlantManage";
 
-import MyPage from "./pages/MyPage/MyPage";
-import MyPageView from "./pages/MyPage/MyPageView";
-import MyPageEdit from "./pages/MyPage/MyPageEdit";
-import MyPageTimelapse from "./pages/MyPage/MyPageTimelapse";
+// import MyPage from "./pages/MyPage/MyPage";
+// import MyPageView from "./pages/MyPage/MyPageView";
+// import MyPageEdit from "./pages/MyPage/MyPageEdit";
+// import MyPageTimelapse from "./pages/MyPage/MyPageTimelapse";
 
 // =============================
 // 우영 로그인/회원가입 + 인증
@@ -36,6 +36,7 @@ import PWFindReset from "./pages/Login/PWFindReset";
 // 테스트 & 관리자 페이지
 import TestHome from "./pages/Login/TestHome";
 import AdminHome from "./pages/Login/AdminHome";
+import AlarmPage from "./pages/Alerts/AlarmPage";
 
 //usestate 써서 import 해보기
 function App() {
@@ -65,12 +66,12 @@ function App() {
         />
 
         {/* 마이페이지 */}
-        <Route path="/mypage" element={<MyPage />}>
+        {/* <Route path="/mypage" element={<MyPage />}>
           <Route index element={<MyPageView />} />
           <Route path="view" element={<MyPageView />} />
           <Route path="edit" element={<MyPageEdit />} />
           <Route path="timelapse" element={<MyPageTimelapse />} />
-        </Route>
+        </Route> */}
 
         {/* 로그인 관련 */}
         <Route path="/login" element={<Login />} />
@@ -86,6 +87,15 @@ function App() {
         <Route path="/wootest" element={<TestHome />} />
         {/* 🔥 관리자 로그인 / 관리자 페이지 */}
         <Route path="/admin" element={<AdminHome />} />
+        {/* 알람관리 */}
+        <Route
+          path="/alarm"
+          element={
+            <BasicLayout>
+              <AlarmPage />
+            </BasicLayout>
+          }
+        />
       </Routes>
     </AuthProvider>
   );

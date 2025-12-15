@@ -10,3 +10,17 @@ export const timelapseCreate = async (timelapseRequestDTOList) => {
     throw error;
   }
 };
+
+export const timelapseView = async (farmId) => {
+  try {
+    const config = {
+      params: {
+        farmId: farmId,
+      },
+    };
+    const response = await backendServer.get(requests.timelapseView, config);
+    return response.data;
+  } catch (error) {
+    console.log("에러 발생: ", error);
+  }
+};

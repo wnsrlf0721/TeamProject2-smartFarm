@@ -20,4 +20,9 @@ public class FarmResponseDTO {
 
     private Timestamp createdTime;
     private Timestamp updateTime;
+
+    public FarmResponseDTO(Long farmId, String farmName) {
+        this.farmId = farmId;
+        this.farmName = farmName;
+    }
 }

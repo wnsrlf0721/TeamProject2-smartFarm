@@ -1,0 +1,89 @@
+.alarm-page {
+  padding: 24px;
+}
+
+.alarm-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #2f3f22;
+}
+
+/* 빈 상태 */
+.alarm-empty {
+  text-align: center;
+  padding: 60px 0;
+  color: #8a8a8a;
+}
+
+/* 리스트 */
+.alarm-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.alarm-item {
+  position: relative;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.alarm-item:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+}
+
+/* 읽음 / 안 읽음 */
+.alarm-item.unread {
+  border-left: 5px solid #9ac84d;
+}
+
+.alarm-item.read {
+  opacity: 0.6;
+}
+
+/* 내용 */
+.alarm-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alarm-item-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #33412c;
+}
+
+.alarm-message {
+  font-size: 14px;
+  color: #526244;
+}
+
+.alarm-time {
+  font-size: 12px;
+  color: #8b8b8b;
+}
+
+/* 삭제 버튼 */
+.alarm-delete-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+}
+
+.alarm-delete-btn:hover {
+  color: #e54848;
+}

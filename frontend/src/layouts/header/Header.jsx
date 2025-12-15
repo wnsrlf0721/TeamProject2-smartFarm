@@ -1,7 +1,7 @@
 // ==============================
 // 공통 Header.jsx (Auth + 드롭다운 메뉴 + 기본 네비게이션)
 // ==============================
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../api/auth/AuthContext"; // 로그인 상태 가져오기
 import "./Header.css";
@@ -31,29 +31,29 @@ export default function Header() {
         {/* -------------------------
             로고
         -------------------------- */}
-        <Link to="/" className="header-logo">
+        <NavLink to="/" className="header-logo">
           <img src="/logo.svg" alt="logo" className="logo-img" />
-        </Link>
+        </NavLink>
 
         {/* -------------------------
             네비게이션 메뉴
         -------------------------- */}
         <nav className="nova-nav">
-          <Link to="/" className="nav-item">
+          <NavLink to="/" className="nav-item">
             <span>홈</span>
-          </Link>
+          </NavLink>
 
-          <Link to="/plants" className="nav-item">
+          <NavLink to="/plants" className="nav-item">
             <span>내 식물 관리</span>
-          </Link>
+          </NavLink>
 
-          <Link to="/market" className="nav-item">
+          <NavLink to="/market" className="nav-item">
             <span>팜 마켓</span>
-          </Link>
+          </NavLink>
 
-          <Link to="/alerts" className="nav-item">
+          <NavLink to="/alarm" className="nav-item">
             <span>알림</span>
-          </Link>
+          </NavLink>
         </nav>
 
         {/* -------------------------

@@ -4,12 +4,13 @@ const requests = {
   myPageEdit: "/mypage/edit",
   novaList: "/nova/list",
   farmCardList: "/farm/list",
-  myPageTimelapse: "/maypage/timelapse",
+  myPageTimelapse: "/mypage/timelapse",
   timelapseCreate: "/timelapse/create",
   timelapseInfo: "/timelapse/info",
   presetList: "/preset/list", 
   presetStep: "/preset/step",
-  farmCreate: "/farm/create"
+  farmCreate: "/farm/create",
+  timelapseView: "/timelapse/view",
 };
 
 export default requests;
