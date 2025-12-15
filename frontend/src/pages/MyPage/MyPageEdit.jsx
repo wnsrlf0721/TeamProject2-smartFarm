@@ -1,5 +1,5 @@
-import {useNavigate, useOutletContext} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./MyPage.css"; // 기존 CSS 유지
 import {updateUserInfo} from "../../api/mypage/mypageAPI";
 
@@ -23,10 +23,14 @@ function MyPageEdit() {
   useEffect(() => {
     if (!userInfo) return;
 
+<<<<<<< HEAD
     // ✅ usersResponseDTO 그대로
     setEditUser({...userInfo});
 
     // ✅ novaList를 그대로 사용
+=======
+    setEditUser({ ...userInfo.usersResponseDTO });
+>>>>>>> a668be41027dcf08be5da17d4c8d039100f99b38
     setEditNovaList(
       novaList.map((nova) => ({
         ...nova,
@@ -71,7 +75,7 @@ function MyPageEdit() {
   /** NOVA 시리얼 삭제 (실제 삭제 ❌ → status만 변경) */
   const handleSerialRemove = (index) => {
     setEditNovaList((prev) =>
-      prev.map((nova, i) => (i === index ? {...nova, status: "delete"} : nova))
+      prev.map((nova, i) => (i === index ? { ...nova, status: "delete" } : nova))
     );
   };
 
@@ -147,7 +151,7 @@ function MyPageEdit() {
               type="password"
               placeholder="새 비밀번호 입력"
               value={editUser.password || ""}
-              onChange={(e) => setEditUser({...editUser, password: e.target.value})}
+              onChange={(e) => setEditUser({ ...editUser, password: e.target.value })}
             />
           </div>
 
@@ -157,7 +161,7 @@ function MyPageEdit() {
             <input
               className="edit-input"
               value={editUser.name}
-              onChange={(e) => setEditUser({...editUser, name: e.target.value})}
+              onChange={(e) => setEditUser({ ...editUser, name: e.target.value })}
             />
           </div>
 
@@ -168,7 +172,7 @@ function MyPageEdit() {
               className="edit-input"
               type="tel"
               value={editUser.phoneNumber}
-              onChange={(e) => setEditUser({...editUser, phoneNumber: e.target.value})}
+              onChange={(e) => setEditUser({ ...editUser, phoneNumber: e.target.value })}
             />
           </div>
 
@@ -179,7 +183,7 @@ function MyPageEdit() {
               className="edit-input"
               type="email"
               value={editUser.email}
-              onChange={(e) => setEditUser({...editUser, email: e.target.value})}
+              onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
             />
           </div>
 
@@ -189,7 +193,7 @@ function MyPageEdit() {
             <input
               className="edit-input"
               value={editUser.postalCode}
-              onChange={(e) => setEditUser({...editUser, postalCode: e.target.value})}
+              onChange={(e) => setEditUser({ ...editUser, postalCode: e.target.value })}
             />
           </div>
 
@@ -199,7 +203,7 @@ function MyPageEdit() {
             <input
               className="edit-input"
               value={editUser.address}
-              onChange={(e) => setEditUser({...editUser, address: e.target.value})}
+              onChange={(e) => setEditUser({ ...editUser, address: e.target.value })}
             />
           </div>
 
@@ -209,7 +213,7 @@ function MyPageEdit() {
             <input
               className="edit-input"
               value={editUser.addressDetail}
-              onChange={(e) => setEditUser({...editUser, addressDetail: e.target.value})}
+              onChange={(e) => setEditUser({ ...editUser, addressDetail: e.target.value })}
             />
           </div>
 

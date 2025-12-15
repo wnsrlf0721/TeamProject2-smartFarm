@@ -92,6 +92,7 @@ function PlantManage() {
   // 팜 생성 → 타임랩스 생성 연결
   const controlNextStep = (farmData) => {
     setNewFarm(farmData);
+    console.log(farmData);
     setIsFarmCreateOpen(false);
     setIsTimeLapseCreateOpen(true);
   };
@@ -136,7 +137,10 @@ function PlantManage() {
           setIsFarmCreateOpen(true);
           setNewSlot(slot);
         }}
-        onSelectFarm={() => setSelectedFarm(farmFullData)}
+        onSelectFarm={(selected) => {
+          // setSelectedFarm(selected);
+          setSelectedFarm(farmFullData);
+        }}
         onTimeLapse={setTimeLapseDetail}
       />
       {selectedFarm && (

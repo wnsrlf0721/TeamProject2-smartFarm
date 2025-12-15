@@ -22,7 +22,7 @@ export function FarmGrid({
               <FarmCard
                 key={index}
                 farm={isFarm}
-                onClick={onSelectFarm}
+                onClick={() => onSelectFarm(isFarm)}
                 onTimeLapse={onTimeLapse}
               />
             );

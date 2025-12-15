@@ -69,6 +69,7 @@
   align-items: flex-start;
   width: 1150px;
   margin: 0px auto 0px;
+  margin-bottom: 10px;
   height: 69.5px;
 }
 
@@ -83,7 +84,7 @@
   font-size: 13px;
   color: #7a8a72;
   margin-top: -6px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .header-right {
@@ -129,6 +130,7 @@
   gap: 10px;
   max-width: 350px;
   padding: 0;
+  margin-top: 10px;
 }
 
 .date-item {

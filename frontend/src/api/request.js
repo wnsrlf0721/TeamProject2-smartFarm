@@ -7,6 +7,7 @@ const requests = {
   myPageTimelapse: "/mypage/timelapse",
   timelapseCreate: "/timelapse/create",
   timelapseView: "/timelapse/view",
+  presetList: "/preset/list",
 };
 
 export default requests;

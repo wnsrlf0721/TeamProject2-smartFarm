@@ -18,3 +18,12 @@ export const getFarmList = async (id) => {
   });
   return response.data;
 };
+
+export const getPresetList = async(id)=>{
+  const response = await backendServer.get(requests.presetList, {
+    params: {
+      userId: id,
+    },
+  });
+  return response.data;
+}
