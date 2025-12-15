@@ -12,5 +12,6 @@ public class PresetResponseDTO {
     private Long presetId;
     private String plantType;
     private String presetName;
+    private String presetImageUrl;
     private UsersResponseDTO user;
 }

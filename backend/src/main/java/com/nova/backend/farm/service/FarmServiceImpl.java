@@ -14,8 +14,12 @@ import com.nova.backend.user.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class FarmServiceImpl implements FarmService{
     private final PresetDAO presetDAO;
     private final PresetStepDAO presetStepDAO;
     private final ModelMapper mapper;
+    private final String uploadDir = System.getProperty("user.dir") + "/uploads/";
 
 
     @Override
@@ -35,7 +40,30 @@ public class FarmServiceImpl implements FarmService{
     }
 
     @Override
-    public void createFarm(FarmRequestDTO farmRequestDTO) {
+    public void createFarm(FarmRequestDTO farmRequestDTO, MultipartFile image) {
+        // 이미지 파일 저장 (로컬 폴더에 저장 후 경로 생성)
+        String storedImageUrl = null; // 이미지가 없으면 null 혹은 기본 이미지 경로
+
+        if (image != null && !image.isEmpty()) {
+            try {
+                String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
+                File folder = new File(uploadDir);
+                if (!folder.exists()) folder.mkdirs();
+
+                String originalFileName = image.getOriginalFilename();
+                String savedFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+
+                // 파일 저장
+                image.transferTo(new File(uploadDir + savedFileName));
+
+                // DB에 넣을 경로
+                storedImageUrl = "/img/" + savedFileName;
+
+            } catch (IOException e) {
+                throw new RuntimeException("이미지 저장 실패", e);
+            }
+        }
+
         // 1. 공통 필수 데이터 매핑 (Nova, User)
         NovaEntity nova = novaDAO.findById(farmRequestDTO.getNovaId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 Nova 기기를 찾을 수 없습니다."));
@@ -49,16 +77,23 @@ public class FarmServiceImpl implements FarmService{
 
         // existingPresetId가 null이면 "새 프리셋 생성"
         if (farmRequestDTO.getExistingPresetId() == null) {
-
-            // A-1. 프리셋 껍데기(PresetEntity) 생성 및 저장
+            // PresetEntity 생성 및 저장
             PresetEntity newPreset = new PresetEntity();
             newPreset.setPresetName(farmRequestDTO.getPresetName());
             newPreset.setPlantType(farmRequestDTO.getPlantType());
             newPreset.setUser(user);
 
+            // 새 프리셋을 만들 때만 이미지를 저장
+            if (storedImageUrl != null) {
+                newPreset.setPresetImageUrl(storedImageUrl);
+            } else {
+                // 이미지가 없으면 기본 이미지 URL 설정
+                newPreset.setPresetImageUrl("/img/default.png");
+            }
+
             PresetEntity savedPreset = presetDAO.insertPreset(newPreset);
 
-            // A-2. 스텝 리스트(PresetStepEntity) 생성 및 저장
+            // PresetStepEntity 생성 및 저장
             if (farmRequestDTO.getStepList() == null || farmRequestDTO.getStepList().isEmpty()) {
                 throw new IllegalArgumentException("새 프리셋을 생성하려면 최소 1개 이상의 단계(Step)가 필요합니다.");
             }
@@ -107,6 +142,5 @@ public class FarmServiceImpl implements FarmService{
 
         farmDAO.save(farm);
     }
-
 
 }
