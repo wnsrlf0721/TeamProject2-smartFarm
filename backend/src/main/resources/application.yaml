@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: classpath:security.yaml
   mqtt:
     url: tcp://localhost:1883    # 브로커 주소
     #    username: myUser             # (선택) 계정
@@ -41,15 +43,10 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username:  # 빈칸처리
-    password:  # 빈칸처리
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-solapi:
-  api-key:  # 빈칸처리
-  api-secret:  # 빈칸처리
-  from-number:  # 발신번호 인증한 번호, 빈칸처리
+solapi: {}
