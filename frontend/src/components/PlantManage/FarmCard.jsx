@@ -8,7 +8,7 @@ export function FarmCard({ farm, onClick, onTimeLapse }) {
   const elapsedDays = calculateElapsedDays(farm.createdTime);
   const preset = farm.presetStep.preset;
   const presetStep = farm.presetStep;
-  
+
   // const stageName = getStepName(farm.stepId);
   // 버튼 클릭 핸들러: 이벤트 전파를 막고 타임랩스 함수 실행
   const handleTimeLapseClick = (e) => {
@@ -20,7 +20,7 @@ export function FarmCard({ farm, onClick, onTimeLapse }) {
       <div className={styles["farm-card-image"]}>
         <img
           src={
-            preset.image ||
+            "http://localhost:8080" + preset.presetImageUrl ||
             "figma:asset/3b935539e1a32b33472fa13c4e9875a8c504995c.png"
           }
           alt={farm.farmName}

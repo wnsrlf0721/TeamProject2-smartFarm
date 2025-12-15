@@ -20,6 +20,8 @@ public class PresetEntity {
     @Column(nullable = false)
     private String presetName;
 
+    private String presetImageUrl;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")   // 추천 프리셋은 NULL
     private UsersEntity user;

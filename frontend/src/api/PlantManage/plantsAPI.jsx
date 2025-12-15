@@ -19,8 +19,12 @@ export const getFarmList = async (id) => {
   return response.data;
 };
 
-export const createFarm = async (datas) => {
-  const request = await backendServer.post(requests.farmCreate, datas);
+export const createFarm = async (formData) => {
+  const request = await backendServer.post(requests.farmCreate, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return request;
 };
 
