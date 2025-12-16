@@ -32,7 +32,6 @@ function MyPage() {
       .then((data) => {
         setUserInfo(data.usersResponseDTO);
         setNovaList(data.novaResponseDTOList);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);

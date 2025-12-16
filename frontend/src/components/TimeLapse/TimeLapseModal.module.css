@@ -89,3 +89,14 @@
 .closeBtn:hover {
   background: #555;
 }
+
+.closeIcon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+}

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FarmDAO {
-    void save(FarmEntity farmEntity);
+    Optional<FarmEntity> save(FarmEntity farmEntity);
     List<FarmEntity> findListByNovaId(Long novaId);
     List<FarmEntity> findFarmsPresetStepsByNovaId(Long novaId);
     Optional<FarmEntity> findById(Long farmId);

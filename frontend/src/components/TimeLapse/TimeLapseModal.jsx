@@ -4,46 +4,18 @@ import styles from "./TimeLapseModal.module.css";
 
 export default function TimeLapseModal({farm, onClose}) {
   const [timelapseList, setTimelpaseList] = useState([]);
+
   useEffect(() => {
-    // timelapseView(farm.farmId)
-    timelapseView(1) // 목데이터 사용
+    if (!farm?.farmId) return;
+
+    timelapseView(farm.farmId)
       .then((data) => {
         setTimelpaseList(data);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);
       });
-  });
-  const mockTimelapseList = [
-    {
-      id: 1,
-      name: "전체 영상 1",
-      preset_step_id: 1,
-      duration: 10,
-      fps: 30,
-      resolution: "1920x1080",
-      state: "PENDING",
-    },
-    {
-      id: 2,
-      name: "전체 영상 2",
-      preset_step_id: 2,
-      duration: 15,
-      fps: 24,
-      resolution: "1920x1080",
-      state: "PROCESSING",
-    },
-    {
-      id: 3,
-      name: "전체 영상 3",
-      preset_step_id: 3,
-      duration: 20,
-      fps: 30,
-      resolution: "1920x1080",
-      state: "DONE",
-    },
-  ];
+  }, [farm?.farmId]);
 
   const convertState = (s) => {
     switch (s) {
@@ -59,8 +31,14 @@ export default function TimeLapseModal({farm, onClose}) {
   };
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
+    <div className={styles.overlay} onClick={onClose}>
+      {/* 모달 클릭 시 닫히지 않도록 stopPropagation */}
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        {/* ❌ 우측 상단 닫기 버튼 */}
+        <button className={styles.closeIcon} onClick={onClose}>
+          ✕
+        </button>
+
         <h2 className={styles.title}>📽 {farm?.farmName} 타임랩스 목록</h2>
 
         <div className={styles.list}>
@@ -95,12 +73,13 @@ export default function TimeLapseModal({farm, onClose}) {
 
               <div className={styles.infoRow}>
                 <span className={styles.label}>스텝 ID:</span>
-                <span className={styles.value}>{item.preset_step_id}</span>
+                <span className={styles.value}>{item.preset_step_id ?? "전체"}</span>
               </div>
             </div>
           ))}
         </div>
 
+        {/* 기존 닫기 버튼 유지 */}
         <button className={styles.closeBtn} onClick={onClose}>
           닫기
         </button>

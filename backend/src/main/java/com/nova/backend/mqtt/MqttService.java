@@ -1,15 +1,19 @@
 package com.nova.backend.mqtt;
 
+import com.nova.backend.timelapse.dao.TimelapseDAO;
+import com.nova.backend.timelapse.entity.TimelapseVideoEntity;
+import com.nova.backend.timelapse.service.TimelapseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
-
 @Service
 @RequiredArgsConstructor
 public class MqttService {
     private final MyPublisher publisher;
+    private final TimelapseService timelapseService;
+
     int count=0;
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public void handleMessage(Message<String> message) {
@@ -38,6 +42,18 @@ public class MqttService {
             System.out.println(">>> 이산화탄소 데이터 처리 로직 수행");
             // JSON 파싱 후 토양 수분 DB 저장 등...
         }
+        try {
+            if (topic.startsWith("home/timelapse/photo/")) {
+                long settingId = Long.parseLong(topic.substring("home/timelapse/photo/".length()));
+                timelapseService.saveImage(settingId, payload);
+
+            } else if (topic.startsWith("home/timelapse/done/")) {
+                long settingId = Long.parseLong(topic.substring("home/timelapse/done/".length()));
+                timelapseService.completeStep(settingId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         count++;
         System.out.println(count);
         String pub_topic = "heaves/home/web/led";
@@ -46,9 +62,10 @@ public class MqttService {
             String pub_msg = count%2==0?"led_on":"led_off";
             publisher.sendToMqtt(pub_msg,pub_topic);
         }
+        publisher.sendToMqtt("start", "home/timelapse/command");
     }
 //    private final MessageChannel mqttOutboundChannel;
-
+//
 //    public void publish(String topic, String payload) {
 //        Message<String> message = MessageBuilder.withPayload(payload)
 //                .setHeader(MqttHeaders.TOPIC, topic)

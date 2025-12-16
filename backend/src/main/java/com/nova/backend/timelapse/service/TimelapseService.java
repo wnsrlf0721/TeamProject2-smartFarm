@@ -9,4 +9,8 @@ import java.util.List;
 public interface TimelapseService {
     List<TimelapseResponseDTO> getTimelapseListByFarmId(long farmId);
     void createTimelapse(List<TimelapseRequestDTO> timelapseRequestDTOList);
+    void startTimelapseForFarm(long farmId);
+    void saveImage(long settingId, String base64Data);
+    void completeStep(long settingId);
+
 }

@@ -95,15 +95,17 @@ function PlantManage() {
   // 팜 생성 → 타임랩스 생성 연결
   const controlNextStep = async (formData) => {
     try {
-      setNewFarm(formData);
-      console.log(formData);
-      const result = await createFarm(formData);
-      console.log(result);
+      const createdFarm = await createFarm(formData);
+      // ⬆️ createdFarm 안에 farmId 있어야 함
+
+      console.log("생성된 farm:", createdFarm);
+
+      setNewFarm(createdFarm); // ✅ farmId 포함된 객체 저장
+      setIsFarmCreateOpen(false);
+      setIsTimeLapseCreateOpen(true);
     } catch (e) {
       console.error(e);
     }
-    setIsFarmCreateOpen(false);
-    setIsTimeLapseCreateOpen(true);
   };
 
   // 팜 생성 처리

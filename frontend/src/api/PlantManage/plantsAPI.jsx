@@ -25,7 +25,7 @@ export const createFarm = async (formData) => {
       "Content-Type": "multipart/form-data",
     },
   });
-  return request;
+  return request.data;
 };
 
 export const getPresetList = async (id) => {

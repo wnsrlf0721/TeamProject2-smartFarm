@@ -16,7 +16,6 @@ function MyPageTimelapse() {
     getTimeLapse(user.userId)
       .then((data) => {
         setMyPageTimelapseList(data);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);

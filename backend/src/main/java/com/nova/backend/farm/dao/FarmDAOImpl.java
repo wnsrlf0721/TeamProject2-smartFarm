@@ -13,8 +13,9 @@ import java.util.Optional;
 public class FarmDAOImpl implements FarmDAO{
     private final FarmRepository farmRepository;
     @Override
-    public void save(FarmEntity farmEntity) {
+    public Optional<FarmEntity> save(FarmEntity farmEntity) {
         farmRepository.save(farmEntity);
+        return farmRepository.findByNova_NovaIdAndSlot(farmEntity.getNova().getNovaId(), farmEntity.getSlot());
     }
 
     @Override

@@ -93,7 +93,6 @@ function MyPageEdit() {
       usersRequestDTO: editUser,
       novaRequestDTOList: editNovaList,
     };
-    console.log("🔥 서버로 보낼 데이터", editUserInfo);
 
     updateUserInfo(editUserInfo);
 

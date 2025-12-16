@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import styles from "./FarmCreateModal.module.css";
-import { RangeSlider } from "../RangeSlider.jsx";
-import {
-  getPresetList,
-  getPresetStepList,
-} from "../../api/PlantManage/plantsAPI.jsx";
+import {RangeSlider} from "../RangeSlider.jsx";
+import {getPresetList, getPresetStepList} from "../../api/PlantManage/plantsAPI.jsx";
 
 // --- [Icons] Simple SVG Icons to replace Lucide ---
 const Icons = {
@@ -21,14 +18,7 @@ const Icons = {
     </svg>
   ),
   Sprout: () => (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="white"
-      strokeWidth="2"
-    >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
       <path d="M7 20h10" />
       <path d="M10 20c5.5-2.5.8-6.4 3-10" />
       <path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.2.4-4.8-.4-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.9z" />
@@ -48,14 +38,7 @@ const Icons = {
     </svg>
   ),
   Trash: () => (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#ef4444"
-      strokeWidth="2"
-    >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2">
       <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
     </svg>
   ),
@@ -87,11 +70,11 @@ const Icons = {
 
 // --- 프리셋 생성 시 나오는 트랙바 초기 데이터 값 ---
 const DEFAULT_ENV = {
-  temp: { min: 20, max: 25 },
-  humidity: { min: 50, max: 70 },
-  co2: { min: 400, max: 800 },
-  soilMoisture: { min: 40, max: 60 },
-  lightPower: { min: 50, max: 80 },
+  temp: {min: 20, max: 25},
+  humidity: {min: 50, max: 70},
+  co2: {min: 400, max: 800},
+  soilMoisture: {min: 40, max: 60},
+  lightPower: {min: 50, max: 80},
   waterLevel: 3,
 };
 // --- 기존에 저장되어 불러온 프리셋 정보
@@ -107,7 +90,7 @@ const MOCK_PRESETS = [
         name: "0",
         environment: {
           ...DEFAULT_ENV,
-          temperature: { min: 18, max: 22 },
+          temperature: {min: 18, max: 22},
         },
       },
       {
@@ -115,7 +98,7 @@ const MOCK_PRESETS = [
         name: "1",
         environment: {
           ...DEFAULT_ENV,
-          temperature: { min: 20, max: 24 },
+          temperature: {min: 20, max: 24},
         },
       },
     ],
@@ -131,7 +114,7 @@ const MOCK_PRESETS = [
         name: "0",
         environment: {
           ...DEFAULT_ENV,
-          temperature: { min: 15, max: 20 },
+          temperature: {min: 15, max: 20},
         },
       },
     ],
@@ -139,7 +122,7 @@ const MOCK_PRESETS = [
 ];
 
 // --- [Main Component] ---
-export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
+export const FarmCreateModal = ({user, nova, slot, onClose, onCreate}) => {
   const [farmName, setFarmName] = useState(""); // 입력한 팜 이름
   const [presetList, setPresetList] = useState(MOCK_PRESETS);
 
@@ -257,7 +240,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
         stage.stepId === stageId
           ? {
               ...stage,
-              [key]: { min, max },
+              [key]: {min, max},
             }
           : stage
       )
@@ -266,43 +249,33 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
 
   // 핸들러: 단계 이름 변경
   const updateStageName = (stageId, e) => {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
 
     const onlyNumbers = value.replace(/[^0-9]/g, "");
     setStepList(
-      stepList.map((stage) =>
-        stage.stepId === stageId ? { ...stage, [name]: onlyNumbers } : stage
-      )
+      stepList.map((stage) => (stage.stepId === stageId ? {...stage, [name]: onlyNumbers} : stage))
     );
   };
   // 팜 생성 시 처리되는 메서드
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!farmName) return alert("팜 이름을 입력해주세요.");
-    if (!selectedPreset && !isCreatingNew)
-      return alert("프리셋을 선택해주세요.");
+    if (!selectedPreset && !isCreatingNew) return alert("프리셋을 선택해주세요.");
 
     const payload = {
       farmName,
       slot,
       novaId: nova.novaId,
       user: nova.user,
-      isNewPreset: isCreatingNew, // 백엔드 처리 구분용
-      // 기존에 있던 프리셋을 사용하는 경우 presetId만을 반환함
-      existingPresetId: isCreatingNew ? null : stepList[0].preset.presetId,
 
-      // 기존에 있던 프리셋을 변경하거나, 새로 프리셋을 추가한 경우 아래 데이터를 반환함
-      // 기존 프리셋의 경우 []이나 null 처리
-      plantType: isCreatingNew
-        ? newPlantName
-          ? newPlantName
-          : selectedPreset.plantType
-        : null,
-      presetName: isCreatingNew
-        ? newPlantName
-          ? newPresetName
-          : selectedPreset.presetName
-        : null,
+      isNewPreset: isCreatingNew,
+
+      // ✅ 기존 프리셋일 경우 selectedPreset에서 presetId 사용
+      existingPresetId: !isCreatingNew ? selectedPreset?.presetId : null,
+
+      // ✅ 새 프리셋일 때만 값 전달
+      plantType: isCreatingNew ? newPlantName : null,
+      presetName: isCreatingNew ? newPresetName : null,
       stepList: isCreatingNew ? stepList : [],
     };
 
@@ -323,15 +296,12 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
 
   return (
     <div className={styles["modal-overlay"]} onClick={onClose}>
-      <div
-        className={styles["modal-content"]}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className={styles["modal-content"]} onClick={(e) => e.stopPropagation()}>
         {/* 헤더 */}
         <div className={styles["modal-header"]}>
           <div className={styles["header-left"]}>
             <Icons.Sprout />
-            <h2 style={{ margin: 0, fontSize: "1.25rem" }}>새로운 팜 생성</h2>
+            <h2 style={{margin: 0, fontSize: "1.25rem"}}>새로운 팜 생성</h2>
           </div>
           <button className={styles["close-btn"]} onClick={onClose}>
             <Icons.Close />
@@ -345,7 +315,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
               <label className={styles["label"]}>기본 정보</label>
               <div>
                 {/* 팜 이름 입력*/}
-                <div style={{ marginTop: "20px" }}>
+                <div style={{marginTop: "20px"}}>
                   <label className={styles["label"]}>팜 이름</label>
                   <input
                     className={styles["input-field"]}
@@ -363,9 +333,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                 >
                   {" "}
                   {/* relative: 리스트 위치 기준점 */}
-                  <label className={styles["label"]}>
-                    식물 종류 프리셋 선택
-                  </label>
+                  <label className={styles["label"]}>식물 종류 프리셋 선택</label>
                   {/* 새로운 식물 만들기 (직접 입력) */}
                   {isCreatingNew ? (
                     <div>
@@ -396,9 +364,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                         </button>
                       </div>
                       <div>
-                        <div className={styles["section-title"]}>
-                          식물 사진 업로드
-                        </div>
+                        <div className={styles["section-title"]}>식물 사진 업로드</div>
                         <div className={styles["modal-content"]}>
                           <input
                             type="file"
@@ -408,14 +374,14 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                             onChange={handleFileChange}
                           />
                           {/* 이미지 출력 영역 */}
-                          <div style={{ marginTop: "20px" }}>
+                          <div style={{marginTop: "20px"}}>
                             {previewUrl ? (
                               <div>
                                 <p>미리보기:</p>
                                 <img
                                   src={previewUrl}
                                   alt="Preview"
-                                  style={{ width: "300px", opacity: 0.5 }}
+                                  style={{width: "300px", opacity: 0.5}}
                                 />
                               </div>
                             ) : null}
@@ -462,9 +428,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                           </span>
                         )}
                         {/* 화살표 아이콘 (열림/닫힘 표시) */}
-                        <span style={{ color: "#94a3b8" }}>
-                          {isOpen ? "▲" : "▼"}
-                        </span>
+                        <span style={{color: "#94a3b8"}}>{isOpen ? "▲" : "▼"}</span>
                       </div>
 
                       {/* 2. 드롭다운 리스트 (isOpen일 때만 보임) */}
@@ -525,10 +489,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
             {(selectedPreset || isCreatingNew) && (
               <div>
                 <div className={styles["stage-header-row"]}>
-                  <div
-                    className={styles["section-title"]}
-                    style={{ margin: 0 }}
-                  >
+                  <div className={styles["section-title"]} style={{margin: 0}}>
                     성장 단계 설정
                   </div>
                   <button
@@ -542,10 +503,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
 
                 {stepList.map((stage) => (
                   <div key={stage.stepId} className={styles["stage-card"]}>
-                    <div
-                      className={styles["stage-top"]}
-                      onClick={() => toggleStage(stage.stepId)}
-                    >
+                    <div className={styles["stage-top"]} onClick={() => toggleStage(stage.stepId)}>
                       <div>
                         <input
                           className={styles["stage-name-edit"]}
@@ -608,9 +566,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                           unit="°C"
                           minValue={stage.temp.min}
                           maxValue={stage.temp.max}
-                          onChange={(min, max) =>
-                            updateEnvironment(stage.stepId, "temp", min, max)
-                          }
+                          onChange={(min, max) => updateEnvironment(stage.stepId, "temp", min, max)}
                         />
 
                         <RangeSlider
@@ -622,12 +578,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                           minValue={stage.humidity.min}
                           maxValue={stage.humidity.max}
                           onChange={(min, max) =>
-                            updateEnvironment(
-                              stage.stepId,
-                              "humidity",
-                              min,
-                              max
-                            )
+                            updateEnvironment(stage.stepId, "humidity", min, max)
                           }
                         />
 
@@ -639,9 +590,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                           unit="ppm"
                           minValue={stage.co2.min}
                           maxValue={stage.co2.max}
-                          onChange={(min, max) =>
-                            updateEnvironment(stage.stepId, "co2", min, max)
-                          }
+                          onChange={(min, max) => updateEnvironment(stage.stepId, "co2", min, max)}
                         />
 
                         <RangeSlider
@@ -653,12 +602,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                           minValue={stage.soilMoisture.min}
                           maxValue={stage.soilMoisture.max}
                           onChange={(min, max) =>
-                            updateEnvironment(
-                              stage.stepId,
-                              "soilMoisture",
-                              min,
-                              max
-                            )
+                            updateEnvironment(stage.stepId, "soilMoisture", min, max)
                           }
                         />
 
@@ -671,12 +615,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
                           minValue={stage.lightPower.min}
                           maxValue={stage.lightPower.max}
                           onChange={(min, max) =>
-                            updateEnvironment(
-                              stage.stepId,
-                              "lightPower",
-                              min,
-                              max
-                            )
+                            updateEnvironment(stage.stepId, "lightPower", min, max)
                           }
                         />
                       </div>
@@ -689,11 +628,7 @@ export const FarmCreateModal = ({ user, nova, slot, onClose, onCreate }) => {
 
           {/* 푸터 */}
           <div className={styles["modal-footer"]}>
-            <button
-              type="button"
-              className={styles["btn-cancel"]}
-              onClick={onClose}
-            >
+            <button type="button" className={styles["btn-cancel"]} onClick={onClose}>
               취소
             </button>
             <button type="submit" className={styles["btn-submit"]}>

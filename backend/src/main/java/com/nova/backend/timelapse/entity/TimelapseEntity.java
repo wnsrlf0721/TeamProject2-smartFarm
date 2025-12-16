@@ -23,7 +23,7 @@ public class TimelapseEntity {
     @JoinColumn(name = "farm_id", nullable = false)
     private FarmEntity farmEntity;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "step_id", nullable = false)
+    @JoinColumn(name = "step_id", nullable = true)
     private PresetStepEntity presetStepEntity;
     @Column(nullable = false)
     private String timelapseName;

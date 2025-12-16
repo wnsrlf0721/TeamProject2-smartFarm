@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TimelapseRequestDTO {
     private long farmId;
-    private long stepId;
+    private Long stepId;
     private String timelapseName;
     private int fps;
     private int duration;

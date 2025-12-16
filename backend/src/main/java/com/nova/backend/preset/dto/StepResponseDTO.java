@@ -20,5 +20,4 @@ public class StepResponseDTO {
     private EnvRange lightPower;
     private EnvRange co2;
     private EnvRange soilMoisture;
-    private Integer waterLevel;
 }

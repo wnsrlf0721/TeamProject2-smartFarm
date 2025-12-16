@@ -7,7 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TimelapseRepository extends JpaRepository<TimelapseEntity, Integer> {
     List<TimelapseEntity> findByFarmEntity_FarmId(long farmId);
+
+    Optional<TimelapseEntity> findFirstBySettingIdGreaterThanAndPresetStepEntityNotNullOrderBySettingId(long currentSettingId);
+
+    Optional<TimelapseEntity> findFirstByFarmEntity_FarmIdAndPresetStepEntityIsNull(long farmId);
 }

@@ -42,7 +42,8 @@
   align-items: center;
   gap: 6px;
   cursor: grab;
-  transition: 0.2s ease;
+  /* transition: 0.2s ease; */
+  transition: all 0.25s ease;
 }
 
 .tm_icon_card:hover {

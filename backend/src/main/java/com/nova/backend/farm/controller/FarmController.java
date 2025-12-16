@@ -2,6 +2,7 @@ package com.nova.backend.farm.controller;
 
 import com.nova.backend.farm.dto.FarmRequestDTO;
 import com.nova.backend.farm.dto.FarmResponseDTO;
+import com.nova.backend.farm.dto.FarmTimelapseResponseDTO;
 import com.nova.backend.farm.service.FarmService;
 import com.sun.tools.jconsole.JConsoleContext;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,11 @@ public class FarmController {
         return farmService.getFarmListByNovaId(novaId);
     }
     @PostMapping(value = "/create", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<String> createFarm(
+    public FarmTimelapseResponseDTO createFarm(
             @RequestPart("request") FarmRequestDTO farmRequestDTO,
             @RequestPart(value = "image", required = false) MultipartFile image){
 
-        farmService.createFarm(farmRequestDTO, image);
-        return ResponseEntity.ok("팜 생성 완료!");
+        return farmService.createFarm(farmRequestDTO, image);
     }
 
 }

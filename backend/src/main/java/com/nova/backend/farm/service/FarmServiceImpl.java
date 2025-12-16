@@ -3,6 +3,7 @@ package com.nova.backend.farm.service;
 import com.nova.backend.farm.dao.FarmDAO;
 import com.nova.backend.farm.dto.FarmRequestDTO;
 import com.nova.backend.farm.dto.FarmResponseDTO;
+import com.nova.backend.farm.dto.FarmTimelapseResponseDTO;
 import com.nova.backend.farm.entity.FarmEntity;
 import com.nova.backend.nova.dao.NovaDAO;
 import com.nova.backend.nova.entity.NovaEntity;
@@ -10,6 +11,7 @@ import com.nova.backend.preset.dao.PresetDAO;
 import com.nova.backend.preset.dao.PresetStepDAO;
 import com.nova.backend.preset.entity.PresetEntity;
 import com.nova.backend.preset.entity.PresetStepEntity;
+import com.nova.backend.timelapse.dto.TimelapseVideoResponseDTO;
 import com.nova.backend.user.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,7 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ public class FarmServiceImpl implements FarmService{
     private final PresetStepDAO presetStepDAO;
     private final ModelMapper mapper;
     private final String uploadDir = System.getProperty("user.dir") + "/uploads/";
+    private final ModelMapper modelMapper;
 
 
     @Override
@@ -40,7 +45,7 @@ public class FarmServiceImpl implements FarmService{
     }
 
     @Override
-    public void createFarm(FarmRequestDTO farmRequestDTO, MultipartFile image) {
+    public FarmTimelapseResponseDTO createFarm(FarmRequestDTO farmRequestDTO, MultipartFile image) {
         // 이미지 파일 저장 (로컬 폴더에 저장 후 경로 생성)
         String storedImageUrl = null; // 이미지가 없으면 null 혹은 기본 이미지 경로
 
@@ -140,7 +145,9 @@ public class FarmServiceImpl implements FarmService{
         farm.setNova(nova);           // 기기 연결
         farm.setPresetStep(startStep); // 시작 스텝 연결 (FK)
 
-        farmDAO.save(farm);
+        return farmDAO.save(farm)
+                .map(entity -> modelMapper.map(entity, FarmTimelapseResponseDTO.class))
+                .orElseThrow();
     }
 
 }
