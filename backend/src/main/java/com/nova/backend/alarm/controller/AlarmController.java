@@ -63,4 +63,40 @@ public class AlarmController {
         alarmService.readAllAlarms(farmId);
         return ResponseEntity.ok().build();
     }
+
+    // 🔹 알람 페이지 - 읽음 / 안읽음 분리
+    @GetMapping("/page/read-status")
+    public ResponseEntity<List<AlarmResponseDTO>> getAlarmsByReadStatus(
+            @RequestParam Long farmId,
+            @RequestParam boolean isRead
+    ) {
+        return ResponseEntity.ok(
+                alarmService.getAlarmsByReadStatus(farmId, isRead)
+        );
+    }
+
+    // 🔹 알람 페이지 - 타입별 (SENSOR / EVENT 등)
+    @GetMapping("/page/type")
+    public ResponseEntity<List<AlarmResponseDTO>> getAlarmsByType(
+            @RequestParam Long farmId,
+            @RequestParam String alarmType
+    ) {
+        return ResponseEntity.ok(
+                alarmService.getAlarmPageAlarmsByType(farmId, alarmType)
+        );
+    }
+
+    // 🔹 알람 페이지 - 타입 + 읽음 상태
+    @GetMapping("/page/type-read")
+    public ResponseEntity<List<AlarmResponseDTO>> getAlarmsByTypeAndRead(
+            @RequestParam Long farmId,
+            @RequestParam String alarmType,
+            @RequestParam boolean isRead
+    ) {
+        return ResponseEntity.ok(
+                alarmService.getAlarmPageAlarmsByTypeAndRead(
+                        farmId, alarmType, isRead
+                )
+        );
+    }
 }

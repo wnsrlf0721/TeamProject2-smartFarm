@@ -3,6 +3,7 @@ package com.nova.backend.alarm.service;
 import com.nova.backend.alarm.dao.AlarmDAO;
 import com.nova.backend.alarm.dto.AlarmResponseDTO;
 import com.nova.backend.alarm.entity.PlantAlarmEntity;
+import com.nova.backend.alarm.repository.PlantAlarmRepository;
 import com.nova.backend.farm.entity.FarmEntity;
 import com.nova.backend.farm.repository.FarmRepository;
 import com.nova.backend.preset.entity.PresetStepEntity;
@@ -21,6 +22,7 @@ public class AlarmServiceImpl implements AlarmService {
     private final AlarmDAO alarmDAO;
     private final FarmRepository farmRepository;
     private final ModelMapper modelMapper;
+    private final PlantAlarmRepository plantAlarmRepository;
 
     // farm 조회 공통 메서드
     private FarmEntity getFarm(Long farmId) {
@@ -110,5 +112,41 @@ public class AlarmServiceImpl implements AlarmService {
                 .build();
 
         alarmDAO.save(alarm);
+    }
+
+    @Override
+    public List<AlarmResponseDTO> getAlarmsByReadStatus(Long farmId, boolean isRead) {
+        FarmEntity farm = getFarm(farmId);
+
+        return plantAlarmRepository
+                .findByFarmAndIsReadOrderByCreatedAtDesc(farm, isRead)
+                .stream()
+                .map(alarm -> modelMapper.map(alarm, AlarmResponseDTO.class))
+                .toList();
+    }
+
+
+    @Override
+    public List<AlarmResponseDTO> getAlarmPageAlarmsByType(Long farmId, String alarmType) {
+        FarmEntity farm = getFarm(farmId);
+
+        return plantAlarmRepository
+                .findByFarmAndAlarmTypeOrderByCreatedAtDesc(farm, alarmType)
+                .stream()
+                .map(alarm -> modelMapper.map(alarm, AlarmResponseDTO.class))
+                .toList();
+    }
+
+    @Override
+    public List<AlarmResponseDTO> getAlarmPageAlarmsByTypeAndRead(Long farmId, String alarmType, boolean isRead) {
+        FarmEntity farm = getFarm(farmId);
+
+        return plantAlarmRepository
+                .findByFarmAndAlarmTypeAndIsReadOrderByCreatedAtDesc(
+                        farm, alarmType, isRead
+                )
+                .stream()
+                .map(alarm -> modelMapper.map(alarm, AlarmResponseDTO.class))
+                .toList();
     }
 }

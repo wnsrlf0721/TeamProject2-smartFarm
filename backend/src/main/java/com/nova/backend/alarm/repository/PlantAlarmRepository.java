@@ -31,4 +31,20 @@ public interface PlantAlarmRepository extends JpaRepository<PlantAlarmEntity,Lon
     List<PlantAlarmEntity> findByFarmOrderByCreatedAtDesc(
             FarmEntity farm
     );
+    //1) 알람 페이지 전체 조회 (읽음/안읽음 분리용)-> 알람 페이지 첫 화면에서 바로 사용
+    List<PlantAlarmEntity> findByFarmAndIsReadOrderByCreatedAtDesc(
+            FarmEntity farm,
+            boolean isRead
+    );
+    //2) 타입 + 읽음 상태 기준 조회 (탭 필터용)-> “센서 알람 / 이벤트 알람” 탭에서 사용
+    List<PlantAlarmEntity> findByFarmAndAlarmTypeAndIsReadOrderByCreatedAtDesc(
+            FarmEntity farm,
+            String alarmType,
+            boolean isRead
+    );
+    //3) 타입 기준 전체 조회 (읽음/안읽음 통합)-> 탭 눌렀을 때 기본 리스트
+    List<PlantAlarmEntity> findByFarmAndAlarmTypeOrderByCreatedAtDesc(
+            FarmEntity farm,
+            String alarmType
+    );
 }
