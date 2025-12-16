@@ -8,9 +8,13 @@ export default function AlertSection({ plant_alarm = [] }) {
   // 날짜 구분
   const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
-  const todayAlerts = plant_alarm.filter((a) => a.created_at.startsWith(today));
+  const todayAlerts = plant_alarm.filter(
+    (a) => typeof a.createdAt === "string" && a.createdAt.startsWith(today)
+  );
 
-  const pastAlerts = plant_alarm.filter((a) => !a.created_at.startsWith(today));
+  const pastAlerts = plant_alarm.filter(
+    (a) => typeof a.createdAt === "string" && !a.createdAt.startsWith(today)
+  );
 
   return (
     <div className="alert-grid">
@@ -21,8 +25,8 @@ export default function AlertSection({ plant_alarm = [] }) {
         <div className="alert-list">
           {todayAlerts.length === 0 && <p className="alert-empty">오늘 발생한 알람이 없습니다.</p>}
 
-          {todayAlerts.map((a) => (
-            <AlertCard key={a.p_alarm_id} data={a} />
+          {todayAlerts.map((a, idx) => (
+            <AlertCard key={idx} data={a} />
           ))}
         </div>
 
@@ -36,8 +40,8 @@ export default function AlertSection({ plant_alarm = [] }) {
         <div className="alert-list">
           {pastAlerts.length === 0 && <p className="alert-empty">이전 알람이 없습니다.</p>}
 
-          {pastAlerts.map((a) => (
-            <AlertCard key={a.p_alarm_id} data={a} />
+          {pastAlerts.map((a, idx) => (
+            <AlertCard key={idx} data={a} />
           ))}
         </div>
 

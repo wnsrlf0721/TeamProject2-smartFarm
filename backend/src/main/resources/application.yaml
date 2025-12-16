@@ -11,7 +11,7 @@ spring:
     topic:
       command: server/command   # 발행(Publish)할 토픽
       #      sensor: farm/+/sensor/+        # 구독(Subscribe)할 토픽
-      sensor: home/sensor/+
+      sensor: +/+/sensor
 
   application:
     name: backend

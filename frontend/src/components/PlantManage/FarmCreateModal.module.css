@@ -1,13 +1,13 @@
 /* --- 변수 정의 (다크 테마 색상) --- */
 :root {
   --bg-dark: #0f172a; /* Slate 900 */
-  --bg-card: #1e293b; /* Slate 800 */
-  --bg-input: #0f172a;
-  --border-color: #334155; /* Slate 700 */
+  --bg-card: #0c100a; /* Slate 800 */
+  --bg-input: #295324;
+  --border-color: #242a20; /* Slate 700 */
   --text-main: #f8fafc; /* Slate 50 */
   --text-sub: #94a3b8; /* Slate 400 */
-  --primary-blue: #3b82f6;
-  --primary-purple: #a855f7;
+  --primary-blue: #859656;
+  --primary-purple: #2b4f12;
   --danger: #ef4444;
 }
 
@@ -28,11 +28,10 @@
   background-color: var(--bg-card);
   width: 900px; /* 와이드 모달 */
   max-width: 95%;
-  max-height: 90vh;
+  max-height: 95vh;
   border-radius: 16px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   position: relative; /* z-index 등 관리 */
@@ -246,11 +245,7 @@
 .create-new-btn {
   width: 100%;
   padding: 12px;
-  background: linear-gradient(
-    to right,
-    var(--primary-blue),
-    var(--primary-purple)
-  );
+  background: linear-gradient(to right, var(--primary-blue), var(--primary-purple));
   border: none;
   border-radius: 8px;
   color: white;
@@ -266,11 +261,7 @@
   margin-bottom: 16px;
 }
 .add-stage-btn {
-  background: linear-gradient(
-    to right,
-    var(--primary-blue),
-    var(--primary-purple)
-  );
+  background: linear-gradient(to right, var(--primary-blue), var(--primary-purple));
   border: none;
   padding: 8px 16px;
   border-radius: 20px;
@@ -403,11 +394,7 @@
 .btn-submit {
   flex: 1;
   padding: 14px;
-  background: linear-gradient(
-    to right,
-    var(--primary-blue),
-    var(--primary-purple)
-  );
+  background: linear-gradient(to right, var(--primary-blue), var(--primary-purple));
   border: none;
   border-radius: 8px;
   color: white;

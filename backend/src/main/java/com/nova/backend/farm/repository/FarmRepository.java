@@ -22,5 +22,7 @@ public interface FarmRepository extends JpaRepository<FarmEntity,Long> {
 
     //    // slot만으로 찾고 싶다면 (기기에 슬롯이 unique라면)
 //    Optional<FarmEntity> findBySlot(int slot);
-    Optional<FarmEntity> findByNova_NovaIdAndSlot(Long novaId, int slot);
+
+    //Mqtt에서 토픽을 통해 FarmId를 찾는 방법
+    Optional<FarmEntity> findByNova_NovaSerialNumberAndSlot(String novaSerialNumber, int slot);
 }

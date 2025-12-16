@@ -1,6 +1,7 @@
 package com.nova.backend.user.controller;
 
 
+import com.nova.backend.security.jwt.JwtTokenProvider;
 import com.nova.backend.user.dto.FindIdRequestDTO;
 import com.nova.backend.user.dto.LoginRequestDTO;
 import com.nova.backend.user.dto.ResetPasswordDTO;
@@ -21,7 +22,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-
+    private final JwtTokenProvider jwtTokenProvider;
     // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequestDTO dto) {
@@ -35,22 +36,26 @@ public class UserController {
         try {
             UsersEntity user = userService.login(dto);
 
+            String token = jwtTokenProvider.createToken(
+                    user.getLoginId(),
+                    user.getRole()
+            );
+
             return ResponseEntity.ok(
                     Map.of(
                             "userId", user.getUserId(),
                             "loginId", user.getLoginId(),
                             "name", user.getName(),
-                            "role", user.getRole()
+                            "role", user.getRole(),
+                            "accessToken", token
                     )
             );
 
         } catch (RuntimeException e) {
-            //  핵심
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     //아이디 찾기
     @PostMapping("/find-id")

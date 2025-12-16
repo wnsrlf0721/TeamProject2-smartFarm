@@ -15,4 +15,7 @@ public interface ActuatorService {
 
     // 물주기
     WateringResponseDTO waterPlant(Long farmId, WateringRequestDTO request);
+
+    // 광량 블라인드용
+    void controlBlind(Long farmId, String action, float lightValue);
 }

@@ -7,6 +7,7 @@ import com.nova.backend.actuator.entity.ActuatorLogEntity;
 import com.nova.backend.actuator.repository.ActuatorLogRepository;
 import com.nova.backend.farm.entity.FarmEntity;
 import com.nova.backend.farm.repository.FarmRepository;
+import com.nova.backend.mqtt.MyPublisher;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class ActuatorServiceImpl implements ActuatorService {
     private final ActuatorLogRepository actuatorLogRepository;
     private final FarmRepository farmRepository;
     private final ModelMapper modelMapper;
+    private final MyPublisher publisher;
 
 
     @Override
@@ -86,5 +88,38 @@ public class ActuatorServiceImpl implements ActuatorService {
                 .executedAt(LocalDateTime.now())
                 .message("물주기 명령이 정상적으로 실행되었습니다.")
                 .build();
+    }
+
+    @Override
+    public void controlBlind(Long farmId, String action, float lightValue) {
+        FarmEntity farm = farmRepository.findById(farmId)
+                .orElseThrow(() -> new IllegalArgumentException("Farm을 찾을 수 없습니다."));
+        // 1) 디비로그 저장
+        ActuatorLogEntity log = ActuatorLogEntity.builder()
+                .farm(farm)
+                .actuatorType("BLIND")
+                .action(action) // "OPEN" or "CLOSE"
+                .sensorType("light")
+                .currentValue(lightValue)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        actuatorLogRepository.save(log);
+
+        // 2) 서보 각도 결정 (원하는 값으로 조정)
+        int angle = "OPEN".equalsIgnoreCase(action) ? 90 : 0;
+        // 3) MQTT payload는 "문자열(JSON)"로
+        String payload = String.format(
+                "{\"action\":\"%s\",\"angle\":%d,\"farmId\":%d}",
+                action.toUpperCase(),
+                angle,
+                farmId
+        );
+        // 4) MQTT publish
+        publisher.sendToMqtt(payload, "home/actuator/blind");
+//        MyPublisher.(
+//                "actuator/blind/" + farmId,
+//                action
+//        );
     }
 }

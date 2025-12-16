@@ -1,71 +1,144 @@
 import "./AlarmPage.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function AlarmPage() {
-  // 임시 mock 데이터 (나중에 API로 교체)
-  const [alarms, setAlarms] = useState([
-    {
-      id: 1,
-      type: "sensor",
-      title: "온도 이상 감지",
-      message: "현재 온도가 설정 범위를 벗어났습니다.",
-      createdAt: "2025-01-15 14:32",
-      isRead: false,
-    },
-    {
-      id: 2,
-      type: "system",
-      title: "물 주기 완료",
-      message: "자동 물 공급이 정상적으로 완료되었습니다.",
-      createdAt: "2025-01-15 09:10",
-      isRead: true,
-    },
-  ]);
+function AlarmPage({ farmId }) {
+  /** ======================
+   * 상태 정의
+   * ====================== */
+  // 1차 탭: 전체 / 센서 / 이벤트
+  const [selectedType, setSelectedType] = useState("ALL"); // ALL | SENSOR | EVENT
 
-  const handleRead = (id) => {
-    setAlarms((prev) => prev.map((a) => (a.id === id ? { ...a, isRead: true } : a)));
+  // 2차 필터: 읽음 / 안읽음
+  const [isRead, setIsRead] = useState(false); // false = 안 읽은 알림
+
+  // 알람 리스트
+  const [alarms, setAlarms] = useState([]);
+
+  // 로딩 상태 (선택)
+  const [loading, setLoading] = useState(false);
+
+  const getIsReadParam = () => {
+    if (isRead === "all") return null;
+    return isRead === "read";
   };
 
-  const handleDelete = (id) => {
-    setAlarms((prev) => prev.filter((a) => a.id !== id));
+  /** ======================
+   * 알람 조회
+   * ====================== */
+  const fetchAlarms = async () => {
+    if (!farmId) return;
+
+    setLoading(true);
+
+    try {
+      const isRead = getIsReadParam();
+      let response;
+
+      // 전체 + 읽음/안읽음
+      if (selectedType === "ALL") {
+        response = await axios.get("/alarm/page/read-status", {
+          params: { farmId, isRead },
+        });
+      }
+      // 타입 + 읽음/안읽음
+      else {
+        response = await axios.get("/alarm/page/type-read", {
+          params: {
+            farmId,
+            alarmType: selectedType,
+            isRead,
+          },
+        });
+      }
+
+      setAlarms(response.data);
+    } catch (error) {
+      console.error("알람 조회 실패", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  /** ======================
+   * 전체 읽음 처리
+   * ====================== */
+  const handleReadAll = async () => {
+    try {
+      await axios.patch("/alarm/read-all", { params: { farmId } });
+      // 다시 조회
+      fetchAlarms();
+    } catch (error) {
+      console.error("전체 읽음 처리 실패", error);
+    }
+  };
+
+  /** ======================
+   * 상태 변경 시 재조회
+   * ====================== */
+  useEffect(() => {
+    fetchAlarms();
+  }, [selectedType, isRead, farmId]);
+
+  /** ======================
+   * 렌더링
+   * ====================== */
   return (
     <div className="alarm-page">
-      <h1 className="alarm-title">알림</h1>
+      {/* ===== 헤더 ===== */}
+      <div className="alarm-header">
+        <h1>알림</h1>
+        <button className="read-all-btn" onClick={handleReadAll}>
+          전체 읽음
+        </button>
+      </div>
 
-      {alarms.length === 0 ? (
-        <div className="alarm-empty">알림이 없습니다.</div>
-      ) : (
-        <ul className="alarm-list">
-          {alarms.map((alarm) => (
-            <li
-              key={alarm.id}
-              className={`alarm-item ${alarm.isRead ? "read" : "unread"}`}
-              onClick={() => handleRead(alarm.id)}
-            >
-              <div className="alarm-main">
-                <div className="alarm-text">
-                  <h3 className="alarm-item-title">{alarm.title}</h3>
-                  <p className="alarm-message">{alarm.message}</p>
-                </div>
+      {/* ===== 1차 탭 (타입) ===== */}
+      <div className="alarm-type-tabs">
+        {["ALL", "SENSOR", "EVENT"].map((type) => (
+          <button
+            key={type}
+            className={`type-tab ${selectedType === type ? "active" : ""}`}
+            onClick={() => setSelectedType(type)}
+          >
+            {type === "ALL" ? "전체" : type === "SENSOR" ? "센서" : "이벤트"}
+          </button>
+        ))}
+      </div>
 
-                <span className="alarm-time">{alarm.createdAt}</span>
+      {/* ===== 2차 필터 (읽음 상태) ===== */}
+      <div className="alarm-read-filter">
+        <button className={!isRead ? "active" : ""} onClick={() => setIsRead(false)}>
+          안 읽은 알림
+        </button>
+        <button className={isRead ? "active" : ""} onClick={() => setIsRead(true)}>
+          읽은 알림
+        </button>
+      </div>
+
+      {/* ===== 리스트 ===== */}
+      <div className="alarm-list">
+        {loading ? (
+          <div className="alarm-loading">로딩 중...</div>
+        ) : alarms.length === 0 ? (
+          <div className="alarm-empty">알림이 없습니다.</div>
+        ) : (
+          alarms.map((alarm) => (
+            <div key={alarm.pAlarmId} className={`alarm-item ${alarm.isRead ? "read" : "unread"}`}>
+              <div className="alarm-left">{!alarm.isRead && <span className="unread-dot" />}</div>
+
+              <div className="alarm-content">
+                <h3 className="alarm-title">{alarm.title}</h3>
+                <p className="alarm-message">{alarm.message}</p>
               </div>
 
-              <button
-                className="alarm-delete-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(alarm.id);
-                }}
-              >
-                ✕
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+              <div className="alarm-right">
+                <span className="alarm-time">{alarm.createdAt.replace("T", " ")}</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useAuth } from "../../api/auth/AuthContext";
 import "./Login.css";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, user } = useAuth(); //  user 가져오기
   const navigate = useNavigate();
 
   const [id, setId] = useState("");
@@ -13,7 +13,10 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const result = await login(id, pw); // 로그인 시도
+    console.log(" 로그인 버튼 클릭됨");
+
+    const result = await login(id, pw);
+    console.log(" login 결과:", result);
 
     if (!result.ok) {
       alert(result.msg);
@@ -22,10 +25,9 @@ export default function Login() {
 
     alert("로그인 성공!");
 
-    // 만약 user.role이 있다면 role 확인 가능
-    const { role } = result.data;
-
-    if (role === "ADMIN") {
+    //  result.data x
+    // AuthContext에서 관리하는 user 기준
+    if (user?.role === "ROLE_ADMIN") {
       navigate("/admin");
     } else {
       navigate("/");

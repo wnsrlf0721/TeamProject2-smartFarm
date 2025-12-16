@@ -1,11 +1,11 @@
-import api from "./api"; // npm install axios
+import backendServer from "../backendServer"; // npm install axios
 import userRequest from "./userRequest";
 // 백엔드로 요청을 만드는 파일
 
 //   1. 회원가입 API
 export const signupAPI = async (payload) => {
   try {
-    const response = await api.post(userRequest.signup, payload);
+    const response = await backendServer.post(userRequest.signup, payload);
     return { ok: true, data: response.data };
   } catch (err) {
     return {
@@ -18,7 +18,7 @@ export const signupAPI = async (payload) => {
 //   2. 로그인 API
 export const loginAPI = async (id, pw) => {
   try {
-    const response = await api.post(userRequest.login, {
+    const response = await backendServer.post(userRequest.login, {
       loginId: id,
       password: pw,
     });
@@ -35,7 +35,7 @@ export const loginAPI = async (id, pw) => {
 //   3. 아이디 찾기 API
 export const findIdAPI = async (name, email, phone) => {
   try {
-    const response = await api.post(userRequest.findId, {
+    const response = await backendServer.post(userRequest.findId, {
       name,
       email,
       phoneNumber: phone,
@@ -53,7 +53,7 @@ export const findIdAPI = async (name, email, phone) => {
 //  4. 비밀번호 재설정 API
 export const resetPasswordAPI = async (userId, newPw) => {
   try {
-    await api.post(userRequest.resetPW, {
+    await backendServer.post(userRequest.resetPW, {
       userId,
       newPassword: newPw,
     });
@@ -70,7 +70,7 @@ export const resetPasswordAPI = async (userId, newPw) => {
 // 아이디 중복확인
 export const checkLoginIdAPI = async (loginId) => {
   try {
-    const res = await api.get("/api/users/check-loginid", {
+    const res = await backendServer.get("/api/users/check-loginid", {
       params: { loginId },
     });
 
@@ -86,7 +86,7 @@ export const checkLoginIdAPI = async (loginId) => {
 // 이메일 인증번호 전송
 export const sendEmailAuthAPI = async (email) => {
   try {
-    const res = await api.post("/api/users/email/send", { email });
+    const res = await backendServer.post("/api/users/email/send", { email });
     return { ok: true, msg: res.data };
   } catch (err) {
     return {
@@ -99,7 +99,7 @@ export const sendEmailAuthAPI = async (email) => {
 // 이메일 인증번호 검증
 export const verifyEmailAuthAPI = async (email, code) => {
   try {
-    const res = await api.post("/api/users/email/verify", {
+    const res = await backendServer.post("/api/users/email/verify", {
       email,
       code,
     });
@@ -117,7 +117,7 @@ export const verifyEmailAuthAPI = async (email, code) => {
 // 인증번호 전송
 export const sendPwEmailAuthAPI = async (email) => {
   try {
-    const res = await api.post("/api/users/password/email/send", { email });
+    const res = await backendServer.post("/api/users/password/email/send", { email });
     return { ok: true, msg: res.data };
   } catch (err) {
     return {
@@ -130,7 +130,7 @@ export const sendPwEmailAuthAPI = async (email) => {
 // 인증번호 검증
 export const verifyPwEmailAuthAPI = async (email, code) => {
   try {
-    const res = await api.post("/api/users/password/email/verify", {
+    const res = await backendServer.post("/api/users/password/email/verify", {
       email,
       code,
     });
@@ -146,7 +146,7 @@ export const verifyPwEmailAuthAPI = async (email, code) => {
 // 비밀번호 재설정
 export const resetPasswordByEmailAPI = async (email, password) => {
   try {
-    const res = await api.post("/api/users/password/email/reset", {
+    const res = await backendServer.post("/api/users/password/email/reset", {
       email,
       password,
     });
@@ -164,7 +164,7 @@ export const resetPasswordByEmailAPI = async (email, password) => {
 // 인증번호 전송
 export const sendPwPhoneAuthAPI = async (phoneNumber) => {
   try {
-    const res = await api.post("/api/users/password/phone/send", {
+    const res = await backendServer.post("/api/users/password/phone/send", {
       phoneNumber,
     });
     return { ok: true, msg: res.data };
@@ -179,7 +179,7 @@ export const sendPwPhoneAuthAPI = async (phoneNumber) => {
 // 인증번호 검증
 export const verifyPwPhoneAuthAPI = async (phoneNumber, code) => {
   try {
-    const res = await api.post("/api/users/password/phone/verify", {
+    const res = await backendServer.post("/api/users/password/phone/verify", {
       phoneNumber,
       code,
     });
@@ -195,7 +195,7 @@ export const verifyPwPhoneAuthAPI = async (phoneNumber, code) => {
 // 비밀번호 재설정 (전화번호)
 export const resetPasswordByPhoneAPI = async (phoneNumber, password) => {
   try {
-    const res = await api.post("/api/users/password/phone/reset", {
+    const res = await backendServer.post("/api/users/password/phone/reset", {
       phoneNumber,
       password,
     });

@@ -25,6 +25,11 @@
   overflow: visible !important;
 }
 
+.lodding {
+  width: 1200px;
+  max-height: 92vh;
+}
+
 /* 내부 스크롤 영역 */
 .modal-content {
   height: calc(92vh - 20px);

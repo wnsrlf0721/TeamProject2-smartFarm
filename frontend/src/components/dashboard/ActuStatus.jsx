@@ -9,11 +9,11 @@ import "swiper/css/pagination";
 export default function ActuStatus({ logs = [], current_sensor = {} }) {
   // 센서 키와 표시 이름 매핑
   const SENSORS = {
-    temperature: "Temperature",
-    humidity: "Humidity",
-    light: "Light",
-    soil: "Soil Moisture",
-    co2: "CO₂",
+    fan: "Fan",
+    pump: "Pump",
+    led: "LED",
+    humidifier: "Humidifier",
+    heater: "Heater",
   };
 
   // 현재 센서값 기반 상태 계산
@@ -31,7 +31,7 @@ export default function ActuStatus({ logs = [], current_sensor = {} }) {
   // 로그를 센서별로 그룹화 (최근 1개만)
   const groupedLogs = {};
   logs.forEach((log) => {
-    const type = log.sensor_type;
+    const type = log.actuatorType?.toLowerCase();
     if (!groupedLogs[type]) groupedLogs[type] = log;
   });
 
@@ -80,8 +80,8 @@ export default function ActuStatus({ logs = [], current_sensor = {} }) {
                     {recentLog ? (
                       <div className="log-item">
                         <span className="log-action">{recentLog.action}</span>
-                        <span className="log-device">{recentLog.actuator_type}</span>
-                        <span className="log-time">{recentLog.created_at}</span>
+                        <span className="log-device">{recentLog.actuatorType}</span>
+                        <span className="log-time">{recentLog.createdAt}</span>
                       </div>
                     ) : (
                       <div className="log-empty">최근 작동 로그 없음</div>

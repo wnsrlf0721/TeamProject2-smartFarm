@@ -36,7 +36,7 @@ public class SensorLogEntity {
     @Column(nullable = false)
     private Float humidity;
 
-    @Column(name = "lightPower", nullable = false)
+    @Column(name = "light_power", nullable = false)
     private Float lightPower;
 
     @Column(nullable = false)

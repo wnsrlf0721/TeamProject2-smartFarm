@@ -18,7 +18,9 @@ ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip,
 function calculateStats(data = []) {
   if (!data.length) return { avg: "-", max: "-", min: "-" };
 
-  const values = data.map((d) => d.y);
+  const values = data.map((d) => d.value).filter((v) => typeof v === "number");
+
+  if (!values.length) return { avg: "-", max: "-", min: "-" };
   const avg = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1);
   const max = Math.max(...values);
   const min = Math.min(...values);
@@ -27,6 +29,7 @@ function calculateStats(data = []) {
 }
 
 export default function SensorTrendChart({ title, data = [], unit = "" }) {
+  console.log("chart data sample", data[0]);
   const stats = calculateStats(data);
 
   // 데이터 없으면 빈 박스
@@ -42,11 +45,11 @@ export default function SensorTrendChart({ title, data = [], unit = "" }) {
   }
 
   const chartData = {
-    labels: data.map((d) => d.x.slice(11, 16)), // 시간(HH:MM)만 표시
+    labels: data.map((d) => (typeof d.time === "string" ? d.time : "-")), // 시간(HH:MM)만 표시
     datasets: [
       {
         label: title,
-        data: data.map((d) => d.y),
+        data: data.map((d) => (typeof d.value === "number" ? d.value : null)),
         fill: true,
         tension: 0.35,
         borderColor: "rgba(90, 140, 90, 0.9)",

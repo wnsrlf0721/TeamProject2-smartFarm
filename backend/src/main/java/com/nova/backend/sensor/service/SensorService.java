@@ -1,5 +1,6 @@
 package com.nova.backend.sensor.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nova.backend.farm.entity.FarmEntity;
 import com.nova.backend.sensor.dto.SensorCurrentDTO;
 import com.nova.backend.sensor.dto.SensorHistoryDTO;
@@ -22,4 +23,6 @@ public interface SensorService {
             String title,
             String message
     );
+    // Mqtt에서 넘어온 Sensor 값을 처리하는 메서드
+    void controlSensorData(String payload, String novaSerialNumber, int slot) throws JsonProcessingException;
 }

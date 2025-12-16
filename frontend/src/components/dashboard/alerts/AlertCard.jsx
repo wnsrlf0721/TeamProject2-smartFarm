@@ -1,10 +1,10 @@
 // src/components/dashboard/alerts/AlertCard.jsx
 
 export default function AlertCard({ data }) {
-  const { title, message, created_at } = data;
+  const { title, message, createdAt } = data;
 
   // 상대 시간 계산 (간단 버전)
-  const timeAgo = getRelativeTime(created_at);
+  const timeAgo = getRelativeTime(createdAt);
 
   return (
     <div className="alert-card">
