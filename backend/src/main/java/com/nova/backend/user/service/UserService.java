@@ -19,4 +19,7 @@ public interface UserService { // 서비스 에 인증 2개
     // 아이디 중복확인
     boolean existsLoginId(String loginId);
 
+    UsersEntity findByLoginId(String loginId);
+
+    void resetPasswordByLoginId(String loginId, String newPassword);
 }

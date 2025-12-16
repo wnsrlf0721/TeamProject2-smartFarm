@@ -65,10 +65,23 @@ export default function PWFindVerify() {
       return;
     }
 
+    /**
+     * ✅ 핵심
+     * 지금 프로젝트 구조상
+     * email / phone === loginId 로 사용 중
+     */
+    const loginId = value;
+
+    // ✅ reset 페이지 대비 안전장치
+    localStorage.setItem("pwResetLoginId", loginId);
+
     alert("인증 완료!");
 
     navigate("/find/pw/reset", {
-      state: tab === "email" ? { email: value } : { phoneNumber: value },
+      state: {
+        type: tab, // "email" | "phone"
+        value: value, // email or phoneNumber
+      },
     });
   };
 
@@ -79,7 +92,6 @@ export default function PWFindVerify() {
           비밀번호 재설정을 위해 <br /> 사용자 확인을 진행합니다
         </h2>
 
-        {/* 탭 */}
         <div className="find-tabs">
           <span
             className={tab === "phone" ? "active" : ""}

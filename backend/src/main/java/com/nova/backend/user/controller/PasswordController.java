@@ -16,11 +16,17 @@ public class PasswordController {
     private final EmailAuthService emailAuthService;
     private final PasswordService passwordService;
 
-
+    // =========================
     // 이메일 인증번호 전송
+    // =========================
     @PostMapping("/email/send")
     public ResponseEntity<?> sendEmailAuth(@RequestBody Map<String, String> req) {
+
         String email = req.get("email");
+
+        if (email == null || email.isBlank()) {
+            return ResponseEntity.badRequest().body("이메일을 입력해주세요.");
+        }
 
         passwordService.checkEmailExists(email);
         emailAuthService.sendAuthCode(email);
@@ -28,8 +34,9 @@ public class PasswordController {
         return ResponseEntity.ok("인증번호가 이메일로 전송되었습니다.");
     }
 
-
+    // =========================
     // 이메일 인증번호 검증
+    // =========================
     @PostMapping("/email/verify")
     public ResponseEntity<?> verifyEmailAuth(@RequestBody Map<String, String> req) {
 
@@ -46,39 +53,37 @@ public class PasswordController {
         return ResponseEntity.ok("이메일 인증 완료");
     }
 
-
-    //  이메일 비밀번호 재설정
+    // =========================
+    // 비밀번호 재설정 (email 기준)
+    // =========================
     @PostMapping("/email/reset")
-    public ResponseEntity<?> resetPasswordByEmail(@RequestBody Map<String, String> req) {
+    public ResponseEntity<?> resetByEmail(@RequestBody Map<String, String> req) {
 
         String email = req.get("email");
         String password = req.get("password");
 
         if (email == null || password == null) {
-            return ResponseEntity.badRequest()
-                    .body("요청 값이 올바르지 않습니다.");
+            return ResponseEntity.badRequest().body("요청 값이 올바르지 않습니다.");
         }
 
-        passwordService.resetPassword(email, password);
-
+        passwordService.resetPasswordByEmail(email, password);
         return ResponseEntity.ok("비밀번호가 변경되었습니다.");
     }
 
-    // 전화번호 비밀번호 재설정
-
+    // =========================
+    // 비밀번호 재설정 (phone 기준)
+    // =========================
     @PostMapping("/phone/reset")
-    public ResponseEntity<?> resetPasswordByPhone(@RequestBody Map<String, String> req) {
+    public ResponseEntity<?> resetByPhone(@RequestBody Map<String, String> req) {
 
         String phoneNumber = req.get("phoneNumber");
         String password = req.get("password");
 
         if (phoneNumber == null || password == null) {
-            return ResponseEntity.badRequest()
-                    .body("요청 값이 올바르지 않습니다.");
+            return ResponseEntity.badRequest().body("요청 값이 올바르지 않습니다.");
         }
 
         passwordService.resetPasswordByPhone(phoneNumber, password);
-
         return ResponseEntity.ok("비밀번호가 변경되었습니다.");
     }
 }

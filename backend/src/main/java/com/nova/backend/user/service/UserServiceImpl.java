@@ -39,28 +39,36 @@ public class UserServiceImpl implements UserService {
         user.setAddress(dto.getAddress());
         user.setAddressDetail(dto.getAddressDetail());
         user.setCreateDate(LocalDateTime.now());
-        user.setRole("user");
+        user.setRole("ROLE_USER");
         user.setLoginType("normal");
 
         userDao.save(user);
     }
 
-    @Override
-    public UsersEntity login(LoginRequestDTO dto) {
-        UsersEntity user = userDao.findByLoginId(dto.getLoginId());
-        if (user == null) {
-            throw new RuntimeException("아이디가 존재하지 않습니다.");
-        }
+//    @Override
+//    public UsersEntity login(LoginRequestDTO dto) {
+//        UsersEntity user = userDao.findByLoginId(dto.getLoginId());
+//        if (user == null) {
+//            throw new RuntimeException("아이디가 존재하지 않습니다.");
+//        }
+//
+//        // 암호화된 비밀번호 비교
+//        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+//            throw new RuntimeException("비밀번호가 틀렸습니다");
+//        }
+//
+//        user.setLastLoginDate(LocalDateTime.now());
+//        userDao.save(user);
+//        return user;
+//    }
+@Deprecated
+@Override
+public UsersEntity login(LoginRequestDTO dto) {
+    throw new UnsupportedOperationException(
+            "login은 AuthenticationManager를 통해 처리됩니다."
+    );
+}
 
-        // 암호화된 비밀번호 비교
-        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new RuntimeException("비밀번호가 틀렸습니다");
-        }
-
-        user.setLastLoginDate(LocalDateTime.now());
-        userDao.save(user);
-        return user;
-    }
 
     @Override
     public String findUserId(FindIdRequestDTO dto) {
@@ -101,4 +109,31 @@ public class UserServiceImpl implements UserService {
     public boolean existsLoginId(String loginId) {
         return userDao.findByLoginId(loginId) != null;
     }
+
+    @Override
+    public UsersEntity findByLoginId(String loginId) {
+        UsersEntity user = userDao.findByLoginId(loginId);
+        if (user == null) {
+            throw new RuntimeException("사용자를 찾을 수 없습니다.");
+        }
+        return user;
+    }
+
+    @Override
+    public void resetPasswordByLoginId(String loginId, String newPassword) {
+
+        UsersEntity user = userDao.findByLoginId(loginId);
+        if (user == null) {
+            throw new RuntimeException("사용자를 찾을 수 없습니다.");
+        }
+
+        if (newPassword.length() < 8 || newPassword.length() > 16) {
+            throw new RuntimeException("비밀번호는 8~16자여야 합니다.");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userDao.save(user);
+    }
+
+
 }
