@@ -28,11 +28,9 @@ class DHTSensor(Thread):
 # MCP칩을 사용하는 센서를 받아오는 클래스
 # 조도 센서, 토양 수분 센서
 class MCPSensor(Thread):
-    def __init__(self, client, pump_callback=None):
+    def __init__(self):
         Thread.__init__(self)
-        self.client = client
-        self.pump_callback = pump_callback  # 펌프 ON 함수
-        
+
         # 1. SPI 버스 생성 (하드웨어 SPI 사용)
         self.spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
         # 2. Chip Select 핀 설정 (여기서는 GPIO 5번 핀 사용)
@@ -62,23 +60,7 @@ class MCPSensor(Thread):
                 # 퍼센트 변환
                 light_percent = (light_value / light_max) * 100
                 self.data['lightpower'] = round(max(0,min(100,light_percent)),1)
-                
-                data_payload = {
-                    "soil_percent": moisture_percent,
-                    "soil_value": soil_value, # 원본 값. 디버깅 용으로 값을 측정,
-                    "light_percent": light_percent,
-                    "light_value": light_value,
-                }
-                
-                json_str = json.dumps(data_payload)
-                self.client.publish("home/sensor/mcp", json_str)
 
-                # 토양 수분 부족 시 펌프 ON
-                if self.pump_callback and moisture_percent < 30:  # 임계값 30%
-                    print("토양 건조, 펌프 작동")
-                    self.pump_callback()
-                
-                time.sleep(5)
             except RuntimeError as err:
                 print(err)
             time.sleep(2)

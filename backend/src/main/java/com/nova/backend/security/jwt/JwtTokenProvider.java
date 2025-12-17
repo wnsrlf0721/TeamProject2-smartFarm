@@ -15,7 +15,7 @@ public class JwtTokenProvider {
     private static final String SECRET_KEY =
             "nova-secret-key-nova-secret-key-nova";
 
-    private static final long TOKEN_VALID_TIME = 1000L * 60 * 60;
+    private static final long TOKEN_VALID_TIME = 1000L * 60 * 60; // 유효기간 1시간 설정
 
     //  핵심: String → Key
     private final Key key =
