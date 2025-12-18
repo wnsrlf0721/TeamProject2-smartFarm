@@ -10,7 +10,7 @@ import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
 # MH-Z19 (이산화탄소 센서 라이브러리)
 import mh_z19
-
+# 온습도 센서
 class DHTSensor(Thread):
     def __init__(self):
         Thread.__init__(self)
