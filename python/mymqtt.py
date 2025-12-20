@@ -70,7 +70,7 @@ class MqttWorker:
         # 카메라 촬영 시작, callback 등록
         Thread(target=self.timelapse_camera.start_timelapse, args=(self.mqtt_publish_photo,)).start()
 
-    # broker 연결 후 실행될 콜백메서드 - rc가 0이면 성공접속, 1이면 실패
+    # broker 서버와 연결 후 실행될 콜백메서드 - rc가 0이면 접속 성공, sub_topics 구독 신청
     def on_connect(self, client, userdata, flags, rc):
         global sub_topics
         print(client, userdata, flags)
@@ -80,7 +80,7 @@ class MqttWorker:
         else:
             print("연결실패.....")
 
-    # 메시지가 수신되면 자동으로 호출되는 메서드
+    # sub_topics 메시지가 수신되면 자동으로 호출되는 메서드
     def on_message(self,client, userdata, message):
         global nova_serial, slot
         my_val = message.payload.decode("utf-8")
@@ -97,27 +97,26 @@ class MqttWorker:
                 self.humidifier.control_msg(my_val)
             elif topicArr[2] == "blind":
                 self.blind.on_message(my_val)
-        
+            elif topicArr[2] == "pump":
+                if my_val == "pump_on":
+                    print("웹 요청으로 펌프 작동")
+                    self.pump.run_pump()
+            elif topicArr[2] == "timelapse":
+                if my_val == "start":
+                    print("웹 요청으로 타임랩스 시작")
+                    self.start_timelapse()
 
-        elif message.topic == "heaves/home/web/pump":
-            if my_val == "pump_on":
-                print("웹 요청으로 펌프 작동")
-                self.pump.run_pump()
-        elif message.topic == "heaves/home/web/timelapse":
-            if my_val == "start":
-                print("웹 요청으로 타임랩스 시작")
-                self.start_timelapse()
+                    # MyCamera의 getStreaming 을 호출해서 프레임을 publish
+                    self.is_streaming = True
+                    print("start")
+                    self.cam_thread = Thread(target=self.send_camera_frame)
+                    self.cam_thread.start()
+                elif my_val == "end":
+                    print("end")
+                    self.is_streaming = False
 
-                # MyCamera의 getStreaming 을 호출해서 프레임을 publish
-                self.is_streaming = True
-                print("start")
-                self.cam_thread = Thread(target=self.send_camera_frame)
-                self.cam_thread.start()
-            elif my_val == "end":
-                print("end")
-                self.is_streaming = False
-
-    # 데이터를 모아서 보내는 쓰레드 메서드
+    # publish 메시지를 보내는 메서드
+    # 센서가 수집하는 모든 데이터를 한번에 모아서 전송하는 방식
     def publish_all_sensor_data(self):
         global pub_topic
         while True:
@@ -138,7 +137,7 @@ class MqttWorker:
             except Exception as e:
                 print(f"Publish Error: {e}")
 
-            time.sleep(5) # 5초마다 전송
+            time.sleep(5) # 5초마다 반복 전송
 
     # MQTT 서버연결을 하는 메서드 - 사용자정의
     def mymqtt_connect(self):
