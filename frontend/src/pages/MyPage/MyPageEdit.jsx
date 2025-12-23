@@ -88,13 +88,13 @@ function MyPageEdit() {
   };
 
   /** 저장 */
-  const handleSave = () => {
+  const handleSave = async () => {
     const editUserInfo = {
       usersRequestDTO: editUser,
       novaRequestDTOList: editNovaList,
     };
 
-    updateUserInfo(editUserInfo);
+    await updateUserInfo(editUserInfo);
 
     // ✅ 부모 userInfo 수정
     setUserInfo((prev) => ({
@@ -122,7 +122,10 @@ function MyPageEdit() {
               type="password"
               placeholder="비밀번호 입력"
               value={passwordInput}
-              onChange={(e) => setPasswordInput(e.target.value)}
+              onChange={(e) => {
+                setPasswordInput(e.target.value);
+                setEditUser({...editUser, password: e.target.value});
+              }}
               onKeyDown={(e) => e.key === "Enter" && handlePasswordCheck()}
               autoFocus
             />
@@ -157,7 +160,7 @@ function MyPageEdit() {
               className="edit-input"
               type="password"
               placeholder="새 비밀번호 입력"
-              // value={editUser.password || ""}
+              value={editUser.password || ""}
               onChange={(e) => setEditUser({...editUser, password: e.target.value})}
             />
           </div>
