@@ -89,7 +89,25 @@ public class ActuatorServiceImpl implements ActuatorService {
                 .message("물주기 명령이 정상적으로 실행되었습니다.")
                 .build();
     }
+    @Override
+    public void control(FarmEntity farm, String actType, String action, String sensorType, float sensorValue){
+        // Actuator DB에 저장
+        ActuatorLogEntity log = ActuatorLogEntity.builder()
+                .farm(farm)
+                .actuatorType(actType)
+                .action(action)
+                .sensorType(sensorType)
+                .currentValue(sensorValue)
+                .build();
+        actuatorLogRepository.save(log);
 
+        // Actuator Publish
+        String payload = String.format("{\"action\":\"%s\"}",action);
+        String topic = String.format("%s/%d/%s",farm.getNova().getNovaSerialNumber(), farm.getSlot(),actType);
+        System.out.println("Request Message: " + payload);
+        System.out.println("Request Topic: " + topic);
+        publisher.sendToMqtt(payload,topic);
+    }
     @Override
     public void controlBlind(Long farmId, String action, float lightValue) {
         FarmEntity farm = farmRepository.findById(farmId)

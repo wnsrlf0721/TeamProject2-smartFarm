@@ -49,20 +49,5 @@ public class MqttService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-//        if(count%3==0){
-//            System.out.println("조건만족");
-//            String pub_msg = count%2==0?"led_on":"led_off";
-//            publisher.sendToMqtt(pub_msg,pub_topic);
-//        }
     }
-//    private final MessageChannel mqttOutboundChannel;
-//
-//    public void publish(String topic, String payload) {
-//        Message<String> message = MessageBuilder.withPayload(payload)
-//                .setHeader(MqttHeaders.TOPIC, topic)
-//                .build();
-//        mqttOutboundChannel.send(message);
-//    }
 }
