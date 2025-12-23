@@ -33,8 +33,8 @@ class MCPSensor(Thread):
 
         # 1. SPI 버스 생성 (하드웨어 SPI 사용)
         self.spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
-        # 2. Chip Select 핀 설정 (여기서는 GPIO 5번 핀 사용)
-        self.cs = digitalio.DigitalInOut(board.D5)
+        # 2. Chip Select 핀 설정 (여기서는 GPIO 8번 핀 사용)
+        self.cs = digitalio.DigitalInOut(board.D8)
         # 3. MCP3208 객체 생성
         self.mcp = MCP.MCP3008(self.spi, self.cs)
         # 채널 설정 (CH0: 토양 수분 센서, CH1: 조도 센서)
@@ -59,6 +59,7 @@ class MCPSensor(Thread):
                 light_value = self.light.value
                 # 퍼센트 변환
                 light_percent = (light_value / light_max) * 100
+                print(light_value)
                 self.data['lightpower'] = round(max(0,min(100,light_percent)),1)
 
             except RuntimeError as err:

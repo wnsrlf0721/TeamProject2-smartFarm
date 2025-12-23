@@ -25,7 +25,7 @@ class Blind:
         client.subscribe("home/actuator/blind")
 
     def on_message(self, msg):
-        print("받은 메시지:", msg.payload.decode())
+        print("받은 메시지:", msg)
 
         data = json.loads(msg.payload.decode())
         angle = data.get("angle", 0)

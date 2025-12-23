@@ -12,12 +12,12 @@ import time
 
 # subscribe 할 토픽 리스트
 sub_topics = [
-    ("+/+/led",1),
-    ("+/+/fan",1),
-    ("+/+/humi",1),
-    ("+/+/pump",1),
-    ("+/+/heater",1),
-    ("+/+/blind",1),
+    ("+/+/LED",1),
+    ("+/+/FAN",1),
+    ("+/+/HUMI",1),
+    ("+/+/PUMP",1),
+    ("+/+/HEATER",1),
+    ("+/+/BLIND",1),
 ]
 
 # publish 할 토픽은 센서밖에 없고, nova 시리얼 넘버와 slot을 기반으로 Farm을 찾음
@@ -89,18 +89,19 @@ class MqttWorker:
         # 토픽을 "/" 기준으로 나누어 어떤 액추에이터에 관한 토픽인지 구분
         topicArr = message.topic.split("/")
         if(topicArr[0]==nova_serial and int(topicArr[1])==slot):
-            if topicArr[2] == "led":
+            if topicArr[2] == "LED":
                 self.led.control_msg(my_val)
-            elif topicArr[2] == "fan":
+            elif topicArr[2] == "FAN":
                 self.fan.control_msg(my_val)
-            elif topicArr[2] == "humidifier":
+            elif topicArr[2] == "HUMI":
                 self.humidifier.control_msg(my_val)
-            elif topicArr[2] == "blind":
+            elif topicArr[2] == "BLIND":
                 self.blind.on_message(my_val)
-            elif topicArr[2] == "pump":
-                if my_val == "pump_on":
-                    print("웹 요청으로 펌프 작동")
-                    self.pump.run_pump()
+            elif topicArr[2] == "PUMP":
+                print(my_val)
+                # if my_val == "pump_on":
+                #     print("웹 요청으로 펌프 작동")
+                #     self.pump.run_pump()
             elif topicArr[2] == "timelapse":
                 if my_val == "start":
                     print("웹 요청으로 타임랩스 시작")
