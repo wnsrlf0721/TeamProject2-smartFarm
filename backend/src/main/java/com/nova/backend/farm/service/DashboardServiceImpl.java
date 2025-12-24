@@ -51,7 +51,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .presetSteps(stepDTOs)
                 .activePresetStepId(farm.getPresetStep().getStepId())
                 .actuators(actuatorService.getActuatorLogs(farmId))
-                .alarms(alarmService.getRecentAlarms(farmId))
+//                .alarms(alarmService.getRecentAlarms(farmId))
                 .build();
     }
 

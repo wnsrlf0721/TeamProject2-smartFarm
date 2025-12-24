@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 // 알람 조회 (최근 값)
@@ -20,6 +21,16 @@ public interface PlantAlarmRepository extends JpaRepository<PlantAlarmEntity,Lon
             //서비스에서 오늘 00:00 ~ 23:59 계산해서
             LocalDateTime start,
             LocalDateTime end
+    );
+    // 오늘 및 이전알림 (unread로) 최신 10개 조회
+    List<PlantAlarmEntity> findTop10ByFarmAndIsReadFalseAndCreatedAtBetweenOrderByCreatedAtDesc(
+            FarmEntity farm,
+            LocalDateTime start,
+            LocalDateTime end
+    );
+    List<PlantAlarmEntity> findTop10ByFarmAndIsReadFalseAndCreatedAtBeforeOrderByCreatedAtDesc(
+            FarmEntity farm,
+            LocalDateTime before
     );
 
     // 읽지 않은 알람 (실시간 팝업용)
@@ -47,4 +58,25 @@ public interface PlantAlarmRepository extends JpaRepository<PlantAlarmEntity,Lon
             FarmEntity farm,
             String alarmType
     );
+
+    List<PlantAlarmEntity> findByFarmAndAlarmTypeInOrderByCreatedAtDesc(FarmEntity farm, Collection<String> alarmTypes);
+
+    List<PlantAlarmEntity> findByFarmAndAlarmTypeInAndIsReadOrderByCreatedAtDesc(FarmEntity farm, Collection<String> alarmTypes, boolean isRead);
+    //user 전체 기준
+    List<PlantAlarmEntity>
+    findByUser_UserIdOrderByCreatedAtDesc(Long userId);
+    //유저+읽음여부
+    List<PlantAlarmEntity>
+    findByUser_UserIdAndIsReadOrderByCreatedAtDesc(
+            Long userId, boolean isRead);
+    //유저+알람타입
+    List<PlantAlarmEntity>
+    findByUser_UserIdAndAlarmTypeInOrderByCreatedAtDesc(
+            Long userId, Collection<String> alarmTypes);
+    //유저+알람타입+읽음여부
+    List<PlantAlarmEntity>
+    findByUser_UserIdAndAlarmTypeInAndIsReadOrderByCreatedAtDesc(
+            Long userId, Collection<String> alarmTypes, boolean isRead);
+
+    List<PlantAlarmEntity> findByUser_UserIdAndIsReadFalseOrderByCreatedAtDesc(Long userId);
 }

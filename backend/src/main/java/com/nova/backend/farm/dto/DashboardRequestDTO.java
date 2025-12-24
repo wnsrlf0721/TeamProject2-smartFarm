@@ -25,6 +25,6 @@ public class DashboardRequestDTO {
     private PresetInfoDTO preset;
     private List<StepResponseDTO> presetSteps; // 현재 적용 프리셋
     private List<ActuatorLogResponseDTO> actuators; // 장치 동작 상태
-    private List<AlarmResponseDTO> alarms;       // 최근 알림
+//    private List<AlarmResponseDTO> alarms;       // 최근 알림
     private int activePresetStepId;
 }
