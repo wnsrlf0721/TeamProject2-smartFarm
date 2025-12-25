@@ -5,6 +5,7 @@ import com.nova.backend.farm.repository.FarmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,5 +31,10 @@ public class FarmDAOImpl implements FarmDAO{
     @Override
     public Optional<FarmEntity> findById(Long farmId) {
         return farmRepository.findById(farmId);
+    }
+
+    @Override
+    public List<FarmEntity> findFarmListToGrow(Timestamp now){
+        return farmRepository.findFarmListToGrow(now);
     }
 }

@@ -12,4 +12,5 @@ public interface PresetStepRepository extends JpaRepository<PresetStepEntity,Lon
     List<PresetStepEntity> findByPreset(PresetEntity preset);
     List<PresetStepEntity> findByPreset_PresetId(Long presetId);
     Optional<PresetStepEntity> findFirstByPreset_PresetIdOrderByGrowthStepAsc(Long presetId);
+    Optional<PresetStepEntity> findByPreset_PresetIdAndGrowthStep(Long presetId, int growthStep);
 }

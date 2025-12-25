@@ -15,11 +15,14 @@ import com.nova.backend.timelapse.dto.TimelapseVideoResponseDTO;
 import com.nova.backend.user.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -148,6 +151,49 @@ public class FarmServiceImpl implements FarmService{
         return farmDAO.save(farm)
                 .map(entity -> modelMapper.map(entity, FarmTimelapseResponseDTO.class))
                 .orElseThrow();
+    }
+
+    // 다음 프리셋 스탭으로 업데이트 할 팜을 조회하는 메서드
+    @Scheduled(fixedDelay = 30000) // 30초 마다 반복
+    @Transactional
+    public void checkFarmStep() {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        System.out.println(now);
+        //조건에 맞는 팜 리스트 조회
+        List<FarmEntity> farmList = farmDAO.findFarmListToGrow(now);
+        if(farmList.isEmpty()){
+            System.out.println("업데이트할 팜이 없습니다.");
+        }
+        //해당 팜의 stepId를 업데이트
+        else{
+            for (FarmEntity farm : farmList) {
+                processGrowth(farm);
+            }
+        }
+    }
+
+    // 팜 업데이트 (다음 프리셋으로 변경 or 프리셋 종료)
+    private void processGrowth(FarmEntity farm) {
+        PresetStepEntity currentStep = farm.getPresetStep();
+
+        if (currentStep == null) return;
+
+        // 조건: 같은 Preset ID + 현재 Growth Step보다 1 큰 단계
+        // (PresetEntity 내부에 id가 있다고 가정: currentStep.getPreset().getPresetId())
+        Optional<PresetStepEntity> nextStep = presetStepDAO.findByPreset_PresetIdAndGrowthStep(
+                currentStep.getPreset().getPresetId(),
+                currentStep.getGrowthStep() + 1
+        );
+
+        if (nextStep.isPresent()) {
+            // 다음 단계가 있으면 -> 업데이트
+            farm.updateStep(nextStep.get());
+            System.out.println(farm.getFarmName()+" 업데이트 완료 ("+nextStep.get().getGrowthStep()+"단계)");
+        } else {
+            // 다음 단계가 없으면 -> 수확/종료 (빈 팜 만들기)
+            farm.resetStep();
+            System.out.println(farm.getFarmName()+" 재배 종료 (마지막 단계 완료)");
+        }
     }
 
 }
