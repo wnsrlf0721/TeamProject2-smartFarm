@@ -22,6 +22,7 @@ public class AlarmResponseDTO {
     private boolean isRead;
 
     private String farmName;
+    private Long farmId;
 
     public boolean getRead() {
         return isRead;
