@@ -24,33 +24,6 @@ public class ActuatorServiceImpl implements ActuatorService {
     private final ModelMapper modelMapper;
     private final MyPublisher publisher;
 
-
-    @Override
-    public WateringResponseDTO water(WateringRequestDTO request) {
-        // farm 조회
-        FarmEntity farm = farmRepository.findById(request.getFarmId())
-                .orElseThrow(() -> new IllegalArgumentException("Farm not found"));
-
-        // 엑추에이터 로그 생성
-        ActuatorLogEntity log = ActuatorLogEntity.builder()
-                .farm(farm)
-                .actuatorType("PUMP")
-                .action("ON")
-                .currentValue(request.getWaterLevel())
-                .createdAt(LocalDateTime.now())
-                .build();
-
-        // 로그 저장
-        actuatorLogRepository.save(log);
-
-        // 응답 반환
-        return WateringResponseDTO.builder()
-                .success(true)
-                .executedAt(LocalDateTime.now())
-                .message("Watering executed successfully")
-                .build();
-    }
-
     @Override
     public List<ActuatorLogResponseDTO> getActuatorLogs(Long farmId) {
         FarmEntity farm = farmRepository.findById(farmId)
