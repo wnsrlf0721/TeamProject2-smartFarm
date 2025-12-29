@@ -37,4 +37,8 @@ public class PresetStepDAOImpl implements PresetStepDAO {
     public Optional<PresetStepEntity> findStartStepByPresetId(Long presetId) {
         return presetStepRepository.findFirstByPreset_PresetIdOrderByGrowthStepAsc(presetId);
     }
+    @Override
+    public Optional<PresetStepEntity> findByPreset_PresetIdAndGrowthStep(Long presetId, int growthStep){
+        return presetStepRepository.findByPreset_PresetIdAndGrowthStep(presetId,growthStep);
+    }
 }

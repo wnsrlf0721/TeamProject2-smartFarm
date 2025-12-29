@@ -109,7 +109,7 @@ public class AlarmServiceImpl implements AlarmService {
                 .user(farm.getNova().getUser())
                 .preset(step.getPreset())
                 .presetStep(step)
-                .alarmType("SENSOR")
+                .alarmType(alarmType)
                 .title(title)
                 .message(message)
                 .isRead(false)

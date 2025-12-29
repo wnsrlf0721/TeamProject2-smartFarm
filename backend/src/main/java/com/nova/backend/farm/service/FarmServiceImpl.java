@@ -1,5 +1,6 @@
 package com.nova.backend.farm.service;
 
+import com.nova.backend.alarm.service.AlarmService;
 import com.nova.backend.farm.dao.FarmDAO;
 import com.nova.backend.farm.dto.FarmRequestDTO;
 import com.nova.backend.farm.dto.FarmResponseDTO;
@@ -11,19 +12,20 @@ import com.nova.backend.preset.dao.PresetDAO;
 import com.nova.backend.preset.dao.PresetStepDAO;
 import com.nova.backend.preset.entity.PresetEntity;
 import com.nova.backend.preset.entity.PresetStepEntity;
-import com.nova.backend.timelapse.dto.TimelapseVideoResponseDTO;
 import com.nova.backend.user.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +37,7 @@ public class FarmServiceImpl implements FarmService{
     private final ModelMapper mapper;
     private final String uploadDir = System.getProperty("user.dir") + "/uploads/";
     private final ModelMapper modelMapper;
+    private final AlarmService alarmService;
 
 
     @Override
@@ -45,109 +48,171 @@ public class FarmServiceImpl implements FarmService{
     }
 
     @Override
+    @Transactional
     public FarmTimelapseResponseDTO createFarm(FarmRequestDTO farmRequestDTO, MultipartFile image) {
-        // 이미지 파일 저장 (로컬 폴더에 저장 후 경로 생성)
-        String storedImageUrl = null; // 이미지가 없으면 null 혹은 기본 이미지 경로
+        // 1. 이미지 처리 (이미지 저장 및 경로 반환)
+        String storedImageUrl = uploadFarmImage(image,"/src/main/resources/static");
 
-        if (image != null && !image.isEmpty()) {
-            try {
-                String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
-                File folder = new File(uploadDir);
-                if (!folder.exists()) folder.mkdirs();
-
-                String originalFileName = image.getOriginalFilename();
-                String savedFileName = UUID.randomUUID().toString() + "_" + originalFileName;
-
-                // 파일 저장
-                image.transferTo(new File(uploadDir + savedFileName));
-
-                // DB에 넣을 경로
-                storedImageUrl = "/img/" + savedFileName;
-
-            } catch (IOException e) {
-                throw new RuntimeException("이미지 저장 실패", e);
-            }
-        }
-
-        // 1. 공통 필수 데이터 매핑 (Nova, User)
+        // 2. 공통 필수 데이터 조회 및 매핑 (Nova, User)
         NovaEntity nova = novaDAO.findById(farmRequestDTO.getNovaId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 Nova 기기를 찾을 수 없습니다."));
+
         if (farmRequestDTO.getUser() == null || farmRequestDTO.getUser().getUserId() == null) {
             throw new IllegalArgumentException("사용자 정보가 유효하지 않습니다.");
         }
-        UsersEntity user = mapper.map(farmRequestDTO.getUser(),UsersEntity.class);
+        UsersEntity user = mapper.map(farmRequestDTO.getUser(), UsersEntity.class);
 
-        // 2. 팜의 시작 스텝(PresetStep) 결정 로직
-        PresetStepEntity startStep = null;
+        // 3. 팜의 시작 스텝(StartStep) 결정 (신규 생성 or 기존 조회 분기 처리)
+        PresetStepEntity startStep = findStartStep(farmRequestDTO, user, storedImageUrl);
 
-        // existingPresetId가 null이면 "새 프리셋 생성"
-        if (farmRequestDTO.getExistingPresetId() == null) {
-            // PresetEntity 생성 및 저장
-            PresetEntity newPreset = new PresetEntity();
-            newPreset.setPresetName(farmRequestDTO.getPresetName());
-            newPreset.setPlantType(farmRequestDTO.getPlantType());
-            newPreset.setUser(user);
-
-            // 새 프리셋을 만들 때만 이미지를 저장
-            if (storedImageUrl != null) {
-                newPreset.setPresetImageUrl(storedImageUrl);
-            } else {
-                // 이미지가 없으면 기본 이미지 URL 설정
-                newPreset.setPresetImageUrl("/img/default.png");
-            }
-
-            PresetEntity savedPreset = presetDAO.insertPreset(newPreset);
-
-            // PresetStepEntity 생성 및 저장
-            if (farmRequestDTO.getStepList() == null || farmRequestDTO.getStepList().isEmpty()) {
-                throw new IllegalArgumentException("새 프리셋을 생성하려면 최소 1개 이상의 단계(Step)가 필요합니다.");
-            }
-
-            int minGrowthStep = Integer.MAX_VALUE;
-            for (FarmRequestDTO.NewPresetStepDto stepDto : farmRequestDTO.getStepList()) {
-                PresetStepEntity stepEntity = new PresetStepEntity();
-                stepEntity.setPreset(savedPreset); // 위에서 저장한 프리셋 연결
-                stepEntity.setGrowthStep(stepDto.getGrowthStep());
-                stepEntity.setPeriodDays(stepDto.getPeriodDays());
-
-                // 환경 변수 매핑 (EnvRange 객체 그대로 사용)
-                stepEntity.setTemp(stepDto.getTemp());
-                stepEntity.setHumidity(stepDto.getHumidity());
-                stepEntity.setLightPower(stepDto.getLightPower());
-                stepEntity.setCo2(stepDto.getCo2());
-                stepEntity.setSoilMoisture(stepDto.getSoilMoisture());
-
-                PresetStepEntity savedStep = presetStepDAO.save(stepEntity);
-
-                if (savedStep.getGrowthStep() < minGrowthStep) {
-                    minGrowthStep = savedStep.getGrowthStep();
-                    startStep = savedStep; // 시작 스텝으로 임명
-                }
-            }
-
-        }
-        // 값이 있으면 "기존 프리셋 사용"
-        else {
-            // B-1. 기존 프리셋의 1단계(GrowthStep = 1) 조회
-            // PresetDAO가 아닌 PresetStepDAO를 통해 직접 스텝을 찾습니다.
-            startStep = presetStepDAO.findStartStepByPresetId(farmRequestDTO.getExistingPresetId())
-                    .orElseThrow(() -> new IllegalArgumentException("프리셋의 Step 데이터를 찾을 수 없습니다."));
-        }
-        // 3. 유효성 검증 (시작 스텝이 설정되었는지)
-        if (startStep == null) {
-            throw new IllegalStateException("팜을 생성할 Step이 설정되지 않았습니다. 입력 데이터를 확인해주세요.");
-        }
-
-        // 4. 팜(FarmEntity) 생성 및 저장
-        FarmEntity farm = new FarmEntity();
-        farm.setFarmName(farmRequestDTO.getFarmName());
-        farm.setSlot(farmRequestDTO.getSlot());
-        farm.setNova(nova);           // 기기 연결
-        farm.setPresetStep(startStep); // 시작 스텝 연결 (FK)
+        // 4. 팜(FarmEntity) 생성 및 저장 (메인 메서드에서 수행)
+        FarmEntity farm = FarmEntity.builder()
+                        .farmName(farmRequestDTO.getFarmName())
+                        .slot(farmRequestDTO.getSlot())
+                        .nova(nova)
+                        .presetStep(startStep).build();
 
         return farmDAO.save(farm)
                 .map(entity -> modelMapper.map(entity, FarmTimelapseResponseDTO.class))
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("팜 저장 중 오류가 발생했습니다."));
+    }
+    /**
+     * 1. 이미지 파일 저장 및 URL 생성 메서드
+     */
+    @Override
+    public String uploadFarmImage(MultipartFile image, String url) {
+        if (image == null || image.isEmpty()) {
+            return null;
+        }
+
+        try {
+            String uploadDir = System.getProperty("user.dir") + url+"/img/";
+            File folder = new File(uploadDir);
+            if (!folder.exists()) folder.mkdirs();
+
+            String originalFileName = image.getOriginalFilename();
+            String savedFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+
+            // 파일 저장
+            image.transferTo(new File(uploadDir + savedFileName));
+
+            // DB에 저장할 경로 반환
+            return "/img/" + savedFileName;
+
+        } catch (IOException e) {
+            throw new RuntimeException("이미지 저장 실패", e);
+        }
+    }
+
+    /**
+     * 2. 시작 스텝 결정 메서드 (분기 처리)
+     */
+    private PresetStepEntity findStartStep(FarmRequestDTO dto, UsersEntity user, String storedImageUrl) {
+        if (dto.getExistingPresetId() == null) {
+            // 기존 ID가 없으면 -> 새 프리셋 및 스텝 생성
+            return createNewPresetAndSteps(dto, user, storedImageUrl);
+        } else {
+            // 기존 ID가 있으면 -> 기존 스텝 조회
+            return presetStepDAO.findStartStepByPresetId(dto.getExistingPresetId())
+                    .orElseThrow(() -> new IllegalArgumentException("프리셋의 Step 데이터를 찾을 수 없습니다. ID: " + dto.getExistingPresetId()));
+        }
+    }
+
+    /* 새 프리셋 및 스텝 생성 로직 */
+    private PresetStepEntity createNewPresetAndSteps(FarmRequestDTO dto, UsersEntity user, String storedImageUrl) {
+        // PresetEntity 생성
+        PresetEntity newPreset = new PresetEntity();
+        newPreset.setPresetName(dto.getPresetName());
+        newPreset.setPlantType(dto.getPlantType());
+        newPreset.setUser(user);
+        // 이미지 경로 설정 (없으면 기본값)
+        newPreset.setPresetImageUrl(storedImageUrl != null ? storedImageUrl : "/img/default.png");
+
+        PresetEntity savedPreset = presetDAO.insertPreset(newPreset);
+
+        // StepList 검증
+        if (dto.getStepList() == null || dto.getStepList().isEmpty()) {
+            throw new IllegalArgumentException("새 프리셋을 생성하려면 최소 1개 이상의 단계(Step)가 필요합니다.");
+        }
+
+        // Step 생성 및 시작 스텝 찾기
+        PresetStepEntity startStep = null;
+        int minGrowthStep = Integer.MAX_VALUE;
+
+        for (FarmRequestDTO.NewPresetStepDto stepDto : dto.getStepList()) {
+            PresetStepEntity stepEntity = PresetStepEntity.builder()
+                            .preset(savedPreset)
+                            .growthStep(stepDto.getGrowthStep())
+                            .periodDays(stepDto.getPeriodDays())
+                            .temp(stepDto.getTemp())
+                            .humidity(stepDto.getHumidity())
+                            .lightPower(stepDto.getLightPower())
+                            .co2(stepDto.getCo2())
+                            .soilMoisture(stepDto.getSoilMoisture()).build();
+
+            PresetStepEntity savedStep = presetStepDAO.save(stepEntity);
+
+            // 가장 낮은 단계를 시작 스텝으로 지정
+            if (savedStep.getGrowthStep() < minGrowthStep) {
+                minGrowthStep = savedStep.getGrowthStep();
+                startStep = savedStep;
+            }
+        }
+        return startStep;
+    }
+
+    // 다음 프리셋 스탭으로 업데이트 할 팜을 조회하는 메서드
+    @Scheduled(fixedDelay = 30000)
+    @Transactional
+    @Override
+    public void checkFarmStep() {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        System.out.println(now);
+        //조건에 맞는 팜 리스트 조회
+        List<FarmEntity> farmList = farmDAO.findFarmListToGrow(now);
+        if(farmList.isEmpty()){
+            System.out.println("업데이트할 팜이 없습니다.");
+        }
+        //해당 팜의 stepId를 업데이트
+        else{
+            for (FarmEntity farm : farmList) {
+                processGrowth(farm);
+            }
+        }
+    }
+
+    // 팜 업데이트 (다음 프리셋으로 변경 or 프리셋 종료)
+    public void processGrowth(FarmEntity farm) {
+        PresetStepEntity currentStep = farm.getPresetStep();
+
+        if (currentStep == null) return;
+
+        // 조건: 같은 Preset ID + 현재 Growth Step보다 1 큰 단계
+        // (PresetEntity 내부에 id가 있다고 가정: currentStep.getPreset().getPresetId())
+        Optional<PresetStepEntity> nextStep = presetStepDAO.findByPreset_PresetIdAndGrowthStep(
+                currentStep.getPreset().getPresetId(),
+                currentStep.getGrowthStep() + 1
+        );
+
+        if (nextStep.isPresent()) {
+            // 다음 단계가 있으면 -> 업데이트
+            farm.updateStep(nextStep.get());
+            System.out.println(farm.getFarmName()+" 업데이트 완료 ("+nextStep.get().getGrowthStep()+"단계)");
+            alarmService.createSensorAlarm(farm,
+                    "EVENT",
+                    farm.getFarmName()+"의 프리셋 단계 변경",
+                    nextStep.get().getGrowthStep()+" 단계가 새롭게 시작됐습니다!"
+            ); // 현재 프리셋 기간이 종료되고, 다음 프리셋 스탭으로 넘어감
+        } else {
+            // 다음 단계가 없으면 -> 수확/종료 (빈 팜 만들기)
+            System.out.println(farm.getFarmName()+" 재배 종료 (마지막 단계 완료)");
+            alarmService.createSensorAlarm(farm,
+                    "EVENT",
+                    farm.getFarmName()+"의 프리셋 종료",
+                    "식물의 성장 프리셋이 모두 종료되었습니다!"
+            ); // 팜의 프리셋 단계가 모두 완료됨
+            farm.resetStep();
+        }
     }
 
 }

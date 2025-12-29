@@ -11,4 +11,5 @@ public interface PresetStepDAO {
     List<PresetStepEntity> findAllByPresetId(Long presetId);
     void deleteById(Long stepId);
     public Optional<PresetStepEntity> findStartStepByPresetId(Long presetId);
+    Optional<PresetStepEntity> findByPreset_PresetIdAndGrowthStep(Long presetId, int growthStep);
 }

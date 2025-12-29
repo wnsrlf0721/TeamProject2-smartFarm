@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +26,10 @@ public interface FarmRepository extends JpaRepository<FarmEntity,Long> {
 
     //Mqtt에서 토픽을 통해 FarmId를 찾는 방법
     Optional<FarmEntity> findByNova_NovaSerialNumberAndSlot(String novaSerialNumber, int slot);
+
+    @Query("SELECT f FROM FarmEntity f " +
+           "JOIN FETCH f.presetStep ps " +
+           "WHERE ps IS NOT NULL " +
+           "AND FUNCTION('TIMESTAMPDIFF', DAY, f.updateTime, :now) >= ps.periodDays")
+    List<FarmEntity> findFarmListToGrow(Timestamp now);
 }

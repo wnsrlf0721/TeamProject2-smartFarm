@@ -3,6 +3,7 @@ package com.nova.backend.preset.entity;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.Type;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class PresetStepEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int stepId;

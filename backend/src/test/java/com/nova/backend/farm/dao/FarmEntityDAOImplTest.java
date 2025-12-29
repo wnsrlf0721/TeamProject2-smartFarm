@@ -33,7 +33,7 @@ class FarmEntityDAOImplTest {
                 .farmName("테스트용 새 농장")
                 .slot(99) // 임의의 위치
                 .nova(existingNova)
-                .presetStepEntity(existingStep)
+                .presetStep(existingStep)
                 .build();
 
         // when
@@ -103,12 +103,12 @@ class FarmEntityDAOImplTest {
             System.out.println(">>> 팜 이름: " + farmEntity.getFarmName());
 
             // Farm -> PresetStep 접근
-            System.out.println("    ㄴ 현재 단계(Step): " + farmEntity.getPresetStepEntity().getGrowthStep());
-            System.out.println("    ㄴ 기간(Days): " + farmEntity.getPresetStepEntity().getPeriodDays());
+            System.out.println("    ㄴ 현재 단계(Step): " + farmEntity.getPresetStep().getGrowthStep());
+            System.out.println("    ㄴ 기간(Days): " + farmEntity.getPresetStep().getPeriodDays());
 
             // Farm -> PresetStep -> Preset 접근
-            System.out.println("    ㄴ 작물 종류: " + farmEntity.getPresetStepEntity().getPreset().getPlantType());
-            System.out.println("    ㄴ 프리셋 이름: " + farmEntity.getPresetStepEntity().getPreset().getPresetName());
+            System.out.println("    ㄴ 작물 종류: " + farmEntity.getPresetStep().getPreset().getPlantType());
+            System.out.println("    ㄴ 프리셋 이름: " + farmEntity.getPresetStep().getPreset().getPresetName());
             System.out.println("-----------------------------------------");
         }
         System.out.println("=========================================");

@@ -5,6 +5,7 @@ import com.nova.backend.farm.repository.FarmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +15,8 @@ public class FarmDAOImpl implements FarmDAO{
     private final FarmRepository farmRepository;
     @Override
     public Optional<FarmEntity> save(FarmEntity farmEntity) {
-        farmRepository.save(farmEntity);
-        return farmRepository.findByNova_NovaSerialNumberAndSlot(farmEntity.getNova().getNovaSerialNumber(), farmEntity.getSlot());
+        FarmEntity savedFarm = farmRepository.save(farmEntity);
+        return Optional.ofNullable(savedFarm);
     }
 
     @Override
@@ -30,5 +31,10 @@ public class FarmDAOImpl implements FarmDAO{
     @Override
     public Optional<FarmEntity> findById(Long farmId) {
         return farmRepository.findById(farmId);
+    }
+
+    @Override
+    public List<FarmEntity> findFarmListToGrow(Timestamp now){
+        return farmRepository.findFarmListToGrow(now);
     }
 }
