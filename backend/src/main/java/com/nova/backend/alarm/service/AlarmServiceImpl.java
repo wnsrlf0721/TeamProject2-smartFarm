@@ -5,6 +5,7 @@ import com.nova.backend.alarm.dto.AlarmResponseDTO;
 import com.nova.backend.alarm.dto.DashboardAlarmResponse;
 import com.nova.backend.alarm.entity.PlantAlarmEntity;
 import com.nova.backend.alarm.repository.PlantAlarmRepository;
+import com.nova.backend.alarm.sse.AlarmSseEmitterManager;
 import com.nova.backend.farm.entity.FarmEntity;
 import com.nova.backend.farm.repository.FarmRepository;
 import com.nova.backend.preset.entity.PresetStepEntity;
@@ -12,6 +13,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +28,7 @@ public class AlarmServiceImpl implements AlarmService {
     private final FarmRepository farmRepository;
     private final ModelMapper modelMapper;
     private final PlantAlarmRepository plantAlarmRepository;
+    private final AlarmSseEmitterManager sseEmitterManager;
 
     // farm 조회 공통 메서드
     private FarmEntity getFarm(Long farmId) {
@@ -93,6 +97,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
+    @Transactional
     public void createSensorAlarm(FarmEntity farm, String alarmType, String title, String message) {
         PresetStepEntity step = farm.getPresetStep();
         if (step == null || step.getPreset() == null) {
@@ -112,6 +117,21 @@ public class AlarmServiceImpl implements AlarmService {
                 .build();
 
         alarmDAO.save(alarm);
+        // SSE 전송!!!!!!!!!!!!!!!! (db저장 이후에 보내야됨/프론트가 받은 dto를 그대로 쓸 수o)
+        AlarmResponseDTO dto = modelMapper.map(alarm, AlarmResponseDTO.class);
+        dto.setAlarmId(alarm.getAlarmId());
+        dto.setFarmId(alarm.getFarm().getFarmId());
+        dto.setFarmName(alarm.getFarm().getFarmName());
+        dto.setAlarmType(alarm.getAlarmType());
+        dto.setRead(false);
+        TransactionSynchronizationManager.registerSynchronization(
+                new TransactionSynchronization() {
+                    @Override
+                    public void afterCommit() {
+                        sseEmitterManager.send(alarm.getUser().getUserId(), dto);
+                    }
+                }
+        );
     }
 
     @Override
@@ -166,6 +186,7 @@ public class AlarmServiceImpl implements AlarmService {
                     "actuator",
                     "preset",
                     "anniversary",
+                    "water",
                     "log");
             if (isRead == null) {
                 alarms = plantAlarmRepository

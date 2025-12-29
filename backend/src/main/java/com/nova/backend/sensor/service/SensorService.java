@@ -17,11 +17,11 @@ public interface SensorService {
     SensorHistoryDTO getSensorHistory(Long farmId);
 
     // 알람 생성
-    void createSensorAlarm(
-            FarmEntity farm,
-            String type,
-            String title,
-            String message
-    );
+//    void createSensorAlarm(
+//            FarmEntity farm,
+//            String type,
+//            String title,
+//            String message
+//    );
     void controlSensorData(String payload, String novaSerialNumber, int slot) throws JsonProcessingException;
 }
