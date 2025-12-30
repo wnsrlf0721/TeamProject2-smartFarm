@@ -19,7 +19,6 @@ public class MqttService {
     private final TimelapseService timelapseService;
     private final SensorService sensorService;
 
-    int count=0;
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public void handleMessage(Message<String> message) {
         // 메시지 페이로드(내용)

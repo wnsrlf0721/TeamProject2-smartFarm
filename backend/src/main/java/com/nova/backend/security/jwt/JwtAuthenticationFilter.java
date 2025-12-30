@@ -39,50 +39,50 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         try {
-            System.out.println("====== JwtAuthenticationFilter START ======");
-            System.out.println(" 요청 URI: " + request.getRequestURI());
+//            System.out.println("====== JwtAuthenticationFilter START ======");
+//            System.out.println(" 요청 URI: " + request.getRequestURI());
 
             // 이미 인증된 경우
             if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                System.out.println(" 이미 인증됨 → 필터 패스");
+//                System.out.println(" 이미 인증됨 → 필터 패스");
                 filterChain.doFilter(request, response);
                 return;
             }
 
             // Authorization 헤더 확인
             String authHeader = request.getHeader("Authorization");
-            System.out.println("Authorization Header = " + authHeader);
+//            System.out.println("Authorization Header = " + authHeader);
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                System.out.println(" Authorization 헤더 없음 또는 Bearer 아님");
+//                System.out.println(" Authorization 헤더 없음 또는 Bearer 아님");
                 filterChain.doFilter(request, response);
                 return;
             }
 
             // 토큰 추출
             String token = authHeader.substring(7);
-            System.out.println("JWT Token = " + token);
+//            System.out.println("JWT Token = " + token);
 
             // 토큰 검증
             boolean valid = jwtTokenProvider.validateToken(token);
-            System.out.println("JWT validate 결과 = " + valid);
+//            System.out.println("JWT validate 결과 = " + valid);
 
             if (!valid) {
-                System.out.println(" JWT 검증 실패");
+//                System.out.println(" JWT 검증 실패");
                 filterChain.doFilter(request, response);
                 return;
             }
 
             // loginId 추출
             String loginId = jwtTokenProvider.getLoginId(token);
-            System.out.println("loginId from token = " + loginId);
+//            System.out.println("loginId from token = " + loginId);
 
             // 사용자 조회
             CustomUserDetails userDetails =
                     (CustomUserDetails) userDetailsService.loadUserByUsername(loginId);
 
-            System.out.println("UserDetails username = " + userDetails.getUsername());
-            System.out.println("UserDetails authorities = " + userDetails.getAuthorities());
+//            System.out.println("UserDetails username = " + userDetails.getUsername());
+//            System.out.println("UserDetails authorities = " + userDetails.getAuthorities());
 
             // 인증 객체 생성
             UsernamePasswordAuthenticationToken authentication =
@@ -99,17 +99,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // SecurityContext 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            System.out.println(" SecurityContext 인증 저장 완료");
-            System.out.println("SecurityContext auth = "
-                    + SecurityContextHolder.getContext().getAuthentication());
+//            System.out.println(" SecurityContext 인증 저장 완료");
+//            System.out.println("SecurityContext auth = "
+//                    + SecurityContextHolder.getContext().getAuthentication());
 
         } catch (Exception e) {
-            System.out.println(" JwtAuthenticationFilter ERROR");
+//            System.out.println(" JwtAuthenticationFilter ERROR");
             e.printStackTrace();
             SecurityContextHolder.clearContext();
         }
 
-        System.out.println("====== JwtAuthenticationFilter END ======");
+//        System.out.println("====== JwtAuthenticationFilter END ======");
         filterChain.doFilter(request, response);
     }
 }

@@ -57,6 +57,7 @@ public class SensorServiceImpl implements SensorService {
         // CO2가 높을 때 -> 팬 가동 (환기)
         ACTUATOR_MAP.put("CO2_HIGH", new ActuatorTypeDTO("FAN", "CO2","ON"));
         // CO2가 낮을 때 -> (이미지에는 명확하지 않으나 보통 그대로 두거나 CO2 발생기 사용. 여기선 비워둠)
+        ACTUATOR_MAP.put("CO2_LOW", new ActuatorTypeDTO("FAN", "CO2","ON"));
 
         // --- 조도/광량 (Light) ---
         // 광량이 높을 때 -> 블라인드 닫기 (차단)
@@ -193,7 +194,10 @@ public class SensorServiceImpl implements SensorService {
 
         if (sensorValue < presetRange.getMin() || sensorValue > presetRange.getMax()) {
             // 이미 알람 상태면 중복 방지
-            if (alarmActive) return;
+//            if (alarmActive) {
+//                System.out.printf("중복 알림 방지, %s %s 값이 범위 내에 있지 않음.%n",farm.getFarmName(),sensorType);
+//                return;
+//            }
             // 최초로 벗어났을 때만 알람 생성
             sensorAlarmState.put(stateKey, true);
 
@@ -207,7 +211,6 @@ public class SensorServiceImpl implements SensorService {
                         "SENSOR",
                         act.getSensorName() + " 부족",
                         String.format("%s이 기준보다 낮습니다. (현재 %s: %.1f%%)", act.getSensorName(), sensorType, sensorValue));
-                actuatorService.control(farm, act.getActuatorType(), act.getAction(), sensorType, sensorValue);
             }
             // 프리셋 범위보다 높은 값이 측정되었을 때
             else {
@@ -217,9 +220,8 @@ public class SensorServiceImpl implements SensorService {
                         "SENSOR",
                         act.getSensorName() + " 과다",
                         String.format("%s이 기준보다 높습니다. (현재 %s: %.1f%%)", act.getSensorName(), sensorType, sensorValue));
-                actuatorService.control(farm, act.getActuatorType(), act.getAction(), sensorType, sensorValue);
             }
-//                System.out.println(sensorType + ": " + sensorValue + " 값이 프리셋 정상범위 내에 있습니다.");
+            // 액추에이터 실행
             actuatorService.control(
                     farm,
                     act.getActuatorType(),
@@ -236,76 +238,6 @@ public class SensorServiceImpl implements SensorService {
         } else {
             // 평소 정상 상태
             System.out.println(sensorType + ": " + sensorValue + " 값이 프리셋 정상범위 내에 있습니다.");
-        }
-    }
-
-    private void checkThreshold(SensorLogEntity log) {
-        FarmEntity farm = log.getFarm();
-        if (farm == null) return;
-        PresetStepEntity step = farm.getPresetStep();
-        if (step == null) return;
-        // 온도
-        if (log.getTemp() < step.getTemp().getMin() || log.getTemp() > step.getTemp().getMax()) {
-            alarmService.createSensorAlarm(
-                    farm,
-                    "SENSOR",
-                    "온도 이상",
-                    "온도가 기준 범위를 벗어났습니다. (현재 온도: " + log.getTemp() + "℃)"
-            );
-        }
-        // 습도
-        if (log.getHumidity() < step.getTemp().getMin() || log.getHumidity() > step.getTemp().getMax()) {
-            alarmService.createSensorAlarm(
-                    farm,
-                    "SENSOR",
-                    "습도 이상",
-                    "습도가 기준 범위를 벗어났습니다. (현재 습도: " + log.getHumidity() + "%)"
-            );
-        }
-        // 토양 수분
-        if (log.getSoilMoisture() < step.getSoilMoisture().getMin() || log.getSoilMoisture() > step.getSoilMoisture().getMax()) {
-            alarmService.createSensorAlarm(
-                    farm,
-                    "SENSOR",
-                    "토양 수분 이상",
-                    "토양 수분이 기준 범위를 벗어났습니다. (현재 토양 수분: " + log.getSoilMoisture() + "%)"
-            );
-        }
-        // 광량
-        if (log.getLightPower() < step.getLightPower().getMin()) {
-            alarmService.createSensorAlarm(
-                    farm,
-                    "SENSOR",
-                    "광량 부족",
-                    "광량이 기준보다 낮습니다. (현재 광량: " + log.getLightPower() + "%)"
-            );
-            actuatorService.controlBlind(
-                    farm.getFarmId(),
-                    "OPEN",
-                    log.getLightPower()
-            );
-        }
-        if (log.getLightPower() > step.getLightPower().getMax()) {
-            alarmService.createSensorAlarm(
-                    farm,
-                    "SENSOR",
-                    "광량 과다",
-                    "광량이 기준보다 높습니다. (현재 광량: " + log.getLightPower() + "%)"
-            );
-            actuatorService.controlBlind(
-                    farm.getFarmId(),
-                    "CLOSE",
-                    log.getLightPower()
-            );
-        }
-        // CO2
-        if (log.getCo2() < step.getCo2().getMin() || log.getCo2() > step.getCo2().getMax()) {
-            alarmService.createSensorAlarm(
-                    farm,
-                    "SENSOR",
-                    "CO₂ 이상",
-                    "CO₂ 수치가 기준 범위를 벗어났습니다. (현재 CO₂: " + log.getCo2() + "%)"
-            );
         }
     }
     private String alarmKey(FarmEntity farm, String sensorType) {
