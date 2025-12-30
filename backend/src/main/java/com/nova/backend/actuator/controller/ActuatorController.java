@@ -27,12 +27,13 @@ public class ActuatorController {
         );
     }
 
-    // ✅ 물주기 버튼 (POST)
+    // 대시보드 물주기 버튼 (POST)
     @PostMapping("/water")
     public ResponseEntity<WateringResponseDTO> waterPlant(
             @RequestParam Long farmId,
             @RequestBody(required = false) WateringRequestDTO request
     ) {
+        System.out.println("✅ [Controller] waterPlant 호출됨 farmId=" + farmId);
         return ResponseEntity.ok(
                 actuatorService.waterPlant(farmId, request)
         );

@@ -21,9 +21,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/project2?serverTimezone=Asia/Seoul
     username: sample
-    password: 1234
+#    password: 1234
 
-#    password: tnalsdlchlrhdi!
+    password: tnalsdlchlrhdi!
 
   sql:
     init:
