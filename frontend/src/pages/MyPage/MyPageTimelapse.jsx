@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 
 function MyPageTimelapse() {
   const [myPageTimelapseList, setMyPageTimelapseList] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null); // 모달에서 재생할 동영상
+  const [selectedVideoPath, setSelectedVideoPath] = useState(null);
   const {user} = useAuth();
   const navigate = useNavigate();
 
@@ -26,8 +26,9 @@ function MyPageTimelapse() {
   }, [user, navigate]);
 
   const handleDownload = (videoFilePath, timelapseName) => {
+    const fileName = videoFilePath.split("/").pop();
     const link = document.createElement("a");
-    link.href = `http://localhost:8080${videoFilePath}`; // 서버 주소 붙여서 다운로드
+    link.href = `http://localhost:8080/video-files/${fileName}`;
     link.download = `${timelapseName}.mp4`;
     document.body.appendChild(link);
     link.click();
@@ -81,7 +82,7 @@ function MyPageTimelapse() {
                         <div className={styles.tlActions}>
                           <button
                             className={styles.viewBtn}
-                            onClick={() => setSelectedVideo(tl.videoList[0].videoFilePath)}
+                            onClick={() => setSelectedVideoPath(tl.videoList[0].videoFilePath)}
                           >
                             보기
                           </button>
@@ -108,14 +109,16 @@ function MyPageTimelapse() {
       ))}
 
       {/* 동영상 모달 */}
-      {selectedVideo && (
+      {selectedVideoPath && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
             <video controls autoPlay width="100%">
-              <source src={`http://localhost:8080${selectedVideo}`} type="video/mp4" />
-              Your browser does not support the video tag.
+              <source
+                src={`http://localhost:8080/video-files/${selectedVideoPath.split("/").pop()}`}
+                type="video/mp4"
+              />
             </video>
-            <button className={styles.closeModal} onClick={() => setSelectedVideo(null)}>
+            <button className={styles.closeModal} onClick={() => setSelectedVideoPath(null)}>
               닫기
             </button>
           </div>

@@ -72,6 +72,12 @@ class TimeLapseCamera:
                 # 프레임 캡처 (numpy array)
                 frame = self.camera.capture_array()
 
+                # ✅ 색상 보정
+                frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+
+                # ✅ 상하좌우 반전
+                frame = cv2.flip(frame, -1)
+
                 # OpenCV로 JPEG 인코딩
                 encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 60]
                 ret, buffer = cv2.imencode(".jpg", frame, encode_param)
@@ -90,7 +96,7 @@ class TimeLapseCamera:
                     })
 
                 print(f"사진 {i} 촬영 성공")
-                time.sleep(self.interval - self.sleep_time)
+                time.sleep(self.interval)
 
             except Exception as e:
                 print(f"사진 {i} 촬영 중 오류 발생:", e)

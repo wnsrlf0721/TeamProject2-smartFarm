@@ -25,13 +25,13 @@ export const timelapseView = async (farmId) => {
   }
 };
 
-export const getTimelapseVideo = async (videoFilePath) => {
+export const getTimelapseVideo = async (settingId) => {
   try {
     const config = {
       params: {
-        videoFilePath: videoFilePath,
+        settingId: settingId,
       },
-      // responseType: "blob", // 바이너리 데이터로 응답 받기
+      responseType: "blob", // 바이너리 데이터로 응답 받기
     };
     const response = await backendServer.get(requests.timelapseVideo, config);
     return response.data;

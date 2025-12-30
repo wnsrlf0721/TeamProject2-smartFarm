@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TimelapseVideoRepository extends JpaRepository<TimelapseVideoEntity, Integer> {
-    List<TimelapseVideoEntity> findByTimelapseEntity_SettingId(int settingId);
+    TimelapseVideoEntity findByTimelapseEntity_SettingId(long settingId);
 
 
 //    List<TimelapseVideoEntity> findByTimelapseIn(List<TimelapseEntity> timelapseEntity);

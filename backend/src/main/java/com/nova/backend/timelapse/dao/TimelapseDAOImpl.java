@@ -33,7 +33,7 @@ public class TimelapseDAOImpl implements TimelapseDAO {
 //    }
 
     @Override
-    public List<TimelapseVideoEntity> findBySettingId(int settingId) {
+    public TimelapseVideoEntity findBySettingId(long settingId) {
         return timelapseVideoRepository.findByTimelapseEntity_SettingId(settingId);
     }
 

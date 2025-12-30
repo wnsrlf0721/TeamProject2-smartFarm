@@ -54,7 +54,8 @@ public class SecurityConfig {
                                 "/api/users/email/**",
                                 "/api/users/password/**",
                                 "/alarm/subscribe",
-                                "/alarm/test-send"
+                                "/alarm/test-send",
+                                "/video-files/**"
                         ).permitAll()
                         // 나머지는 인증 필요
                         .anyRequest().authenticated()
