@@ -4,7 +4,7 @@ from threading import Thread # Thread를 통한 주기적인 통신 데이터 �
 # DHTSensor
 import adafruit_dht # 해당 라이브러리를 활용해서 DHT11 온습도 센서를 제어
 # MCPSensor
-import busio
+import adafruit_bitbangio as bitbangio
 import digitalio
 import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
@@ -25,45 +25,70 @@ class DHTSensor(Thread):
             except RuntimeError as err:
                 print(err)
             time.sleep(2)
-# MCP칩을 사용하는 센서를 받아오는 클래스
-# 조도 센서, 토양 수분 센서
 class MCPSensor(Thread):
     def __init__(self):
         Thread.__init__(self)
+        self.daemon = True  # 메인 프로그램 종료 시 스레드도 자동 종료되도록 설정
 
-        # 1. SPI 버스 생성 (하드웨어 SPI 사용)
-        self.spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
-        # 2. Chip Select 핀 설정 (여기서는 GPIO 8번 핀 사용)
+        # [변경 1] 하드웨어 SPI(busio) -> 소프트웨어 SPI(bitbangio)로 변경
+        # 물리 핀 위치는 그대로(19, 21, 23번) 유지하되, 명확한 GPIO 번호로 지정했습니다.
+        # CLK(23번 핀) = board.D11
+        # MISO(21번 핀) = board.D9
+        # MOSI(19번 핀) = board.D10
+        self.spi = bitbangio.SPI(board.D11, MISO=board.D9, MOSI=board.D10)
+        
+        # 2. Chip Select 핀 설정 (GPIO 8 / 물리 24번)
         self.cs = digitalio.DigitalInOut(board.D8)
-        # 3. MCP3208 객체 생성
+        
+        # 3. MCP3008 객체 생성
         self.mcp = MCP.MCP3008(self.spi, self.cs)
-        # 채널 설정 (CH0: 토양 수분 센서, CH1: 조도 센서)
+        
+        # 채널 설정 (CH0: 토양 수분, CH1: 조도)
         self.soil = AnalogIn(self.mcp, MCP.P0)
         self.light = AnalogIn(self.mcp, MCP.P1)
-        self.data= {"soil_moisture": 0.0, "lightpower": 0.0}
+        
+        # 데이터 저장소
+        self.data = {"soil_moisture": 0.0, "lightpower": 0.0}
 
     def run(self):
-        # [캘리브레이션 값] : 공기 중(건조)일 때 값이 높고, 물 속(습함)일 때 값이 낮음.
-        soil_dry = 60000  # 완전히 말랐을 때의 값
-        soil_wet = 25000  # 물에 담갔을 때의 값
-        light_max = 65000 # 조도에서 나올 수 있는 최대치 값
+        # [중요] 테스트하면서 확인한 실제 값으로 이 부분을 미세 조정해주세요.
+        soil_dry = 60000   # 공기 중 (건조)
+        soil_wet = 25000   # 물 속 (습함)
+        light_max = 65000  # 조도 최대치 (손전등 비췄을 때)
+        
         while True:
             try:
-                # 토양 수분 센서
+                # --- 1. 토양 수분 센서 ---
                 soil_value = self.soil.value
-                # 퍼센트 변환
-                moisture_percent = (soil_dry - soil_value) / (soil_dry - soil_wet) * 100
-                self.data['soil_moisture'] = round(max(0,min(100,moisture_percent)),1)
+                
+                # 범위 제한 (센서 값이 튀어서 캘리브레이션 범위를 벗어날 때 보정)
+                if soil_value > soil_dry: soil_value = soil_dry
+                if soil_value < soil_wet: soil_value = soil_wet
+                
+                # 퍼센트 변환 (건조할수록 값이 크므로 역수 계산 필요)
+                # 분모가 0이 되는 에러 방지
+                denominator = soil_dry - soil_wet
+                if denominator == 0: denominator = 1
+                
+                moisture_percent = (soil_dry - soil_value) / denominator * 100
+                self.data['soil_moisture'] = round(max(0, min(100, moisture_percent)), 1)
 
-                # 조도 센서
+                # --- 2. 조도 센서 ---
                 light_value = self.light.value
+                
                 # 퍼센트 변환
                 light_percent = (light_value / light_max) * 100
-                print(light_value)
-                self.data['lightpower'] = round(max(0,min(100,light_percent)),1)
+                
+                # 값 확인용 출력 (테스트 끝나면 주석 처리 가능)
+                # print(f"Soil Raw: {soil_value} | Light Raw: {light_value}")
+                
+                self.data['lightpower'] = round(max(0, min(100, light_percent)), 1)
 
             except RuntimeError as err:
-                print(err)
+                print(f"센서 읽기 에러: {err}")
+            except Exception as e:
+                print(f"기타 에러: {e}")
+                
             time.sleep(2)
 
 # 초음파센서를 통해 수위 측정

@@ -5,6 +5,7 @@ from sensor import DHTSensor, MCPSensor, UltrasonicSensor, CO2Sensor
 from pump import Pump
 from actuator import Actuator
 from blind import Blind
+from heater import Heater
 from mycamera import TimeLapseCamera
 import paho.mqtt.publish as publisher
 import json
@@ -22,7 +23,7 @@ sub_topics = [
 
 # publish 할 토픽은 센서밖에 없고, nova 시리얼 넘버와 slot을 기반으로 Farm을 찾음
 nova_serial = "NOVA-FARM-001"
-slot = 2
+slot = 3
 pub_topic = f"{nova_serial}/{slot}/sensor"
 
 class MqttWorker:
@@ -48,10 +49,10 @@ class MqttWorker:
         # 액추에이터 객체 생성 및 제어
         self.pump = Pump() # 물 펌프
         self.led = Actuator(13) # P.13 핀에 LED
-        self.fan = Actuator(5) # P.5 핀에 FAN
+        self.fan = Actuator(21) # P.21 핀에 FAN
         self.humidifier = Actuator(10) # P.10 핀에 가습기
         self.blind = Blind() # 서보모터 (블라인드)
-        # 히터 액추 추가 예정
+        self.heater = Heater(12)    # 히터 (P.12 핀)
         
         # 타임랩스 카메라 객체 생성
         # self.timelapse_camera = TimeLapseCamera(interval=5, total_photos=20)
@@ -89,19 +90,28 @@ class MqttWorker:
         # 토픽을 "/" 기준으로 나누어 어떤 액추에이터에 관한 토픽인지 구분
         topicArr = message.topic.split("/")
         if(topicArr[0]==nova_serial and int(topicArr[1])==slot):
+            data = json.loads(my_val)
             if topicArr[2] == "LED":
-                self.led.control_msg(my_val)
+                self.led.control_msg(data)
             elif topicArr[2] == "FAN":
-                self.fan.control_msg(my_val)
+                self.fan.control_msg(data)
             elif topicArr[2] == "HUMI":
-                self.humidifier.control_msg(my_val)
+                self.humidifier.control_msg(data)
             elif topicArr[2] == "BLIND":
-                self.blind.on_message(my_val)
+                self.blind.on_message(data)
             elif topicArr[2] == "PUMP":
                 print(my_val)
                 # if my_val == "pump_on":
                 #     print("웹 요청으로 펌프 작동")
                 #     self.pump.run_pump()
+            elif topicArr[2] == "HEATER":
+                data = json.loads(my_val)
+                action = data.get("action", "").upper()
+
+                if action == "ON":
+                    self.heater.on()
+                elif action == "OFF":
+                    self.heater.off()
             elif topicArr[2] == "timelapse":
                 if my_val == "start":
                     print("웹 요청으로 타임랩스 시작")
