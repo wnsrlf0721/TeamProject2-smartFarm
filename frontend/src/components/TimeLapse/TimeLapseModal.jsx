@@ -23,7 +23,7 @@ export default function TimeLapseModal({farm, onClose}) {
         return "제작 예정";
       case "PROCESSING":
         return "제작 중";
-      case "DONE":
+      case "COMPLETED":
         return "제작 완료";
       default:
         return "-";
@@ -73,7 +73,7 @@ export default function TimeLapseModal({farm, onClose}) {
 
               <div className={styles.infoRow}>
                 <span className={styles.label}>스텝 ID:</span>
-                <span className={styles.value}>{item.preset_step_id ?? "전체"}</span>
+                <span className={styles.value}>{item.stepId == 0 ? "전체" : item.stepId}</span>
               </div>
             </div>
           ))}

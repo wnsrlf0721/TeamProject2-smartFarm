@@ -34,6 +34,11 @@ public class FarmDAOImpl implements FarmDAO{
     }
 
     @Override
+    public FarmEntity findByNova_NovaIdAndSlot(Long novaId, int slot) {
+        return farmRepository.findByNova_NovaIdAndSlot(novaId, slot);
+    }
+    
+    @Override
     public List<FarmEntity> findFarmListToGrow(Timestamp now){
         return farmRepository.findFarmListToGrow(now);
     }

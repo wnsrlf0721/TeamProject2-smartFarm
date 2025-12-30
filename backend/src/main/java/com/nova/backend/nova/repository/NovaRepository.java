@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface NovaRepository extends JpaRepository<NovaEntity, Long> {
     List<NovaEntity> findByUser_UserId(Long userId);
+    NovaEntity findNovaIdByNovaSerialNumber(String novaSerialNumber);
 }

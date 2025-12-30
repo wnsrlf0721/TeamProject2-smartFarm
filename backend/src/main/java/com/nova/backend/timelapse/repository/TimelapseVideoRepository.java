@@ -15,4 +15,5 @@ public interface TimelapseVideoRepository extends JpaRepository<TimelapseVideoEn
 
     List<TimelapseVideoEntity> findByTimelapseEntityIn(List<TimelapseEntity> timelapseEntityList);
 
+    List<TimelapseVideoEntity> findByTimelapseEntity_FarmEntity_FarmId(Long farmId);
 }

@@ -12,6 +12,7 @@ spring:
       command: server/command   # 발행(Publish)할 토픽
       #      sensor: farm/+/sensor/+        # 구독(Subscribe)할 토픽
       sensor: +/+/sensor
+      timelapse: +/+/timelapse/#
 
   application:
     name: backend
@@ -29,7 +30,7 @@ spring:
       encoding: UTF-8
       mode: always
   jpa:
-#    show-sql: true
+    show-sql: true
     hibernate:
       #      ddl-auto: create
       ddl-auto: none

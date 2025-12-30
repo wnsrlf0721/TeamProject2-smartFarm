@@ -132,4 +132,24 @@ public class TimelapseDAOImpl implements TimelapseDAO {
         return timelapseRepository.findFirstByFarmEntity_FarmIdAndPresetStepEntityIsNull(farmId)
                 .orElse(null);
     }
+
+    @Override
+    public TimelapseEntity findByFarmEntity_FarmIdAndState(long farmId, String processing) {
+        return timelapseRepository.findByFarmEntity_FarmIdAndState(farmId, processing);
+    }
+
+    @Override
+    public void saveImagePath(TimelapseImageEntity timelapseImageEntity) {
+        timelapseImageRepository.save(timelapseImageEntity);
+    }
+
+    @Override
+    public void saveVideo(TimelapseVideoEntity video) {
+        timelapseVideoRepository.save(video);
+    }
+
+    @Override
+    public List<TimelapseVideoEntity> findVideosByFarmId(Long farmId) {
+        return timelapseVideoRepository.findByTimelapseEntity_FarmEntity_FarmId(farmId);
+    }
 }
