@@ -27,4 +27,10 @@ public class TimelapseVideoEntity {
     private Timestamp createdAt;
     @Column(nullable = false)
     private String size;
+
+    public TimelapseVideoEntity(TimelapseEntity timelapseEntity, String videoFilePath, String size) {
+        this.timelapseEntity = timelapseEntity;
+        this.videoFilePath = videoFilePath;
+        this.size = size;
+    }
 }

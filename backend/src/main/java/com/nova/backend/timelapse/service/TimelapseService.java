@@ -10,7 +10,7 @@ public interface TimelapseService {
     List<TimelapseResponseDTO> getTimelapseListByFarmId(long farmId);
     void createTimelapse(List<TimelapseRequestDTO> timelapseRequestDTOList);
     void startTimelapseForFarm(long farmId);
-    void saveImage(long settingId, String base64Data);
-    void completeStep(long settingId);
+    void saveImage(String novaSerialNumber, int slot, String payload);
+    void completeStep(String novaSerialNumber, int slot, String payload);
 
 }

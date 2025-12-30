@@ -31,4 +31,9 @@ public class FarmDAOImpl implements FarmDAO{
     public Optional<FarmEntity> findById(Long farmId) {
         return farmRepository.findById(farmId);
     }
+
+    @Override
+    public FarmEntity findByNova_NovaIdAndSlot(Long novaId, int slot) {
+        return farmRepository.findByNova_NovaIdAndSlot(novaId, slot);
+    }
 }

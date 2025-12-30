@@ -25,4 +25,6 @@ public interface FarmRepository extends JpaRepository<FarmEntity,Long> {
 
     //Mqtt에서 토픽을 통해 FarmId를 찾는 방법
     Optional<FarmEntity> findByNova_NovaSerialNumberAndSlot(String novaSerialNumber, int slot);
+
+    FarmEntity findByNova_NovaIdAndSlot(Long novaId, int slot);
 }

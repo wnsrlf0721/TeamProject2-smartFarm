@@ -25,4 +25,9 @@ public class TimelapseImageEntity {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
+
+    public TimelapseImageEntity(TimelapseEntity timelapseEntity, String imageFilePath) {
+        this.timelapseEntity = timelapseEntity;
+        this.imageFilePath = imageFilePath;
+    }
 }
