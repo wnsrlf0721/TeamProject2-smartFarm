@@ -120,7 +120,7 @@ function PlantModal({ farmId, onClose }) {
     }
     pushAlert({
       id: `${latest.alarmId}-${latest.createdAt}`,
-      type: "sensor" | "water" | "error" | "actuator" | "preset",
+      type: latest.alarmType.toLowerCase(),
       title: latest.title,
       message: latest.message,
     });
@@ -359,12 +359,6 @@ function PlantModal({ farmId, onClose }) {
               onClick={async () => {
                 try {
                   await waterPlant(farm.farmId);
-
-                  pushAlert({
-                    type: "water",
-                    title: "물 주기 실행",
-                    message: "물 주기가 실행되었습니다.",
-                  });
                 } catch (e) {
                   pushAlert({
                     type: "error",
