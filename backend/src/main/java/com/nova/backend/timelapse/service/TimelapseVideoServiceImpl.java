@@ -2,16 +2,14 @@ package com.nova.backend.timelapse.service;
 
 import com.nova.backend.timelapse.dao.TimelapseDAO;
 import com.nova.backend.timelapse.entity.TimelapseEntity;
-import com.nova.backend.timelapse.entity.TimelapseImageEntity;
 import com.nova.backend.timelapse.entity.TimelapseVideoEntity;
-import com.nova.backend.timelapse.repository.TimelapseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TimelapseVideoServiceImpl implements TimelapseVideoService {
     private final TimelapseDAO timelapseDAO;
-    private final TimelapseRepository timelapseRepository;
     @Override
     @Async
     public void renderVideo(long settingId) {
@@ -173,10 +170,38 @@ public class TimelapseVideoServiceImpl implements TimelapseVideoService {
 
             System.out.println("전체 step 영상 합치기 완료: " + outputPath);
 
+
+            TimelapseEntity fullSetting = timelapseDAO.findById(settingId);
+
+            if (fullSetting == null) {
+                System.out.println("전체 영상용 Timelapse 설정이 존재하지 않습니다.");
+                return;
+            }
+
+            Path videoPath = Paths.get(outputPath);
+            long sizeBytes = Files.size(videoPath);
+
+            TimelapseVideoEntity video = new TimelapseVideoEntity();
+            video.setTimelapseEntity(fullSetting);
+            video.setVideoFilePath(outputPath);
+            video.setSize(humanReadableSize(sizeBytes));
+
+            timelapseDAO.saveVideo(video);
+
+            System.out.println("전체 타임랩스 DB 저장 완료: " + outputPath);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("타임랩스 step 영상 머지 실패");
         }
+    }
+
+    @Override
+    public String getVideo(long settingId) {
+        TimelapseVideoEntity timelapseVideoEntity = timelapseDAO.findBySettingId(settingId);
+        String filePath = timelapseVideoEntity.getVideoFilePath();
+        String[] path = filePath.split("/");
+        String fileName = path[path.length - 1];
+        return fileName;
     }
 
     private String humanReadableSize(long bytes) {

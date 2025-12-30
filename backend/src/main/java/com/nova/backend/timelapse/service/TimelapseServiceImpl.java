@@ -268,6 +268,8 @@ public class TimelapseServiceImpl implements TimelapseService {
 
                 if (fullSetting != null) {
                     timelapseVideoService.mergeStepVideos(farmId, fullSetting.getSettingId());
+                    fullSetting.setState("COMPLETED");
+                    timelapseDAO.save(fullSetting);
                 }
             }
 
