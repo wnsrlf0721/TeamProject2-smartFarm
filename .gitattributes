@@ -1,0 +1,6 @@
+frontend/** linguist-documentation=false
+frontend/** linguist-vendored=false
+backendend/** linguist-documentation=false
+backend/** linguist-vendored=false
+python/** linguist-documentation=false
+python/** linguist-vendored=false
