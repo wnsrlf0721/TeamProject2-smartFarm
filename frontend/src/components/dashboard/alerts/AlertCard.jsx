@@ -1,13 +1,28 @@
 // src/components/dashboard/alerts/AlertCard.jsx
 
-export default function AlertCard({ data }) {
-  const { title, message, created_at } = data;
+import { readAlarms } from "../../../api/alarm/AlarmPageAPI";
+
+export default function AlertCard({ data, onRead, forceRead = false }) {
+  const { alarmId, title, message, createdAt, isRead } = data;
+  const reading = forceRead || isRead;
 
   // 상대 시간 계산 (간단 버전)
-  const timeAgo = getRelativeTime(created_at);
+  const timeAgo = getRelativeTime(createdAt);
+
+  const handleClick = async () => {
+    // 이미 읽은 알람이면 아무것도 안 함
+    if (isRead) return;
+
+    try {
+      await readAlarms(alarmId); // DB 반영
+      onRead?.(alarmId);
+    } catch (e) {
+      console.error("알람 읽음 실패", e);
+    }
+  };
 
   return (
-    <div className="alert-card">
+    <div className={`alert-card ${reading ? "read" : "unread"}`} onClick={handleClick}>
       <div className="alert-card-top">
         <strong className="alert-title-text">{title}</strong>
         <span className="alert-time">{timeAgo}</span>

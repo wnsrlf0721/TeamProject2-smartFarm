@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import "./ToastAlert.css";
 
-function ToastAlert({ id, type = "sensor", title, message, onClose, duration = 3000 }) {
+function ToastAlert({ id, type = "sensor", title, message, onClose, duration = 0 }) {
   useEffect(() => {
     if (!duration) return; // duration = 0 이면 자동 닫힘 없음
     const timer = setTimeout(() => onClose(id), duration);

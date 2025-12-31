@@ -1,66 +1,117 @@
-import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useNavigate, useOutletContext} from "react-router-dom";
+import {useEffect, useState} from "react";
+import "./MyPage.css"; // 기존 CSS 유지
+import {updateUserInfo, myPageCheckPassword} from "../../api/mypage/mypageAPI";
 
 function MyPageEdit() {
   const navigate = useNavigate();
+  const {userInfo, setUserInfo, novaList, setNovaList} = useOutletContext();
 
-  const [userData, setUserData] = useState({
-    loginId: "sayjoy97",
-    name: "장세종",
-    userAddr: "경남 통영시",
-    email: "sayjoy97@gmail.com",
-    phoneNumber: "010-8661-6470",
-    novaSerialNumber: ["NOVA-2000", "NOVA-2001"],
-  });
+  // 🔹 사용자 정보 (usersResponseDTO 그대로)
+  const [editUser, setEditUser] = useState(null);
 
-  const [editData, setEditData] = useState({...userData, password: ""});
-  const [newSerial, setNewSerial] = useState("");
+  // 🔹 NOVA 목록 (novaResponseDTOList 그대로)
+  const [editNovaList, setEditNovaList] = useState([]);
+
+  const [newNovaList, setNewNovaList] = useState("");
+
+  // 🔹 비밀번호 확인 모달
   const [showPasswordModal, setShowPasswordModal] = useState(true);
   const [passwordInput, setPasswordInput] = useState("");
-  const correctPassword = "1234";
+  const [passwordCheckLoading, setPasswordCheckLoading] = useState(false);
+
+  /** 부모에서 받은 API 데이터 그대로 복사 */
+  useEffect(() => {
+    if (!userInfo) return;
+
+    setEditUser(userInfo);
+    setEditNovaList(
+      novaList.map((nova) => ({
+        ...nova,
+        status: "default",
+      }))
+    );
+  }, [userInfo, novaList]);
 
   /** 비밀번호 확인 */
-  const handlePasswordCheck = () => {
-    if (passwordInput === correctPassword) {
-      setShowPasswordModal(false);
-    } else {
-      alert("비밀번호가 틀렸습니다.");
-      setPasswordInput("");
+  const handlePasswordCheck = async () => {
+    if (!passwordInput.trim()) {
+      alert("비밀번호를 입력해주세요.");
+      return;
+    }
+
+    try {
+      setPasswordCheckLoading(true);
+      const response = await myPageCheckPassword({
+        userId: editUser.userId,
+        password: passwordInput,
+      });
+      if (response.data === true) {
+        setShowPasswordModal(false); // 확인 성공 시 폼 보여주기
+      } else {
+        alert("비밀번호가 틀렸습니다.");
+        setPasswordInput("");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("비밀번호 확인 중 오류가 발생했습니다.");
+    } finally {
+      setPasswordCheckLoading(false);
     }
   };
 
-  /** 저장 */
-  const handleSave = () => {
-    const updated = {...editData};
-    if (!editData.password) delete updated.password;
+  /** NOVA 시리얼 추가 */
+  const handleSerialAdd = () => {
+    if (!newNovaList.trim()) {
+      alert("시리얼 번호를 입력해주세요.");
+      return;
+    }
 
-    setUserData(updated);
+    setEditNovaList((prev) => [
+      ...prev,
+      {
+        novaId: null,
+        userId: editUser.userId,
+        novaSerialNumber: newNovaList.trim(),
+        status: "create",
+      },
+    ]);
+
+    setNewNovaList("");
+  };
+
+  /** NOVA 시리얼 삭제 (실제 삭제 ❌ → status만 변경) */
+  const handleSerialRemove = (index) => {
+    setEditNovaList((prev) =>
+      prev.map((nova, i) => (i === index ? {...nova, status: "delete"} : nova))
+    );
+  };
+
+  /** 저장 */
+  const handleSave = async () => {
+    const editUserInfo = {
+      usersRequestDTO: editUser,
+      novaRequestDTOList: editNovaList,
+    };
+
+    await updateUserInfo(editUserInfo);
+
+    // ✅ 부모 userInfo 수정
+    setUserInfo((prev) => ({
+      ...prev,
+      ...editUser,
+    }));
+
+    // ✅ 부모 novaList 수정 (delete 제외)
+    setNovaList(editNovaList.filter((nova) => nova.status !== "delete"));
+
     alert("정보가 수정되었습니다.");
     navigate("/mypage");
   };
 
-  /** 시리얼 추가 */
-  const handleSerialAdd = () => {
-    if (!newSerial.trim()) {
-      alert("시리얼 번호를 입력해주세요.");
-      return;
-    }
-    setEditData({
-      ...editData,
-      novaSerialNumber: [...editData.novaSerialNumber, newSerial.trim()],
-    });
-    setNewSerial("");
-  };
-
-  /** 시리얼 삭제 */
-  const handleSerialRemove = (index) => {
-    const updated = editData.novaSerialNumber.filter((_, i) => i !== index);
-    setEditData({...editData, novaSerialNumber: updated});
-  };
-
   return (
     <div className="edit-wrapper">
-      {/* 비밀번호 모달 */}
+      {/* ================= 비밀번호 모달 ================= */}
       {showPasswordModal && (
         <div className="modal-overlay">
           <div className="modal-box">
@@ -71,8 +122,11 @@ function MyPageEdit() {
               type="password"
               placeholder="비밀번호 입력"
               value={passwordInput}
-              onChange={(e) => setPasswordInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handlePasswordCheck()}
+              onChange={(e) => {
+                setPasswordInput(e.target.value);
+                setEditUser({...editUser, password: e.target.value});
+              }}
+              onKeyDown={(e) => e.key === "Enter" && handlePasswordCheck()}
               autoFocus
             />
 
@@ -88,93 +142,122 @@ function MyPageEdit() {
         </div>
       )}
 
-      {/* 수정 폼 */}
+      {/* ================= 수정 폼 ================= */}
       {!showPasswordModal && (
         <div className="edit-form">
           <h1 className="edit-title">정보 수정</h1>
 
+          {/* 아이디 */}
           <div className="edit-field">
             <div className="edit-label">아이디 (수정 불가)</div>
-            <div className="info-value-readonly">{editData.loginId}</div>
+            <div className="info-value-readonly">{editUser.loginId}</div>
           </div>
 
+          {/* 비밀번호 변경 */}
+          <div className="edit-field">
+            <div className="edit-label">비밀번호 변경 (선택)</div>
+            <input
+              className="edit-input"
+              type="password"
+              placeholder="새 비밀번호 입력"
+              value={editUser.password || ""}
+              onChange={(e) => setEditUser({...editUser, password: e.target.value})}
+            />
+          </div>
+
+          {/* 이름 */}
           <div className="edit-field">
             <div className="edit-label">이름</div>
             <input
               className="edit-input"
-              value={editData.name}
-              onChange={(e) => setEditData({...editData, name: e.target.value})}
+              value={editUser.name}
+              onChange={(e) => setEditUser({...editUser, name: e.target.value})}
             />
           </div>
 
-          <div className="edit-field">
-            <div className="edit-label">주소</div>
-            <input
-              className="edit-input"
-              value={editData.userAddr}
-              onChange={(e) => setEditData({...editData, userAddr: e.target.value})}
-            />
-          </div>
-
-          <div className="edit-field">
-            <div className="edit-label">이메일</div>
-            <input
-              className="edit-input"
-              type="email"
-              value={editData.email}
-              onChange={(e) => setEditData({...editData, email: e.target.value})}
-            />
-          </div>
-
+          {/* 전화번호 */}
           <div className="edit-field">
             <div className="edit-label">전화번호</div>
             <input
               className="edit-input"
               type="tel"
-              value={editData.phoneNumber}
-              onChange={(e) => setEditData({...editData, phoneNumber: e.target.value})}
+              value={editUser.phoneNumber}
+              onChange={(e) => setEditUser({...editUser, phoneNumber: e.target.value})}
             />
           </div>
 
+          {/* 이메일 */}
           <div className="edit-field">
-            <div className="edit-label">비밀번호 변경 (선택사항)</div>
+            <div className="edit-label">이메일</div>
             <input
               className="edit-input"
-              type="password"
-              placeholder="새 비밀번호 입력"
-              value={editData.password}
-              onChange={(e) => setEditData({...editData, password: e.target.value})}
+              type="email"
+              value={editUser.email}
+              onChange={(e) => setEditUser({...editUser, email: e.target.value})}
             />
           </div>
 
+          {/* 우편번호 */}
+          <div className="edit-field">
+            <div className="edit-label">우편번호</div>
+            <input
+              className="edit-input"
+              value={editUser.postalCode}
+              onChange={(e) => setEditUser({...editUser, postalCode: e.target.value})}
+            />
+          </div>
+
+          {/* 기본주소 */}
+          <div className="edit-field">
+            <div className="edit-label">기본주소</div>
+            <input
+              className="edit-input"
+              value={editUser.address}
+              onChange={(e) => setEditUser({...editUser, address: e.target.value})}
+            />
+          </div>
+
+          {/* 상세주소 */}
+          <div className="edit-field">
+            <div className="edit-label">상세주소</div>
+            <input
+              className="edit-input"
+              value={editUser.addressDetail}
+              onChange={(e) => setEditUser({...editUser, addressDetail: e.target.value})}
+            />
+          </div>
+
+          {/* NOVA 시리얼 */}
           <div className="edit-field">
             <div className="edit-label">NOVA 시리얼 번호</div>
 
             <div className="serial-list">
-              {editData.novaSerialNumber.map((serial, index) => (
-                <div key={index} className="serial-item">
-                  <span>{serial}</span>
-                  <button className="serial-delete-btn" onClick={() => handleSerialRemove(index)}>
-                    삭제
-                  </button>
-                </div>
-              ))}
+              {editNovaList
+                .filter((nova) => nova.status !== "delete")
+                .map((nova, index) => (
+                  <div key={index} className="serial-item">
+                    <span>{nova.novaSerialNumber}</span>
+                    <button className="serial-delete-btn" onClick={() => handleSerialRemove(index)}>
+                      삭제
+                    </button>
+                  </div>
+                ))}
             </div>
 
             <div className="add-serial-box">
               <input
                 className="add-serial-input"
                 placeholder="새 시리얼 번호 입력"
-                value={newSerial}
-                onChange={(e) => setNewSerial(e.target.value)}
+                value={newNovaList}
+                onChange={(e) => setNewNovaList(e.target.value)}
               />
-
               <button className="add-serial-btn" onClick={handleSerialAdd}>
                 추가
               </button>
             </div>
           </div>
 
+          {/* 버튼 */}
           <div className="edit-buttons">
             <button className="edit-cancel-btn" onClick={() => navigate("/mypage")}>
               취소

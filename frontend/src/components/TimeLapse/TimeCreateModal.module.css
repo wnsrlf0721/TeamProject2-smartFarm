@@ -42,7 +42,8 @@
   align-items: center;
   gap: 6px;
   cursor: grab;
-  transition: 0.2s ease;
+  /* transition: 0.2s ease; */
+  transition: all 0.25s ease;
 }
 
 .tm_icon_card:hover {
@@ -140,7 +141,7 @@
 /* ======================== */
 .tm_setting_row {
   display: grid;
-  grid-template-columns: 80px 1fr 80px 1fr;
+  grid-template-columns: 60px 1fr 60px 1fr;
   align-items: center;
   gap: 16px;
   background: #f6f9e9;

@@ -69,7 +69,7 @@
   color: #004085;
 }
 
-.stateDONE {
+.stateCOMPLETED {
   background: #d4edda;
   color: #155724;
 }
@@ -88,4 +88,52 @@
 
 .closeBtn:hover {
   background: #555;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.viewBtn {
+  background: #4caf50;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.downloadBtn {
+  background: #2196f3;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.videoModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.videoModal {
+  background: #000;
+  padding: 16px;
+  border-radius: 12px;
+  width: 70%;
 }

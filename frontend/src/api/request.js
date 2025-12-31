@@ -1,0 +1,30 @@
+// 백앤드 통신을 하기 위해서 필요한 백앤드 쪽 path - 공통 path를 분리하고 남은 나머지 path들
+const requests = {
+  myPageView: "/mypage/view",
+  myPageEdit: "/mypage/edit",
+  novaList: "/nova/list",
+  farmCardList: "/farm/list",
+  myPageTimelapse: "/mypage/timelapse",
+  timelapseCreate: "/timelapse/create",
+  timelapseInfo: "/timelapse/info",
+  presetList: "/preset/list",
+  presetStep: "/preset/step",
+  farmCreate: "/farm/create",
+  farmUpdate: "/farm/update",
+  farmDelete: "/farm/delete",
+  timelapseView: "/timelapse/view",
+  myPageCheckPassword: "/mypage/checkpassword",
+  farmDashboard: "/farm/dashboard",
+  waterPlantManual: "/actuator/water",
+  getAllAlarms: "/alarm/all",
+  getUnreadAlarms: "/alarm/unread",
+  readAllAlarms: "/alarm/read-all",
+  timelapseVideo: "/timelapse/video",
+  getAlarmPage: "/alarm/page",
+  readAlarms: "/alarm/read",
+  dashboardAlarms: "/alarm/dashboard",
+  readDashboardTodayAll: "/alarm/dashboard/today/read-all",
+  readDashboardPreviousAll: "/alarm/dashboard/previous/read-all",
+};
+
+export default requests;

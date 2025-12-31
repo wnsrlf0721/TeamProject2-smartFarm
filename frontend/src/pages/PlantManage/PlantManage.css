@@ -1,6 +1,66 @@
 .plants-page {
-  padding-top: 10px;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.06) 2px, transparent 2px) 0 0 / 40px 40px,
+    linear-gradient(180deg, #f5ffe8 0%, #ffffff 40%, #f3ffe049 100%);
+  padding-top: 30px;
   text-align: center;
+}
+
+/* Nova 선택 영역 전체 */
+.nova-select-wrapper {
+  margin: 0 auto 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 12px 16px;
+  background-color: #e5f5d6; /* 연한 그린 배경 */
+  border-radius: 30px;
+  border: 1px solid #dbe5d2;
+
+  width: fit-content;
+}
+
+/* 라벨 */
+.nova-select-wrapper label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2f3f22;
+  white-space: nowrap;
+}
+
+/* 셀렉트 박스 */
+.nova-select-box {
+  min-width: 220px;
+
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #2f3f22;
+
+  background-color: #ffffff;
+  border: 1px solid #cfd9c7;
+  border-radius: 8px;
+
+  outline: none;
+  cursor: pointer;
+
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* hover */
+.nova-select-box:hover {
+  border-color: #9db57d;
+}
+
+/* focus */
+.nova-select-box:focus {
+  border-color: #7fa55b;
+  box-shadow: 0 0 0 2px rgba(127, 165, 91, 0.25);
+}
+
+/* option */
+.nova-select-box option {
+  font-size: 14px;
 }
 
 .farm-grid {
@@ -47,4 +107,56 @@
   font-weight: bold;
   color: #007aff;
   margin-bottom: 10px;
+}
+
+/* 로그인 필요 UI */
+
+.need-login-wrap {
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.06) 2px, transparent 2px) 0 0 / 40px 40px,
+    linear-gradient(180deg, #f5ffe8 0%, #ffffff 40%, #f3ffe049 100%);
+  text-align: center;
+  height: 570px;
+  padding-top: 80px;
+}
+
+.need-login-box {
+  margin: 40px auto;
+  padding: 40px 30px;
+  width: 60%;
+  max-width: 480px;
+
+  background: #d4edb69d;
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.need-login-box h2 {
+  margin-bottom: 15px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.need-login-box p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.login-go-btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+
+  background: linear-gradient(135deg, #8bc34a, #6fa83d);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+.login-go-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #7cb342, #5f9833);
 }

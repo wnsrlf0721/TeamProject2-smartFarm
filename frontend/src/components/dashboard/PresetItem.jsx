@@ -1,5 +1,5 @@
 // src/components/dashboard/PresetItem.jsx
-import "./PresetInfo.css"; // 스타일은 PresetInfo.css에서 같이 관리
+import "./PresetItem.css";
 
 export default function PresetItem({ icon, label, value }) {
   return (

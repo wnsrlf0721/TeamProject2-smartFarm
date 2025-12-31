@@ -1,0 +1,14 @@
+# 하드웨어 제어 및 GPIO
+RPi.GPIO
+adafruit-blinka
+adafruit-circuitpython-dht
+adafruit-circuitpython-mcp3xxx
+
+# 센서 라이브러리
+mh-z19
+
+# 통신 프로토콜
+paho-mqtt
+
+# 카메라 (주의: 시스템 패키지 의존성이 있을 수 있음)
+picamera2

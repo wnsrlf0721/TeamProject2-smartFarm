@@ -2,15 +2,21 @@
 
 .toast-alert {
   position: relative;
-  width: 260px;
-  padding: 14px 16px;
+  /* width: 260px; */
+  padding: 5px 15px;
   border-radius: 14px;
-  display: flex;
+  display: inline-flex;
   justify-content: space-between;
-  gap: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: start;
+  gap: 5px;
+  box-shadow: 0 8px 20px #00000026;
   animation: slideIn 0.35s ease forwards;
   color: white;
+
+  inline-size: max-content; /* 🔥 핵심 */
+  max-inline-size: 500px; /* 너무 길어지는 것 방지 */
+  min-inline-size: 180px;
+  background: #76a74f;
 }
 
 /* 색상 테마 */
@@ -36,6 +42,7 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
+  padding-top: 13px;
 }
 
 .toast-title {
@@ -55,6 +62,7 @@
   font-size: 14px;
   cursor: pointer;
   opacity: 0.9;
+  padding-left: 18px;
 }
 
 .toast-close:hover {

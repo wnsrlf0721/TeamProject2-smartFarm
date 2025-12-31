@@ -30,17 +30,17 @@ export default function SensorBar({ sensor, preset_step }) {
     {
       type: "soil",
       label: "Soil Moisture",
-      value: sensor.soil_moisture,
-      presetMin: preset_step?.soil?.min,
-      presetMax: preset_step?.soil?.max,
+      value: sensor.soil,
+      presetMin: preset_step?.soilMoisture?.min,
+      presetMax: preset_step?.soilMoisture?.max,
       unit: "%",
     },
     {
       type: "light",
       label: "Light",
-      value: sensor.lightPower,
-      presetMin: preset_step?.light?.min,
-      presetMax: preset_step?.light?.max,
+      value: sensor.light,
+      presetMin: preset_step?.lightPower?.min,
+      presetMax: preset_step?.lightPower?.max,
       unit: "lx",
     },
     {

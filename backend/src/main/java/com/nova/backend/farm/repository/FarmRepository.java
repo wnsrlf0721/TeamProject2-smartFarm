@@ -1,0 +1,37 @@
+package com.nova.backend.farm.repository;
+
+import com.nova.backend.farm.entity.FarmEntity;
+import com.nova.backend.nova.entity.NovaEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
+
+public interface FarmRepository extends JpaRepository<FarmEntity,Long> {
+    List<FarmEntity> findByNova_NovaId(Long novaId);
+    @Query("SELECT f FROM FarmEntity f " +
+            "JOIN FETCH f.presetStep s " +
+            "JOIN FETCH s.preset p " +
+            "WHERE f.nova.novaId = :novaId")
+    List<FarmEntity> findFarmsWithDetailsByNovaId(@Param("novaId") Long novaId);
+
+    // Nova(기기) 안에서 슬롯으로 팜 찾기
+    Optional<FarmEntity> findByNovaAndSlot(NovaEntity nova, int slot);
+
+    //    // slot만으로 찾고 싶다면 (기기에 슬롯이 unique라면)
+//    Optional<FarmEntity> findBySlot(int slot);
+
+    //Mqtt에서 토픽을 통해 FarmId를 찾는 방법
+    Optional<FarmEntity> findByNova_NovaSerialNumberAndSlot(String novaSerialNumber, int slot);
+
+    FarmEntity findByNova_NovaIdAndSlot(Long novaId, int slot);
+    
+    @Query("SELECT f FROM FarmEntity f " +
+           "JOIN FETCH f.presetStep ps " +
+           "WHERE ps IS NOT NULL " +
+           "AND FUNCTION('TIMESTAMPDIFF', DAY, f.updateTime, :now) >= ps.periodDays")
+    List<FarmEntity> findFarmListToGrow(Timestamp now);
+}

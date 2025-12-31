@@ -1,0 +1,123 @@
+.signup-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.signup-box {
+  width: 380px;
+  padding: 32px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.signup-box h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* ================= input ================= */
+.input {
+  width: 100%;
+  height: 42px;
+  margin-bottom: 6px; /* input 간 기본 간격 */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* ================= row ================= */
+.row-flex {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* ================= buttons ================= */
+.btn-gray {
+  height: 42px;
+  padding: 0 14px;
+  background: #555;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  margin-bottom: 9pt;
+}
+
+.btn-gray:hover {
+  background: #444;
+}
+
+.signup-btn {
+  width: 100%;
+  height: 46px;
+  background: #7cab19;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-top: 14px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.signup-btn:hover {
+  background: #6ba114;
+}
+
+/* ================= text ================= */
+.hint {
+  font-size: 12px;
+  color: #999;
+  text-align: left;
+}
+
+.under-input {
+  margin-top: 0;
+  margin-bottom: 12px;
+  margin-left: 5px;
+}
+
+/* ================= error ================= */
+.error {
+  border: 1px solid #e53935;
+}
+
+/* 핵심: 에러 텍스트를 input에 붙이기 */
+.error-text {
+  color: #e53935;
+  font-size: 12px;
+  margin-top: -4px; /* input의 margin-bottom 상쇄 */
+  margin-bottom: 12px;
+  text-align: left;
+  margin-left: 5px;
+}
+
+/* ================= email ================= */
+.email-fixed {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 14px;
+  color: #555;
+  white-space: nowrap;
+  margin-bottom: 12pt;
+}
+
+.error-text.success-text {
+  color: #16a34a; /* 초록 */
+}
+/* 안내 문구 */
+.hint-text {
+  color: #9ca3af;
+}

@@ -1,42 +1,64 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./MyPageTimelapse.module.css";
+import {getTimeLapse} from "../../api/mypage/mypageAPI";
+import {useAuth} from "../../api/auth/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 function MyPageTimelapse() {
-  const timelapseData = [
-    {
-      serial: "NOVA-2000",
-      farms: [
-        {
-          farmName: "방울토마토 농장 1",
-          timelapses: [
-            {id: 1, title: "성장기록 1차", status: "DONE", size: "45MB"},
-            {id: 2, title: "성장기록 2차", status: "PROGRESS", progress: 62},
-            {id: 3, title: "성장기록 3차", status: "PENDING"},
-          ],
-        },
-      ],
-    },
-    {
-      serial: "NOVA-2001",
-      farms: [
-        {
-          farmName: "허브 농장 1",
-          timelapses: [],
-        },
-      ],
-    },
-  ];
+  const [myPageTimelapseList, setMyPageTimelapseList] = useState([]);
+  const [selectedVideoPath, setSelectedVideoPath] = useState(null);
+  const {user} = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+      return;
+    }
+    getTimeLapse(user.userId)
+      .then((data) => {
+        setMyPageTimelapseList(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [user, navigate]);
+
+  const handleDownload = (videoFilePath, timelapseName) => {
+    const fileName = videoFilePath.split("/").pop();
+    const link = document.createElement("a");
+    link.href = `http://localhost:8080/video-files/${fileName}`;
+    link.download = `${timelapseName}.mp4`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className={styles.timelapsePage}>
       <h1 className={styles.timelapseTitle}>타임랩스 관리</h1>
 
-      {timelapseData.map((device) => (
-        <div key={device.serial} className={styles.deviceBox}>
-          <h2 className={styles.deviceTitle}>{device.serial}</h2>
+      {myPageTimelapseList.map((device) => (
+        <div key={device.novaId} className={styles.deviceBox}>
+          <h2 className={styles.deviceTitle}>{device.novaSerialNumber}</h2>
 
-          {device.farms.map((farm, i) => (
-            <div key={i} className={styles.farmBox}>
+          {Object.values(
+            device.timelapseResponseDTOList.reduce((acc, tl) => {
+              const farmId = tl.farm.farmId;
+
+              if (!acc[farmId]) {
+                acc[farmId] = {
+                  farmName: tl.farm.farmName,
+                  timelapses: [],
+                };
+              }
+
+              acc[farmId].timelapses.push(tl);
+              return acc;
+            }, {})
+          ).map((farm, idx) => (
+            <div key={idx} className={styles.farmBox}>
               <h3 className={styles.farmTitle}>{farm.farmName}</h3>
 
               {farm.timelapses.length === 0 && (
@@ -44,43 +66,64 @@ function MyPageTimelapse() {
               )}
 
               <div className={styles.timelapseList}>
-                {farm.timelapses.map((tl) => (
-                  <div
-                    key={tl.id}
-                    className={`${styles.timelapseCard} ${
-                      styles["status-" + tl.status.toLowerCase()]
-                    }`}
-                  >
-                    <h4 className={styles.tlTitle}>{tl.title}</h4>
+                {farm.timelapses.map((tl) => {
+                  const hasVideo = tl.videoList && tl.videoList.length > 0;
 
-                    {tl.status === "DONE" && (
-                      <div className={styles.tlActions}>
-                        <button className={styles.viewBtn}>보기</button>
-                        <button className={styles.downloadBtn}>다운로드</button>
-                        <div className={styles.tlSize}>용량: {tl.size}</div>
-                      </div>
-                    )}
+                  return (
+                    <div
+                      key={tl.settingId}
+                      className={`${styles.timelapseCard} ${
+                        styles["status-" + (hasVideo ? "done" : "pending")]
+                      }`}
+                    >
+                      <h4 className={styles.tlTitle}>{tl.timelapseName}</h4>
 
-                    {tl.status === "PROGRESS" && (
-                      <div className={styles.progressBox}>
-                        <div className={styles.progressBar}>
-                          <div
-                            className={styles.progressFill}
-                            style={{width: `${tl.progress}%`}}
-                          ></div>
+                      {hasVideo ? (
+                        <div className={styles.tlActions}>
+                          <button
+                            className={styles.viewBtn}
+                            onClick={() => setSelectedVideoPath(tl.videoList[0].videoFilePath)}
+                          >
+                            보기
+                          </button>
+                          <button
+                            className={styles.downloadBtn}
+                            onClick={() =>
+                              handleDownload(tl.videoList[0].videoFilePath, tl.timelapseName)
+                            }
+                          >
+                            다운로드
+                          </button>
+                          <div className={styles.tlSize}>용량: {tl.videoList[0].size}</div>
                         </div>
-                        <div className={styles.progressText}>{tl.progress}% 생성 중...</div>
-                      </div>
-                    )}
-
-                    {tl.status === "PENDING" && <div className={styles.pendingText}>제작 예정</div>}
-                  </div>
-                ))}
+                      ) : (
+                        <div className={styles.pendingText}>제작 예정</div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ))}
         </div>
       ))}
+
+      {/* 동영상 모달 */}
+      {selectedVideoPath && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <video controls autoPlay width="100%">
+              <source
+                src={`http://localhost:8080/video-files/${selectedVideoPath.split("/").pop()}`}
+                type="video/mp4"
+              />
+            </video>
+            <button className={styles.closeModal} onClick={() => setSelectedVideoPath(null)}>
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

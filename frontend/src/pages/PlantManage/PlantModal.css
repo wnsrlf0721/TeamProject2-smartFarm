@@ -25,6 +25,11 @@
   overflow: visible !important;
 }
 
+.lodding {
+  width: 1200px;
+  max-height: 92vh;
+}
+
 /* 내부 스크롤 영역 */
 .modal-content {
   height: calc(92vh - 20px);
@@ -69,6 +74,7 @@
   align-items: flex-start;
   width: 1150px;
   margin: 0px auto 0px;
+  margin-bottom: 10px;
   height: 69.5px;
 }
 
@@ -83,7 +89,7 @@
   font-size: 13px;
   color: #7a8a72;
   margin-top: -6px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .header-right {
@@ -129,6 +135,7 @@
   gap: 10px;
   max-width: 350px;
   padding: 0;
+  margin-top: 10px;
 }
 
 .date-item {
@@ -362,9 +369,35 @@
 .toast-container {
   position: fixed;
   top: 20px;
-  right: 60px;
+  right: 300px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   z-index: 9999;
+}
+
+.alarm-more-btn {
+  align-self: center;
+  margin-top: 20px;
+
+  padding: 6px 18px;
+  border-radius: 999px;
+
+  border: none;
+  background: rgba(228, 228, 228, 0.7);
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #455739;
+
+  box-shadow: 0 2px 6px rgba(120, 140, 110, 0.18);
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.alarm-more-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(80, 100, 90, 0.25);
 }
