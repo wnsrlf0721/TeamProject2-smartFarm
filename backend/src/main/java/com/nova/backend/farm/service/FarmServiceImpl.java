@@ -5,13 +5,17 @@ import com.nova.backend.farm.dao.FarmDAO;
 import com.nova.backend.farm.dto.FarmRequestDTO;
 import com.nova.backend.farm.dto.FarmResponseDTO;
 import com.nova.backend.farm.dto.FarmTimelapseResponseDTO;
+import com.nova.backend.farm.dto.FarmUpdateReqDTO;
 import com.nova.backend.farm.entity.FarmEntity;
+import com.nova.backend.farm.repository.FarmRepository;
 import com.nova.backend.nova.dao.NovaDAO;
 import com.nova.backend.nova.entity.NovaEntity;
 import com.nova.backend.preset.dao.PresetDAO;
 import com.nova.backend.preset.dao.PresetStepDAO;
 import com.nova.backend.preset.entity.PresetEntity;
 import com.nova.backend.preset.entity.PresetStepEntity;
+import com.nova.backend.preset.repository.PresetRepository;
+import com.nova.backend.preset.repository.PresetStepRepository;
 import com.nova.backend.user.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -38,6 +42,9 @@ public class FarmServiceImpl implements FarmService{
     private final String uploadDir = System.getProperty("user.dir") + "/uploads/";
     private final ModelMapper modelMapper;
     private final AlarmService alarmService;
+    private final FarmRepository farmRepository;
+    private final PresetStepRepository stepRepository;
+    private final PresetRepository presetRepository;
 
 
     @Override
@@ -76,6 +83,95 @@ public class FarmServiceImpl implements FarmService{
                 .map(entity -> modelMapper.map(entity, FarmTimelapseResponseDTO.class))
                 .orElseThrow(() -> new RuntimeException("팜 저장 중 오류가 발생했습니다."));
     }
+
+    @Override
+    @Transactional
+    public void updateFarm(FarmUpdateReqDTO dto, MultipartFile image, Long farmId) {
+        // 1. FarmEntity 조회
+        FarmEntity farm = farmRepository.findById(farmId)
+                .orElseThrow(() -> new IllegalArgumentException("Farm not found with id: " + farmId));
+
+        // 2. 기본 정보 업데이트 (이름)
+        farm.setFarmName(dto.getFarmName());
+
+        // 3. 이미지 업데이트 (이미지가 새로 업로드된 경우에만)
+        if (image != null && !image.isEmpty()) {
+            // 기존 이미지가 있다면 삭제하는 로직 필요 (선택사항)
+            String imageUrl = uploadFarmImage(image,"/src/main/resources/static"); // 업로드 후 URL 반환
+
+            farm.getPresetStep().getPreset().setPresetImageUrl(imageUrl); // (구조에 따라 수정 필요)
+        }
+
+        // 4. 성장 단계(Step) 리스트 업데이트
+        // FarmEditModal에서 보낸 stepList를 가져옵니다.
+        List<FarmUpdateReqDTO.UpdateStepDto> newSteps = dto.getStepList();
+
+        if (newSteps != null) {
+            // (A) 기존 단계 업데이트 로직
+            for (FarmUpdateReqDTO.UpdateStepDto stepDto : newSteps) {
+
+                if (stepDto.getStepId() != null) {
+                    // ID가 있으면 기존 데이터 수정 (Dirty Checking)
+                    PresetStepEntity step = stepRepository.findById(stepDto.getStepId())
+                            .orElseThrow(() -> new IllegalArgumentException("Step not found"));
+
+                    // 값 덮어쓰기
+                    step.setGrowthStep(stepDto.getGrowthStep());
+                    step.setPeriodDays(stepDto.getPeriodDays());
+
+                    // EnvRange 값 분해해서 Entity에 넣기 (Entity 구조에 따라 다름)
+                    if(stepDto.getTemp() != null) {
+                        step.getTemp().setMin(stepDto.getTemp().getMin());
+                        step.getTemp().setMax(stepDto.getTemp().getMax());
+                    }
+                    if(stepDto.getHumidity() != null) {
+                        step.getHumidity().setMin(stepDto.getHumidity().getMin());
+                        step.getHumidity().setMax(stepDto.getHumidity().getMax());
+                    }
+                    if(stepDto.getCo2() != null) {
+                        step.getCo2().setMin(stepDto.getCo2().getMin());
+                        step.getCo2().setMax(stepDto.getCo2().getMax());
+                    }
+                    if(stepDto.getLightPower() != null) {
+                        step.getLightPower().setMin(stepDto.getLightPower().getMin());
+                        step.getLightPower().setMax(stepDto.getLightPower().getMax());
+                    }
+                    if(stepDto.getSoilMoisture() != null) {
+                        step.getSoilMoisture().setMin(stepDto.getSoilMoisture().getMin());
+                        step.getSoilMoisture().setMax(stepDto.getSoilMoisture().getMax());
+                    }
+
+                } else {
+                    // (B) ID가 없으면 새로 추가된 단계 (INSERT)
+                    Long presetId = stepDto.getPreset().getPresetId();
+                    PresetEntity preset = presetRepository.findById(presetId)
+                            .orElseThrow(() -> new IllegalArgumentException("Preset not found: " + presetId));
+                    PresetStepEntity newStep = PresetStepEntity.builder()
+                            .preset(preset) // 현재 팜과 연관관계 설정
+                            .growthStep(stepDto.getGrowthStep())
+                            .periodDays(stepDto.getPeriodDays())
+                            .temp(stepDto.getTemp())
+                            .humidity(stepDto.getHumidity())
+                            .co2(stepDto.getCo2())
+                            .lightPower(stepDto.getLightPower())
+                            .soilMoisture(stepDto.getSoilMoisture())
+                            .build();
+                    stepRepository.save(newStep);
+                }
+            }
+
+        // Dirty Checking에 의해 트랜잭션 종료 시 FarmEntity, StepEntity update 쿼리 발생
+    }
+        }
+
+    @Override
+    @Transactional
+    public void deleteFarmById(Long farmId) {
+        FarmEntity farm = farmDAO.findById(farmId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 팜이 존재하지 않습니다. ID=" + farmId));
+        farm.setPresetStep(null);
+    }
+
     /**
      * 1. 이미지 파일 저장 및 URL 생성 메서드
      */

@@ -4,6 +4,7 @@ import styles from "./TimeLapseModal.module.css";
 
 export default function TimeLapseModal({farm, onClose}) {
   const [timelapseList, setTimelpaseList] = useState([]);
+  const [selectedVideoPath, setSelectedVideoPath] = useState(null);
 
   useEffect(() => {
     if (!farm?.farmId) return;
@@ -11,6 +12,7 @@ export default function TimeLapseModal({farm, onClose}) {
     timelapseView(farm.farmId)
       .then((data) => {
         setTimelpaseList(data);
+        console.log(data);
       })
       .catch((error) => {
         console.log(error);
@@ -23,11 +25,26 @@ export default function TimeLapseModal({farm, onClose}) {
         return "제작 예정";
       case "PROCESSING":
         return "제작 중";
-      case "DONE":
+      case "COMPLETED":
         return "제작 완료";
       default:
         return "-";
     }
+  };
+
+  const handleDownload = (videoFilePath, timelapseName) => {
+    const fileName = videoFilePath.split("/").pop();
+    const link = document.createElement("a");
+    link.href = `http://localhost:8080/video-files/${fileName}`;
+    link.download = `${timelapseName}.mp4`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleView = (videoFilePath) => {
+    const fileName = videoFilePath.split("/").pop();
+    setSelectedVideoPath(`http://localhost:8080/video-files/${fileName}`);
   };
 
   return (
@@ -73,8 +90,27 @@ export default function TimeLapseModal({farm, onClose}) {
 
               <div className={styles.infoRow}>
                 <span className={styles.label}>스텝 ID:</span>
-                <span className={styles.value}>{item.preset_step_id ?? "전체"}</span>
+                <span className={styles.value}>{item.stepId == 0 ? "전체" : item.stepId}</span>
               </div>
+
+              {/* ✅ 제작 완료된 경우만 버튼 표시 */}
+              {item.state === "COMPLETED" && item.videoList[0].videoFilePath && (
+                <div className={styles.actions}>
+                  <button
+                    className={styles.viewBtn}
+                    onClick={() => handleView(item.videoList[0].videoFilePath)}
+                  >
+                    보기
+                  </button>
+
+                  <button
+                    className={styles.downloadBtn}
+                    onClick={() => handleDownload(item.videoList[0].videoFilePath, item.name)}
+                  >
+                    다운로드
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -84,6 +120,22 @@ export default function TimeLapseModal({farm, onClose}) {
           닫기
         </button>
       </div>
+
+      {/* 🎬 영상 재생 모달 */}
+      {selectedVideoPath && (
+        <div className={styles.videoOverlay} onClick={() => setSelectedVideoPath(null)}>
+          <div className={styles.videoModal} onClick={(e) => e.stopPropagation()}>
+            <video controls autoPlay width="100%">
+              <source src={selectedVideoPath} type="video/mp4" />
+              브라우저가 video 태그를 지원하지 않습니다.
+            </video>
+
+            <button className={styles.closeBtn} onClick={() => setSelectedVideoPath(null)}>
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

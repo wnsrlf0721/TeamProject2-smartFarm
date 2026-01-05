@@ -15,4 +15,6 @@ public interface TimelapseRepository extends JpaRepository<TimelapseEntity, Inte
     Optional<TimelapseEntity> findFirstBySettingIdGreaterThanAndPresetStepEntityNotNullOrderBySettingId(long currentSettingId);
 
     Optional<TimelapseEntity> findFirstByFarmEntity_FarmIdAndPresetStepEntityIsNull(long farmId);
+
+    TimelapseEntity findByFarmEntity_FarmIdAndState(long farmId, String processing);
 }

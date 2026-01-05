@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface TimelapseDAO {
     List<TimelapseEntity> findByFarmEntity_FarmId(long farmId);
-    List<TimelapseVideoEntity> findBySettingId(int settingId);
+    TimelapseVideoEntity findBySettingId(long settingId);
     void createTimelapse(List<TimelapseEntity> timelapseEntityList);
     List<TimelapseImageEntity> findBySettingIdOrderByCreatedAtDesc(long settingId);
     void saveImageAndUpdateDB(String base64Data, long settingId) throws Exception;
@@ -20,9 +20,12 @@ public interface TimelapseDAO {
 
     TimelapseEntity findById(long settingId);
     void save(TimelapseEntity setting);
-
-
-
     TimelapseEntity findNextStep(long currentSettingId);
     TimelapseEntity findFullVideoSetting(long farmId);
+    TimelapseEntity findByFarmEntity_FarmIdAndState(long farmId, String processing);
+
+    void saveImagePath(TimelapseImageEntity timelapseImageEntity);
+    void saveVideo(TimelapseVideoEntity video);
+
+    List<TimelapseVideoEntity> findVideosByFarmId(Long farmId);
 }

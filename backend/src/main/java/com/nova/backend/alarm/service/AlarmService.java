@@ -26,6 +26,12 @@ public interface AlarmService {
 
     // 센서 기준 위반 알람 생성
     void createSensorAlarm(FarmEntity farm, String alarmType, String title, String message);
+    void createEventAlarm(
+            FarmEntity farm,
+            String alarmType,
+            String title,
+            String message
+    );
 
     // 알람 페이지 - 읽음/안읽음 분리
     List<AlarmResponseDTO> getAlarmsByReadStatus(Long farmId, Boolean isRead);

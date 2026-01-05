@@ -99,10 +99,17 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     @Transactional
     public void createSensorAlarm(FarmEntity farm, String alarmType, String title, String message) {
+        System.out.println("🟠 [AlarmService] createEventAlarm start farmId="
+                + farm.getFarmId() + " type=" + alarmType);
+
         PresetStepEntity step = farm.getPresetStep();
+
         if (step == null || step.getPreset() == null) {
-            // preset 없는 상태에서는 알람 생성 안 함
-            return;
+            // 핵심: Event 알람은 preset 없는 팜에서도 허용
+            // 하지만 DB NOT NULL 때문에 "임시 preset"을 써야 함
+            throw new IllegalStateException(
+                    "EventAlarm 생성 실패: farm에 presetStep이 없음"
+            );
         }
         PlantAlarmEntity alarm = PlantAlarmEntity.builder()
                 .farm(farm)
@@ -129,6 +136,54 @@ public class AlarmServiceImpl implements AlarmService {
                     @Override
                     public void afterCommit() {
                         sseEmitterManager.send(alarm.getUser().getUserId(), dto);
+                    }
+                }
+        );
+    }
+
+    @Override
+    @Transactional
+    public void createEventAlarm(FarmEntity farm, String alarmType, String title, String message) {
+        System.out.println("🟠 [AlarmService] createEventAlarm start farmId="
+                + farm.getFarmId() + " type=" + alarmType);
+
+        // 현재 farm의 presetStep 가져오기 (NOT NULL 회피용)
+        PresetStepEntity step = farm.getPresetStep();
+
+        if (step == null || step.getPreset() == null) {
+            System.out.println("❌ presetStep 또는 preset 없음 → EventAlarm 생성 중단");
+            return;
+        }
+        PlantAlarmEntity alarm = PlantAlarmEntity.builder()
+                .farm(farm)
+                .user(farm.getNova().getUser())
+                .preset(step.getPreset())
+                .presetStep(step)
+                .alarmType(alarmType)
+                .title(title)
+                .message(message)
+                .isRead(false)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        alarmDAO.save(alarm);
+
+        // SSE 전송 (커밋 이후)
+        AlarmResponseDTO dto = modelMapper.map(alarm, AlarmResponseDTO.class);
+        dto.setAlarmId(alarm.getAlarmId());
+        dto.setFarmId(farm.getFarmId());
+        dto.setFarmName(farm.getFarmName());
+        dto.setAlarmType(alarm.getAlarmType());
+        dto.setRead(false);
+
+        TransactionSynchronizationManager.registerSynchronization(
+                new TransactionSynchronization() {
+                    @Override
+                    public void afterCommit() {
+                        sseEmitterManager.send(
+                                alarm.getUser().getUserId(),
+                                dto
+                        );
                     }
                 }
         );

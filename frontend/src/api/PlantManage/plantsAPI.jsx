@@ -18,6 +18,19 @@ export const getFarmList = async (id) => {
   });
   return response.data;
 };
+export const updateFarm = async (farmId, formData) => {
+  const response = await backendServer.put(requests.farmUpdate + `/${farmId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+export const deleteFarm = async (id) => {
+  const response = await backendServer.delete(requests.farmDelete + `/${id}`);
+  return response;
+};
 
 export const createFarm = async (formData) => {
   const request = await backendServer.post(requests.farmCreate, formData, {

@@ -1,9 +1,11 @@
 .farm-card {
+  position: relative; /* 자식 요소인 삭제 버튼의 절대 위치 기준점이 됩니다 */
   background: #324524;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #2d3548;
   transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer; /* 카드 전체 클릭 가능 표시 */
 }
 
 .farm-card:hover {
@@ -98,6 +100,86 @@
 
 .farm-card-button:hover {
   opacity: 0.9;
+}
+
+.button-icon {
+  font-size: 16px;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(0, 0, 0, 0.6); /* 배경을 어둡게 하여 이미지 위에서도 잘 보이게 함 */
+  border: 1px solid #ef4444; /* 빨간색 테두리 */
+  border-radius: 8px;
+  color: #ef4444; /* 아이콘 색상 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10; /* 이미지보다 위에 표시 */
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #ef4444; /* 호버 시 빨간색 배경 */
+  color: white; /* 호버 시 아이콘 흰색 */
+  transform: scale(1.1); /* 살짝 커지는 효과 */
+}
+
+/* SVG 아이콘 크기 */
+.delete-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* 버튼들을 감싸는 컨테이너 추가 */
+.button-group {
+  display: flex;
+  gap: 10px; /* 버튼 사이 간격 */
+  width: 100%;
+}
+
+/* 공통 버튼 스타일 (기존 .farm-card-button 베이스) */
+.action-btn {
+  flex: 1; /* 두 버튼이 공간을 1:1로 나눠가짐 */
+  padding: 12px 0; /* 좌우 padding 대신 중앙 정렬 유도 */
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* 왼쪽: 설정(프리셋) 변경 버튼 - 어두운 톤 + 테두리 */
+.edit-btn {
+  background: #1d371a;
+  border: 1px solid #4ba295;
+  color: #c9f8bd;
+}
+
+.edit-btn:hover {
+  background: #2a4d25;
+}
+
+/* 오른쪽: 타임랩스 버튼 - 기존 그라데이션 유지 */
+.timelapse-btn {
+  background: linear-gradient(135deg, #c9f8bd 0%, #4ba295 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(75, 162, 149, 0.3);
 }
 
 .button-icon {

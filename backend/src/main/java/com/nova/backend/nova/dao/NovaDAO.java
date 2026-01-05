@@ -11,4 +11,5 @@ public interface NovaDAO {
     void delete(List<NovaEntity> novaEntityList);
     void create(List<NovaEntity> novaEntityList);
     Optional<NovaEntity> findById(Long novaId);
+    NovaEntity findNovaIdByNovaSerialNumber(String novaSerialNumber);
 }

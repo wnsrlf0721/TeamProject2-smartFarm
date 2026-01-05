@@ -24,3 +24,19 @@ export const timelapseView = async (farmId) => {
     console.log("에러 발생: ", error);
   }
 };
+
+export const getTimelapseVideo = async (settingId) => {
+  try {
+    const config = {
+      params: {
+        settingId: settingId,
+      },
+      responseType: "blob", // 바이너리 데이터로 응답 받기
+    };
+    const response = await backendServer.get(requests.timelapseVideo, config);
+    return response.data;
+  } catch (error) {
+    console.log("에러 발생: ", error);
+    throw error;
+  }
+};

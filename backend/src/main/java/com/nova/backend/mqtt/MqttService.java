@@ -19,11 +19,13 @@ public class MqttService {
     private final TimelapseService timelapseService;
     private final SensorService sensorService;
 
-    int count=0;
     @ServiceActivator(inputChannel = "mqttInputChannel")
-    public void handleMessage(Message<String> message) {
+    public void handleMessage(Message<?> message) {
         // 메시지 페이로드(내용)
-        String payload = message.getPayload();
+        Object payloadObj = message.getPayload();
+        String payload = payloadObj instanceof byte[]
+                ? new String((byte[]) payloadObj)
+                : payloadObj.toString();
         // 헤더에서 토픽 정보 가져오기
         String topic = (String) message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC);
 
@@ -32,22 +34,33 @@ public class MqttService {
         String[] topicList = topic.split("/");
         String novaSerialNumber = topicList[0];
         int slot = Integer.parseInt(topicList[1]);
+        if (topic.contains("/timelapse/")) {
+            String type = topicList[3]; // frame | done | stopped
+            try {
+                if ("frame".equals(type)) {
+                    timelapseService.saveImage(novaSerialNumber, slot, payload);
+                    System.out.println("================================================");
+                    System.out.println(topicList[3]);
+                    System.out.println("================================================");
+                }
+                else if ("done".equals(type)) {
+                    timelapseService.completeStep(novaSerialNumber, slot, payload);
+                    System.out.println("================================================");
+                    System.out.println(topicList[3]);
+                    System.out.println("================================================");
+                }
+                else if ("stopped".equals(type)) {
+//                    timelapseService.stopTimelapse();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
         try {
             sensorService.controlSensorData(payload,novaSerialNumber,slot);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
-        }
-        try {
-            if (topic.startsWith("home/timelapse/photo/")) {
-                long settingId = Long.parseLong(topic.substring("home/timelapse/photo/".length()));
-                timelapseService.saveImage(settingId, payload);
-
-            } else if (topic.startsWith("home/timelapse/done/")) {
-                long settingId = Long.parseLong(topic.substring("home/timelapse/done/".length()));
-                timelapseService.completeStep(settingId);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

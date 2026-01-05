@@ -11,5 +11,6 @@ public interface FarmDAO {
     List<FarmEntity> findListByNovaId(Long novaId);
     List<FarmEntity> findFarmsPresetStepsByNovaId(Long novaId);
     Optional<FarmEntity> findById(Long farmId);
+    FarmEntity findByNova_NovaIdAndSlot(Long novaId, int slot);
     List<FarmEntity> findFarmListToGrow(Timestamp now);
 }

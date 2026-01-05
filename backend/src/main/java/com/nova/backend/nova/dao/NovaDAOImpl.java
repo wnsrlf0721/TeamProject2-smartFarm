@@ -37,4 +37,9 @@ public class NovaDAOImpl implements NovaDAO {
     public Optional<NovaEntity> findById(Long novaId){
         return novaRepository.findById(novaId);
     }
+
+    @Override
+    public NovaEntity findNovaIdByNovaSerialNumber(String novaSerialNumber) {
+        return novaRepository.findNovaIdByNovaSerialNumber(novaSerialNumber);
+    }
 }

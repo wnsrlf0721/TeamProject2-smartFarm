@@ -23,7 +23,7 @@ function DraggableIcon({item, from, onClickMove}) {
     <div
       ref={drag}
       className={styles.tm_icon_card}
-      style={{ opacity: isDragging ? 0.4 : 1 }}
+      style={{opacity: isDragging ? 0.4 : 1}}
       onClick={() => onClickMove(item, from)}
     >
       {item.type === "video" ? <Video size={28} /> : <Film size={28} />}
@@ -33,7 +33,7 @@ function DraggableIcon({item, from, onClickMove}) {
 }
 
 /* ===================== DropZone ===================== */
-function DropZone({ children, acceptDrop }) {
+function DropZone({children, acceptDrop}) {
   const [, drop] = useDrop({
     accept: ItemTypes.ICON,
     drop: (item) => acceptDrop(item),
@@ -42,7 +42,7 @@ function DropZone({ children, acceptDrop }) {
 }
 
 /* ===================== Scroll Wrapper ===================== */
-function ScrollWrapper({ children }) {
+function ScrollWrapper({children}) {
   const [topFadeVisible, setTopFadeVisible] = useState(false);
   const [bottomFadeVisible, setBottomFadeVisible] = useState(true);
   const scrollRef = useRef();
@@ -74,12 +74,14 @@ function ScrollWrapper({ children }) {
 }
 
 /* ===================== Main Modal ===================== */
-export const TimeCreateModal = ({ farm, onClose }) => {
+export const TimeCreateModal = ({farm, onClose}) => {
   const [availableList, setAvailableList] = useState([]);
   const [selectedList, setSelectedList] = useState([]);
   const [videoSettings, setVideoSettings] = useState({});
   const [stepMap, setStepMap] = useState({});
   const [baseOrder, setBaseOrder] = useState([]);
+  const [defaultResolution, setDefaultResolution] = useState("800x600");
+  const [defaultFps, setDefaultFps] = useState(30);
 
   /* ===== preset_step 조회 (DB 기준) ===== */
   useEffect(() => {
@@ -95,7 +97,7 @@ export const TimeCreateModal = ({ farm, onClose }) => {
 
         // 전체 영상 + 단계 영상 리스트 생성
         const list = [
-          { id: 1, label: "전체 영상", type: "video" },
+          {id: 1, label: "전체 영상", type: "video"},
           ...stepList.map((step) => ({
             id: step.stepId,
             label: `${step.growthStep}단계`,
@@ -117,23 +119,26 @@ export const TimeCreateModal = ({ farm, onClose }) => {
   /* ===== 기본 설정 자동 생성 ===== */
   useEffect(() => {
     setVideoSettings((prev) => {
-      const next = { ...prev };
+      const next = {...prev};
       const allStepIds = Object.keys(stepMap).map(Number);
 
       selectedList.forEach((item) => {
         if (!next[item.id]) {
           const periodDays =
             item.id === 1
-              ? allStepIds.reduce((sum, id) => sum + (videoSettings[id]?.duration ?? stepMap[id]?.periodDays ?? 1), 0)
+              ? allStepIds.reduce(
+                  (sum, id) => sum + (videoSettings[id]?.duration ?? stepMap[id]?.periodDays ?? 1),
+                  0
+                )
               : stepMap[item.id]?.periodDays ?? 1;
 
           next[item.id] = {
             presetStepId: item.id === 1 ? null : item.id,
             timelapseName: item.label,
-            fps: 30,
+            fps: defaultFps,
             duration: periodDays,
             captureInterval: 0,
-            resolution: "1920x1080",
+            resolution: defaultResolution,
             state: "PENDING",
           };
         }
@@ -150,7 +155,7 @@ export const TimeCreateModal = ({ farm, onClose }) => {
       value = Math.max(periodDays, Math.min(value, periodDays * 2));
     }
     setVideoSettings((prev) => {
-      const next = { ...prev, [id]: { ...prev[id], [field]: value } };
+      const next = {...prev, [id]: {...prev[id], [field]: value}};
 
       // 전체 영상 duration 갱신
       const allStepIds = Object.keys(stepMap).map(Number);
@@ -167,7 +172,8 @@ export const TimeCreateModal = ({ farm, onClose }) => {
   };
 
   /* ===== 순서 유지 함수 ===== */
-  const sortByBaseOrder = (list) => [...list].sort((a, b) => baseOrder.indexOf(a.id) - baseOrder.indexOf(b.id));
+  const sortByBaseOrder = (list) =>
+    [...list].sort((a, b) => baseOrder.indexOf(a.id) - baseOrder.indexOf(b.id));
 
   const moveToSelected = (item) => {
     setSelectedList((prev) => {
@@ -311,24 +317,34 @@ export const TimeCreateModal = ({ farm, onClose }) => {
               <div className={styles.tm_setting_row}>
                 <label>FPS</label>
                 <select
-                  onChange={(e) =>
-                    selectedList.forEach((item) => handleSettingChange(item.id, "fps", Number(e.target.value)))
-                  }
+                  value={defaultFps}
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    setDefaultFps(value),
+                      selectedList.forEach((item) => handleSettingChange(item.id, "fps", value));
+                  }}
                 >
+                  {/* 테스트용으로 10fps설정 */}
+                  <option value={10}>10fps</option>
                   <option value={24}>24fps</option>
                   <option value={30}>30fps</option>
-                  <option value={60}>60fps</option>
                 </select>
 
                 <label>해상도</label>
                 <select
-                  onChange={(e) =>
-                    selectedList.forEach((item) => handleSettingChange(item.id, "resolution", e.target.value))
-                  }
+                  value={defaultResolution}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setDefaultResolution(value);
+                    selectedList.forEach((item) =>
+                      handleSettingChange(item.id, "resolution", value)
+                    );
+                  }}
                 >
-                  <option>1920x1080</option>
-                  <option>1280x720</option>
-                  <option>3840x2160</option>
+                  <option value="640x480">640×480 (저용량)</option>
+                  <option value="800x600">800×600 (추천)</option>
+                  <option value="1024x768">1024×768 (고화질)</option>
+                  <option value="1280x720">1280×720 (HD)</option>
                 </select>
               </div>
 
@@ -345,17 +361,26 @@ export const TimeCreateModal = ({ farm, onClose }) => {
                           className={styles.tm_video_name}
                           placeholder="영상 이름"
                           value={videoSettings[item.id]?.timelapseName || ""}
-                          onChange={(e) => handleSettingChange(item.id, "timelapseName", e.target.value)}
+                          onChange={(e) =>
+                            handleSettingChange(item.id, "timelapseName", e.target.value)
+                          }
                         />
                         <div className={styles.tm_duration_box}>
                           {item.id === 1 ? (
-                            <input type="number" value={duration} disabled className={styles.tm_video_duration} />
+                            <input
+                              type="number"
+                              value={duration}
+                              disabled
+                              className={styles.tm_video_duration}
+                            />
                           ) : (
                             <>
                               <button
                                 type="button"
                                 className={styles.tm_duration_btn}
-                                onClick={() => handleSettingChange(item.id, "duration", duration - 1)}
+                                onClick={() =>
+                                  handleSettingChange(item.id, "duration", duration - 1)
+                                }
                               >
                                 −
                               </button>
@@ -365,13 +390,17 @@ export const TimeCreateModal = ({ farm, onClose }) => {
                                 min={stepMap[item.id]?.periodDays}
                                 value={duration}
                                 className={styles.tm_video_duration}
-                                onChange={(e) => handleSettingChange(item.id, "duration", Number(e.target.value))}
+                                onChange={(e) =>
+                                  handleSettingChange(item.id, "duration", Number(e.target.value))
+                                }
                               />
 
                               <button
                                 type="button"
                                 className={styles.tm_duration_btn}
-                                onClick={() => handleSettingChange(item.id, "duration", duration + 1)}
+                                onClick={() =>
+                                  handleSettingChange(item.id, "duration", duration + 1)
+                                }
                               >
                                 +
                               </button>

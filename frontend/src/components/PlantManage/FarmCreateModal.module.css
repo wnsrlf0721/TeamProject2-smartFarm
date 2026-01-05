@@ -205,14 +205,13 @@
 
 /* 프리셋 리스트 */
 .preset-list {
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
   padding: 8px;
   background-color: var(--bg-input);
-  position: absolute;
-  top: 100%; /* 박스 바로 아래 */
-  left: 0;
-  right: 0;
+  position: relative; /* ✅ 추가: 리스트가 열리면 자리를 차지하게 함 */
+  width: 100%; /* ✅ 추가: 가로 폭 꽉 채우기 */
+  box-sizing: border-box; /* ✅ 추가: 패딩 포함 크기 계산 */
   z-index: 10;
   border: 1px solid #e2e8f0;
   border-radius: 8px;

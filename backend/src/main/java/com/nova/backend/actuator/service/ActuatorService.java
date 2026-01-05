@@ -9,9 +9,6 @@ import com.nova.backend.farm.entity.FarmEntity;
 import java.util.List;
 
 public interface ActuatorService {
-    // 수동 물주기 실행
-    WateringResponseDTO water(WateringRequestDTO request);
-
     // 엑추에이터 로그 조회 (farm 기준)
     List<ActuatorLogResponseDTO> getActuatorLogs(Long farmId);
 

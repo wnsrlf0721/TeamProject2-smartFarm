@@ -6,8 +6,10 @@ import {useNavigate} from "react-router-dom";
 
 function MyPageTimelapse() {
   const [myPageTimelapseList, setMyPageTimelapseList] = useState([]);
+  const [selectedVideoPath, setSelectedVideoPath] = useState(null);
   const {user} = useAuth();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!user) {
       navigate("/");
@@ -16,11 +18,22 @@ function MyPageTimelapse() {
     getTimeLapse(user.userId)
       .then((data) => {
         setMyPageTimelapseList(data);
+        console.log(data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [user, navigate]);
+
+  const handleDownload = (videoFilePath, timelapseName) => {
+    const fileName = videoFilePath.split("/").pop();
+    const link = document.createElement("a");
+    link.href = `http://localhost:8080/video-files/${fileName}`;
+    link.download = `${timelapseName}.mp4`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className={styles.timelapsePage}>
@@ -30,7 +43,6 @@ function MyPageTimelapse() {
         <div key={device.novaId} className={styles.deviceBox}>
           <h2 className={styles.deviceTitle}>{device.novaSerialNumber}</h2>
 
-          {/* farmId 기준으로 그룹핑 */}
           {Object.values(
             device.timelapseResponseDTOList.reduce((acc, tl) => {
               const farmId = tl.farm.farmId;
@@ -68,8 +80,20 @@ function MyPageTimelapse() {
 
                       {hasVideo ? (
                         <div className={styles.tlActions}>
-                          <button className={styles.viewBtn}>보기</button>
-                          <button className={styles.downloadBtn}>다운로드</button>
+                          <button
+                            className={styles.viewBtn}
+                            onClick={() => setSelectedVideoPath(tl.videoList[0].videoFilePath)}
+                          >
+                            보기
+                          </button>
+                          <button
+                            className={styles.downloadBtn}
+                            onClick={() =>
+                              handleDownload(tl.videoList[0].videoFilePath, tl.timelapseName)
+                            }
+                          >
+                            다운로드
+                          </button>
                           <div className={styles.tlSize}>용량: {tl.videoList[0].size}</div>
                         </div>
                       ) : (
@@ -83,6 +107,23 @@ function MyPageTimelapse() {
           ))}
         </div>
       ))}
+
+      {/* 동영상 모달 */}
+      {selectedVideoPath && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <video controls autoPlay width="100%">
+              <source
+                src={`http://localhost:8080/video-files/${selectedVideoPath.split("/").pop()}`}
+                type="video/mp4"
+              />
+            </video>
+            <button className={styles.closeModal} onClick={() => setSelectedVideoPath(null)}>
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

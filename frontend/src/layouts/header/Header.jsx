@@ -1,15 +1,15 @@
 // ==============================
 // 공통 Header.jsx (Auth + 드롭다운 메뉴 + 기본 네비게이션)
 // ==============================
-import {NavLink, Link} from "react-router-dom";
-import {useState, useRef, useEffect} from "react";
-import {useAuth} from "../../api/auth/AuthContext"; // 로그인 상태 가져오기
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useAuth } from "../../api/auth/AuthContext"; // 로그인 상태 가져오기
 import "./Header.css";
 
 export default function Header() {
-  const {user, logout} = useAuth();
+  const { user, logout } = useAuth();
   const [openUserMenu, setOpenUserMenu] = useState(false);
-
+  const navigate = useNavigate();
   const dropdownRef = useRef();
 
   // ============================
@@ -63,15 +63,8 @@ export default function Header() {
           {user ? (
             <>
               {/* 로그인 후 나타나는 버튼 */}
-              <button
-                className="user-dropdown-btn"
-                onClick={() => setOpenUserMenu((prev) => !prev)}
-              >
-                <img
-                  src={user.profileImg || "/mockups/woo-default-profile.svg"}
-                  alt="프로필"
-                  className="user-img"
-                />
+              <button className="user-dropdown-btn" onClick={() => setOpenUserMenu((prev) => !prev)}>
+                <img src={user.profileImg || "/mockups/woo-default-profile.svg"} alt="프로필" className="user-img" />
                 <span className="user-name">{user.name}</span>
                 <span className="arrow">▾</span>
               </button>
@@ -90,6 +83,8 @@ export default function Header() {
                     onClick={() => {
                       logout();
                       setOpenUserMenu(false);
+                      alert("로그아웃되었습니다.");
+                      navigate("/");
                     }}
                   >
                     로그아웃 ﹥

@@ -10,6 +10,7 @@ from mycamera import TimeLapseCamera
 import paho.mqtt.publish as publisher
 import json
 import time
+import base64
 
 # subscribe 할 토픽 리스트
 sub_topics = [
@@ -19,12 +20,13 @@ sub_topics = [
     ("+/+/PUMP",1),
     ("+/+/HEATER",1),
     ("+/+/BLIND",1),
+    ("+/+/TIMELAPSE",1)
 ]
 
 # publish 할 토픽은 센서밖에 없고, nova 시리얼 넘버와 slot을 기반으로 Farm을 찾음
 nova_serial = "NOVA-FARM-001"
 slot = 3
-pub_topic = f"{nova_serial}/{slot}/sensor"
+pub_topic = f"{nova_serial}/{slot}"
 
 class MqttWorker:
     #생성자에서 mqtt통신할 수 있는 객체생성, 필요한 다양한 객체생성, 콜백함수 등록
@@ -55,21 +57,36 @@ class MqttWorker:
         self.heater = Heater(12)    # 히터 (P.12 핀)
         
         # 타임랩스 카메라 객체 생성
-        # self.timelapse_camera = TimeLapseCamera(interval=5, total_photos=20)
+        self.timelapse_camera = None
 
-    def mqtt_publish_photo(self, image_bytes, index):
-        """카메라 callback에서 호출"""
-        if image_bytes is None and index == "done":
-            # 촬영 완료 메시지
-            publisher.single("heaves/home/web/timelapse/done", "complete", hostname="192.168.14.116")
-            print("타임랩스 촬영 완료 메시지 전송")
-        else:
-            publisher.single("heaves/home/web/timelapse/photo", image_bytes, hostname="192.168.14.116")
-            print(f"사진 {index} 전송 완료")
+    def mqtt_publish_photo(self, data):
+        global pub_topic
+
+        if "status" in data:
+            self.client.publish(
+                f"{pub_topic}/timelapse/{data['status']}",
+                json.dumps(data)
+            )
+            print(f"타임랩스 상태 전송: {data['status']}")
+            return
+
+        payload = {
+            "index": data["index"],
+            "image": base64.b64encode(data["image"]).decode("utf-8")
+        }
+
+        self.client.publish(
+            f"{pub_topic}/timelapse/frame",
+            json.dumps(payload)
+        )
+
+        print(f"{data['index']}번 프레임 전송 완료")
 
     def start_timelapse(self):
-        # 카메라 촬영 시작, callback 등록
-        Thread(target=self.timelapse_camera.start_timelapse, args=(self.mqtt_publish_photo,)).start()
+        Thread(
+            target=self.timelapse_camera.start_timelapse,
+            args=(self.mqtt_publish_photo,)
+        ).start()
 
     # broker 서버와 연결 후 실행될 콜백메서드 - rc가 0이면 접속 성공, sub_topics 구독 신청
     def on_connect(self, client, userdata, flags, rc):
@@ -110,19 +127,33 @@ class MqttWorker:
                     self.heater.on()
                 elif action == "OFF":
                     self.heater.off()
-            elif topicArr[2] == "timelapse":
-                if my_val == "start":
+            elif topicArr[2] == "TIMELAPSE":
+                data = json.loads(my_val)
+
+                if data["command"] == "start":
                     print("웹 요청으로 타임랩스 시작")
+
+                    interval = data["interval"]
+                    duration = data["duration"]
+                    width = data["width"]
+                    height = data["height"]
+                    print(f"interval: {interval}, duration: {duration}, width: {width}, height: {height}")
+
+                    total_photos = int(duration / interval)
+
+                    self.timelapse_camera = TimeLapseCamera(
+                        interval=interval,
+                        total_photos=total_photos,
+                        width=width,
+                        height=height
+                    )
+
                     self.start_timelapse()
 
-                    # MyCamera의 getStreaming 을 호출해서 프레임을 publish
-                    self.is_streaming = True
-                    print("start")
-                    self.cam_thread = Thread(target=self.send_camera_frame)
-                    self.cam_thread.start()
-                elif my_val == "end":
-                    print("end")
-                    self.is_streaming = False
+                elif data["command"] == "stop":
+                    print("웹 요청으로 타임랩스 중지")
+                    if self.timelapse_camera:
+                        self.timelapse_camera.stop()
 
     # publish 메시지를 보내는 메서드
     # 센서가 수집하는 모든 데이터를 한번에 모아서 전송하는 방식
@@ -141,7 +172,7 @@ class MqttWorker:
                 }
 
                 json_str = json.dumps(payload)
-                self.client.publish(pub_topic, json_str)
+                self.client.publish(pub_topic + "/sensor", json_str)
                 print(f"Sent ALL Data: {json_str}")
             except Exception as e:
                 print(f"Publish Error: {e}")

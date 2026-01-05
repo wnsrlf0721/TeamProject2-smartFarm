@@ -9,6 +9,8 @@ import { FarmCreateModal } from "../../components/PlantManage/FarmCreateModal";
 import TimeLapseModal from "../../components/TimeLapse/TimeLapseModal";
 import { createFarm, getFarmList, getNovaList } from "../../api/PlantManage/plantsAPI";
 import { TimeCreateModal } from "../../components/TimeLapse/TimeCreateModal";
+import { FarmEditModal } from "../../components/PlantManage/FarmEditModal";
+import { updateFarm } from "../../api/PlantManage/plantsAPI";
 
 function PlantManage() {
   // 🔥 로그인 정보 가져오기
@@ -30,6 +32,7 @@ function PlantManage() {
   const [isFarmCreateOpen, setIsFarmCreateOpen] = useState(false);
   const [isTimeLapseCreateOpen, setIsTimeLapseCreateOpen] = useState(false);
   const [timeLapseDetail, setTimeLapseDetail] = useState(null);
+  const [editPresetInfo, setEditPresetInfo] = useState(null);
 
   // 로그인 안 된 경우 → 안내 UI만 보여줌 (기존 코드 영향 없음)
   if (!user) {
@@ -103,6 +106,23 @@ function PlantManage() {
     fetchInitData();
   };
 
+  // 팜 수정 처리
+  const handleFarmUpdate = async (farmId, formData) => {
+    try {
+      console.log(`Updating Farm ID: ${farmId}`);
+
+      // 수정된 API 함수 호출
+      await updateFarm(farmId, formData);
+
+      alert("팜 정보가 수정되었습니다.");
+      setEditPresetInfo(null); // 모달 닫기
+      fetchInitData(); // 목록 새로고침
+    } catch (error) {
+      console.error("팜 수정 실패:", error);
+      alert("수정에 실패했습니다.");
+    }
+  };
+
   return (
     <div className="plants-page">
       <div className="nova-select-wrapper" style={{ marginBottom: "10px" }}>
@@ -138,11 +158,14 @@ function PlantManage() {
           // setSelectedFarm(farmFullData);
         }}
         onTimeLapse={setTimeLapseDetail}
+        onEdit={(farm) => {
+          setEditPresetInfo(farm);
+        }}
       />
-      {selectedFarm && (
-        <PlantModal farmId={selectedFarm.farmId} onClose={() => setSelectedFarm(null)} />
+      {selectedFarm && <PlantModal farmId={selectedFarm.farmId} onClose={() => setSelectedFarm(null)} />}
+      {editPresetInfo && (
+        <FarmEditModal farm={editPresetInfo} onClose={() => setEditPresetInfo(null)} onUpdate={handleFarmUpdate} />
       )}
-
       {isFarmCreateOpen && (
         <FarmCreateModal
           user={user}
@@ -164,9 +187,7 @@ function PlantManage() {
         />
       )}
 
-      {timeLapseDetail && (
-        <TimeLapseModal farm={timeLapseDetail} onClose={() => setTimeLapseDetail(null)} />
-      )}
+      {timeLapseDetail && <TimeLapseModal farm={timeLapseDetail} onClose={() => setTimeLapseDetail(null)} />}
     </div>
   );
 }
