@@ -37,7 +37,7 @@ public class SensorServiceImpl implements SensorService {
     private final ObjectMapper objectMapper;
     // 센서값 이상 상태 관리용 Map (알람 중복 방지용)
     // key: farmId + sensorType (ex: "1_TEMP")
-    private static final Map<String, Boolean> sensorAlarmState = new ConcurrentHashMap<>();
+    private static final Map<String, String> sensorAlarmState = new ConcurrentHashMap<>();
 
     private static final Map<String, ActuatorTypeDTO> ACTUATOR_MAP = new HashMap<>();
     static {
@@ -190,36 +190,48 @@ public class SensorServiceImpl implements SensorService {
     private void checkThreshold(FarmEntity farm, String sensorType, float sensorValue, EnvRange presetRange){
         String mapKey = "";
         String stateKey = farm.getFarmId() + "_" + sensorType;
-        boolean alarmActive = sensorAlarmState.getOrDefault(stateKey, false);
-
+        String alarmActive = sensorAlarmState.getOrDefault(stateKey,"normal");
+        String sensorState = "normal";
+        ActuatorTypeDTO act;
+        // 프리셋 범위를 벗어났을 때
         if (sensorValue < presetRange.getMin() || sensorValue > presetRange.getMax()) {
-            // 이미 알람 상태면 중복 방지
-//            if (alarmActive) {
-//                System.out.printf("중복 알림 방지, %s %s 값이 범위 내에 있지 않음.%n",farm.getFarmName(),sensorType);
-//                return;
-//            }
-            // 최초로 벗어났을 때만 알람 생성
-            sensorAlarmState.put(stateKey, true);
-
-            ActuatorTypeDTO act;
-            // 식물 알림 DB 저장
-            // 프리셋 범위보다 낮은 값이 측정되었을 때
-            if (sensorValue < presetRange.getMin()) {
+            if(sensorValue<presetRange.getMin()){
+                sensorState= "min";
                 mapKey = sensorType.toUpperCase() + "_" + "LOW";
-                act = ACTUATOR_MAP.get(mapKey);
-                alarmService.createSensorAlarm(farm,
-                        "SENSOR",
-                        act.getSensorName() + " 부족",
-                        String.format("%s이 기준보다 낮습니다. (현재 %s: %.1f%%)", act.getSensorName(), sensorType, sensorValue));
             }
-            // 프리셋 범위보다 높은 값이 측정되었을 때
-            else {
+            else if (sensorValue > presetRange.getMax()) {
+                sensorState= "max";
                 mapKey = sensorType.toUpperCase() + "_" + "HIGH";
-                act = ACTUATOR_MAP.get(mapKey);
-                alarmService.createSensorAlarm(farm,
-                        "SENSOR",
-                        act.getSensorName() + " 과다",
-                        String.format("%s이 기준보다 높습니다. (현재 %s: %.1f%%)", act.getSensorName(), sensorType, sensorValue));
+            }
+            act = ACTUATOR_MAP.get(mapKey);
+
+            // 새로 들어온 알림이 기존 알림과 동일할 경우 알림 중복 방지 (실행 x)
+            if (alarmActive.equals(sensorState)) {
+                System.out.printf("중복 알림 방지, %s %s 값이 범위 내에 있지 않음.%n",farm.getFarmName(),sensorType);
+
+            }
+            else{
+                // 최초로 벗어났을 때 알람 생성
+                sensorAlarmState.put(stateKey, sensorState);
+                // 식물 알림 DB 저장
+                // 프리셋 범위보다 낮은 값이 측정되었을 때
+                if (sensorState.equals("min")) {
+                    String text = String.format("%s이 기준보다 낮습니다. (현재 %s: %.1f%%)", act.getSensorName(), sensorType, sensorValue);
+                    System.out.println(text);
+                    alarmService.createSensorAlarm(farm,
+                            "SENSOR",
+                            act.getSensorName() + " 부족",
+                            text);
+                }
+                // 프리셋 범위보다 높은 값이 측정되었을 때
+                else {
+                    String text = String.format("%s이 기준보다 높습니다. (현재 %s: %.1f%%)", act.getSensorName(), sensorType, sensorValue);
+                    System.out.println(text);
+                    alarmService.createSensorAlarm(farm,
+                            "SENSOR",
+                            act.getSensorName() + " 과다",
+                            text);
+                }
             }
             // 액추에이터 실행
             actuatorService.control(
@@ -232,12 +244,12 @@ public class SensorServiceImpl implements SensorService {
             return;
         }
         // 정상 범위 복귀 → 상태 초기화
-        if (alarmActive) {
-            sensorAlarmState.remove(stateKey);
-            System.out.println("🔄 알람 상태 초기화: " + stateKey);
-        } else {
+        if (alarmActive.equals(sensorState)) {
             // 평소 정상 상태
             System.out.println(sensorType + ": " + sensorValue + " 값이 프리셋 정상범위 내에 있습니다.");
+        } else {
+            sensorAlarmState.remove(stateKey);
+            System.out.println("🔄 알람 상태 초기화: " + stateKey);
         }
     }
     private String alarmKey(FarmEntity farm, String sensorType) {
