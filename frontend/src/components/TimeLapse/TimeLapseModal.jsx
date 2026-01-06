@@ -63,7 +63,7 @@ export default function TimeLapseModal({farm, onClose}) {
             <div className={styles.item} key={item.id}>
               <div className={styles.infoRow}>
                 <span className={styles.label}>이름:</span>
-                <span className={styles.value}>{item.name}</span>
+                <span className={styles.value}>{item.timelapseName}</span>
               </div>
 
               <div className={styles.infoRow}>
