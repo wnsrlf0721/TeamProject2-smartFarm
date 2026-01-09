@@ -182,8 +182,18 @@ export default function OrderHistory() {
         </div>
       ) : (
         orders.map((order) => {
-          const status =
-            statusConfig[order.status];
+          console.log(
+            "order.status =",
+            order.status
+          );
+
+          const status = statusConfig[
+            order.status
+          ] || {
+            label: "결제 완료",
+            color: "status-pending",
+            icon: Clock,
+          };
           const StatusIcon = status.icon;
 
           return (

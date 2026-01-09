@@ -9,13 +9,13 @@ public enum OrderStatus {
     /**
      * 1. 주문 초기 단계
      */
-    PENDING("pending"),             // 주문/결제 완료
+    PENDING("status-pending"),             // 주문/결제 완료
     /**
      * 2. 물류 단계
      */
-    PROCESSING("processing"),       // 상품 준비 중 (판매자가 주문을 확인한 상태)
-    SHIPPING("shipping"),           // 배송 중
-    DELIVERED("delivered"),         // 배송 완료
+    PROCESSING("status-processing"),       // 상품 준비 중 (판매자가 주문을 확인한 상태)
+    SHIPPING("status-shipping"),           // 배송 중
+    DELIVERED("status-delivered"),         // 배송 완료
     /**
      * 3. 최종 완료 단계
      */
