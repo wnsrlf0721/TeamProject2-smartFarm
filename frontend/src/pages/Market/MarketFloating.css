@@ -1,0 +1,37 @@
+.floating-buttons {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+}
+
+.floating-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #d9eec6;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.floating-btn:hover {
+  background: #e9ffd9;
+  transform: translateY(-3px);
+}
+
+.floating-btn.logout {
+  background: #ffe5e5;
+  border-color: #ffbaba;
+}
+
+.floating-btn.logout:hover {
+  background: #ffd3d3;
+}

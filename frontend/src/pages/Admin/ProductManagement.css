@@ -1,0 +1,418 @@
+/* ============================= */
+/* PAGE */
+/* ============================= */
+.pm-container {
+  padding-bottom: 120px;
+  background: #f7f9f2;
+  padding-top: 1px;
+}
+
+/* ============================= */
+/* HEADER */
+/* ============================= */
+.pm-header {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8
+  );
+  border-bottom: none;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  margin: 32px auto 0;
+  max-width: 1350px;
+  border-radius: 26px;
+}
+
+.pm-header-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pm-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #253126;
+}
+
+/* ============================= */
+/* GRID */
+/* ============================= */
+.pm-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.pm-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    minmax(280px, 1fr)
+  );
+  gap: 28px;
+}
+
+/* ============================= */
+/* CARD */
+/* ============================= */
+.pm-card {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f4f7e9
+  );
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+  position: relative;
+}
+
+.pm-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* ============================= */
+/* IMAGE */
+/* ============================= */
+.pm-card-img {
+  width: 100%;
+  height: 220px; /* ⬅ 기존보다 크게 */
+  object-fit: cover;
+  display: block;
+  background: #eef2e6;
+}
+
+/* ============================= */
+/* BADGE */
+/* ============================= */
+.pm-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  border: none !important;
+  color: white !important;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+/* ============================= */
+/* TEXT */
+/* ============================= */
+.pm-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #253126;
+  margin: 16px 16px 4px;
+}
+
+.pm-card p {
+  margin: 0 16px 6px;
+  font-size: 14px;
+  color: #616e57;
+}
+
+.pm-card p:last-of-type {
+  font-size: 18px;
+  font-weight: 700;
+  color: #253126;
+  margin-bottom: 12px;
+}
+
+/* ============================= */
+/* BUTTON ROW */
+/* ============================= */
+.pm-btn-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px 18px;
+}
+
+.pm-btn-row button {
+  flex: 1;
+}
+
+/* ============================= */
+/* MODAL CONTENT */
+/* ============================= */
+.pm-dialog-grid {
+  margin-top: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+@media (max-width: 900px) {
+  .pm-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .pm-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pm-card-img {
+    height: 200px;
+  }
+}
+
+/* 공통 버튼 스타일 */
+.pm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  background: linear-gradient(
+    135deg,
+    #4caf50,
+    #81c784
+  );
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.pm-btn:hover {
+  background: linear-gradient(
+    135deg,
+    #43a047,
+    #66bb6a
+  );
+  transform: translateY(-2px);
+}
+
+.pm-btn:active {
+  transform: translateY(0px);
+}
+
+.pm-header {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8
+  );
+  border-bottom: none;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  margin: 32px auto 0;
+  max-width: 1350px;
+  border-radius: 26px;
+}
+
+.pm-header-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pm-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* 필요시 버튼 간격 조정 */
+}
+
+.pm-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #253126;
+}
+
+/* ============================= */
+/* ADMIN / COMMON MODAL STYLE */
+/* ============================= */
+
+/* ============================= */
+/* ADMIN / COMMON MODAL STYLE */
+/* ============================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* 전체 화면을 덮도록 설정 */
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Modal Box */
+.modal-content {
+  width: 100%;
+  max-width: 420px;
+  height: auto; /* 콘텐츠에 맞게 높이를 자동으로 조정 */
+  max-height: 80vh; /* 최대 높이 제한 (모바일에서 특히 유용) */
+  background: linear-gradient(135deg, #ffffff, #f7fbe8);
+  border-radius: 24px;
+  padding: 40px 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  animation: modalFadeUp 0.35s ease;
+  overflow: hidden; /* 스크롤 방지 */
+}
+
+/* Animation */
+@keyframes modalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* Title */
+.modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 22px;
+  color: #253126;
+}
+
+/* Body */
+.modal-body {
+  margin-bottom: 24px;
+}
+
+/* Input inside modal */
+.modal-content input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #d0d7c5;
+  font-size: 15px;
+  margin-bottom: 18px;
+  transition: all 0.2s ease;
+}
+
+.modal-content input:focus {
+  outline: none;
+  border-color: #acda00;
+  box-shadow: 0 0 0 3px rgba(172, 218, 0, 0.25);
+}
+
+/* ============================= */
+/* MODAL ACTION BUTTONS */
+/* ============================= */
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* Cancel Button */
+.modal-btn.cancel,
+.modal-close-btn {
+  flex: 1;
+  min-width: 100px; 
+  padding: 14px 0;
+  background: #e8f3c8; 
+  color: #55602f;
+  border-radius: 32px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.modal-btn.cancel:hover,
+.modal-close-btn:hover {
+  background: #d8ec9c;
+  transform: translateY(-1px);
+}
+
+/* Confirm Button */
+.modal-btn.confirm {
+  flex: 1;
+  padding: 12px 0;
+  background: #acda00;
+  color: #253126;
+  border-radius: 30px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(172, 218, 0, 0.35);
+  transition: 0.25s ease;
+}
+
+.modal-btn.confirm:hover {
+  background: #99c200;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(172, 218, 0, 0.45);
+}
+
+/* ============================= */
+/* MODAL BUTTON - DANGER */
+/* ============================= */
+
+.modal-btn.danger {
+  flex: 1;
+  min-width: 180px; /* 다른 버튼과 동일 */
+  padding: 14px 0;
+  background: linear-gradient(135deg, #ff6b6b, #ff4d4d);
+  color: #ffffff;
+  border-radius: 32px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 77, 77, 0.35);
+  transition: all 0.25s ease;
+}
+
+.modal-btn.danger:hover {
+  background: linear-gradient(135deg, #ff4d4d, #e63b3b);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(255, 77, 77, 0.45);
+}
+
+/* 눌림 효과 */
+.modal-btn.danger:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(255, 77, 77, 0.35);
+}
+.modal-wrapper-btns {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 30px;
+}

@@ -4,8 +4,8 @@ from threading import Lock
 
 class Pump():
     def __init__(self):
-        self.IN1_PIN = 17
-        self.IN2_PIN = 27
+        self.IN1_PIN = 5
+        self.IN2_PIN = 6
         self.PUMP_DURATION = 5   # 펌프 작동 시간 (초)
 
         self._pump_lock = Lock()

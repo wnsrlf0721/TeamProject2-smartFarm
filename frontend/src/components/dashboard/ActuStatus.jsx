@@ -11,7 +11,7 @@ export default function ActuStatus({ logs = [], current_sensor = {} }) {
   const SENSORS = {
     fan: "Fan",
     pump: "Pump",
-    led: "LED",
+    blind: "Blind",
     humidifier: "Humidifier",
     heater: "Heater",
   };

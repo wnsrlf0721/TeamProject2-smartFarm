@@ -23,11 +23,21 @@ class Actuator:
         GPIO.output(self.pin, GPIO.LOW)
 
     def control_msg(self,msg):
-        print(msg)
-        if msg=="on":
+        action = msg.get("action", "").upper().split("/")[0]
+        if action=="ON":
             self.onTime(5) #5초 on
-        elif msg=="off":
+        elif action=="OFF":
             self.off()
 
     def clean(self):
         GPIO.cleanup()
+
+
+if __name__ == "__main__":
+    actuator = Actuator(20)
+    try:
+        while True:
+            actuator.onTime(2)
+            time.sleep(1)
+    except KeyboardInterrupt:
+        actuator.clean()

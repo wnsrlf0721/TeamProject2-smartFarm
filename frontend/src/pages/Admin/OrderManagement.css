@@ -1,0 +1,571 @@
+/* 전체 페이지 */
+.om-page {
+  min-height: 100vh;
+  background: #f5f6fa;
+  padding-top: 1px;
+}
+
+/* HEADER */
+.om-header {
+  max-width: 1350px;
+  margin: 32px auto 0;
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8
+  );
+  border-radius: 26px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  padding: 0;
+  border-bottom: none;
+}
+
+/* 내부 정렬 */
+.om-header {
+  height: 78px;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+}
+
+/* 타이틀 */
+.om-header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #253126;
+}
+
+/* CONTENT */
+.om-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 카드 헤더 버튼 공통 */
+/* .om-card-header button {
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 28px;
+  background: #253126;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+} */
+/* .om-card-header button:hover {
+  background: #1d261f;
+  transform: translateY(-1px);
+} */
+/* .om-card button:not(.secondary) {
+  height: 48px;
+  border-radius: 28px;
+  background: #253126;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  transition: 0.25s ease;
+}
+
+.om-card button:not(.secondary):hover {
+  background: #1d261f;
+} */
+
+/* CARD */
+.om-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e3e5ea;
+  padding: 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  transition: 0.2s;
+}
+
+.om-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* CARD HEADER */
+.om-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.om-card-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* STATUS COLORS */
+.status-pending {
+  background: #90a1b9 !important;
+}
+.status-processing {
+  background: #51a2ff !important;
+}
+.status-shipping {
+  background: #c27aff !important;
+}
+.status-delivered {
+  background: #05df72 !important;
+}
+.status-confirmed {
+  background: #16a34a !important;
+}
+.status-cancelled {
+  background: #ff5555 !important;
+}
+.status-refund-requested {
+  background: #ffa500 !important;
+}
+.status-refunded {
+  background: #62748e !important;
+}
+
+/* CARD BODY */
+.om-card-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 32px;
+}
+
+.om-card-body p {
+  font-size: 14px;
+  color: #333;
+}
+
+.om-card-body strong {
+  color: #111;
+}
+
+/* ===== 상품 이미지 크게 ===== */
+.om-product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.om-product-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/*  기존 60px → 크게 */
+.om-product-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid #e3e5ea;
+  background: #f5f6fa;
+}
+
+/* 이미지 옆 정보 */
+.om-product-info {
+  flex: 1;
+}
+
+.om-product-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.om-product-price {
+  font-size: 14px;
+  color: #666;
+}
+
+/* BUTTON AREA */
+/* .om-card-header button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+} */
+
+/* TRACKING BOX */
+.om-tracking-box {
+  background: #f0e8ff;
+  border: 1px solid #c27aff;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.om-tracking-label {
+  font-size: 12px;
+  color: #a45bff;
+}
+
+.om-tracking-number {
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* REFUND BOX */
+.om-refund-box {
+  background: #ffe8e8;
+  border: 1px solid #ff5555;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.om-refund-label {
+  font-size: 12px;
+  color: #ff5555;
+}
+
+.om-refund-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* MODAL */
+.om-modal {
+  background: white !important;
+  border-radius: 14px;
+  max-width: 480px;
+}
+/* 공통 버튼 스타일 */
+.pm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  background: linear-gradient(
+    135deg,
+    #4caf50,
+    #81c784
+  );
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.pm-btn:hover {
+  background: linear-gradient(
+    135deg,
+    #43a047,
+    #66bb6a
+  );
+  transform: translateY(-2px);
+}
+
+.pm-btn:active {
+  transform: translateY(0px);
+}
+
+.pm-header {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8
+  );
+  border-bottom: none;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  margin: 32px auto 0;
+  max-width: 1350px;
+  border-radius: 26px;
+}
+
+.pm-header-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pm-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; 
+}
+
+.pm-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #253126;
+}
+
+/* ============================= */
+/* ADMIN / COMMON MODAL STYLE */
+/* ============================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Modal Box */
+.modal-content {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(135deg, #ffffff, #f7fbe8);
+  border-radius: 24px;
+  padding: 30px 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  animation: modalFadeUp 0.35s ease;
+}
+
+/* Animation */
+@keyframes modalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Title */
+.modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+  margin-top: 22px;
+  margin-bottom: 22px;
+  color: #253126;
+}
+
+/* Body */
+.modal-body {
+  margin-bottom: 24px;
+}
+
+/* Input inside modal */
+.modal-content input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #d0d7c5;
+  font-size: 15px;
+  margin-bottom: 18px;
+  transition: all 0.2s ease;
+}
+
+.modal-content input:focus {
+  outline: none;
+  border-color: #acda00;
+  box-shadow: 0 0 0 3px rgba(172, 218, 0, 0.25);
+}
+
+/* ============================= */
+/* MODAL ACTION BUTTONS */
+/* ============================= */
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Cancel Button */
+.modal-btn.cancel,
+.modal-close-btn {
+  flex: 1;
+  padding: 12px 0;
+  background: #e0e0e0;
+  color: #555;
+  border-radius: 30px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.modal-btn.cancel:hover,
+.modal-close-btn:hover {
+  background: #cfcfcf;
+}
+
+/* Confirm Button */
+.modal-btn.confirm {
+  flex: 1;
+  padding: 12px 0;
+  background: #acda00;
+  color: #253126;
+  border-radius: 30px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(172, 218, 0, 0.35);
+  transition: 0.25s ease;
+}
+
+.modal-btn.confirm:hover {
+  background: #99c200;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(172, 218, 0, 0.45);
+}
+/* ============================= */
+/* MODAL BUTTON - DANGER */
+/* ============================= */
+
+.modal-btn.danger {
+  flex: 1;
+  min-width: 180px; 
+  padding: 14px 0;
+  background: linear-gradient(135deg, #ff6b6b, #ff4d4d);
+  color: #ffffff;
+  border-radius: 32px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 77, 77, 0.35);
+  transition: all 0.25s ease;
+}
+
+.modal-btn.danger:hover {
+  background: linear-gradient(135deg, #ff4d4d, #e63b3b);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(255, 77, 77, 0.45);
+}
+
+
+.modal-btn.danger:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(255, 77, 77, 0.35);
+}
+/* ============================= */
+/* TRACKING NUMBER MODAL */
+/* ============================= */
+
+.tracking-modal .modal-title {
+  margin-bottom: 12px; 
+}
+
+.tracking-modal input {
+  margin-bottom: 12px; 
+  padding: 12px 14px;
+}
+
+
+.tracking-modal {
+  padding: 0; 
+}
+
+.modal-content:has(.tracking-modal) {
+  padding: 20px 22px; 
+  max-width: 360px;   
+  max-height: 270px;   
+}
+
+
+.modal-content:has(.tracking-modal) .modal-actions {
+  margin-top: 12px;
+}
+.modal-wrapper-btns {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+
+/* 공통 모달 내용 조정 */
+.modal-content {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(135deg, #ffffff, #f7fbe8);
+  border-radius: 24px;
+  padding: 30px 28px; 
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  animation: modalFadeUp 0.35s ease;
+  max-height: 270px;      
+  overflow-y: auto;        
+}
+
+/* TRACKING MODAL */
+.tracking-modal .modal-content {
+  max-width: 360px;
+  max-height: 270px;      
+  padding: 20px 22px;      
+}
+
+/* CONFIRM MODAL (배송 완료) */
+.confirm-modal .modal-content {
+  max-width: 360px;        
+  max-height: 270px;      
+  padding: 20px 22px;      
+  overflow-y: auto;        
+}
+.om-card-header .pm-btn {
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 28px;
+
+  background: linear-gradient(
+    135deg,
+    #4caf50,
+    #81c784
+  );
+  color: white;
+  font-weight: 700;
+
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.om-card-header .pm-btn:hover {
+  background: linear-gradient(
+    135deg,
+    #43a047,
+    #66bb6a
+  );
+  transform: translateY(-2px);
+}
+.pm-btn.outline {
+  background: transparent;
+  border: 2px solid #4caf50;
+  color: #2e7d32;
+}
+
+.pm-btn.outline:hover {
+  background: #4caf50;
+  color: white;
+}

@@ -22,7 +22,6 @@ import java.util.List;
 public class TimelapseVideoServiceImpl implements TimelapseVideoService {
     private final TimelapseDAO timelapseDAO;
     @Override
-    @Async
     public void renderVideo(long settingId) {
         try {
             TimelapseEntity timelapseEntity = timelapseDAO.findById(settingId);

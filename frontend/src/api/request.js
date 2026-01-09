@@ -25,6 +25,51 @@ const requests = {
   dashboardAlarms: "/alarm/dashboard",
   readDashboardTodayAll: "/alarm/dashboard/today/read-all",
   readDashboardPreviousAll: "/alarm/dashboard/previous/read-all",
+
+  /* ===== PRODUCT (USER) ===== */
+  productList: "/api/products",
+  productDetail: (productId) =>
+    `/api/products/${productId}`,
+
+  /* ===== PRODUCT (ADMIN) ===== */
+  adminProductList: "/api/admin/products",
+  adminProductDetail: (productId) =>
+    `/api/admin/products/${productId}`,
+
+  /* ===== CART ===== */
+  cartItems: "/api/cart/items",
+  addCartItem: "/api/cart/items",
+  updateCartItemQuantity: (cartItemId) =>
+    `/api/cart/items/${cartItemId}`,
+  deleteCartItem: (cartItemId) =>
+    `/api/cart/items/${cartItemId}`,
+  clearCart: "/api/cart/clear",
+
+  /* ===== ORDER ===== */
+  orderCreate: "/api/order",
+  orderList: "/api/order/orders",
+  orderDetail: (orderUid) =>
+    `/api/order/${orderUid}`,
+  orderConfirm: (orderUid) =>
+    `/api/order/${orderUid}/confirm`,
+  orderCancel: (orderUid) =>
+    `/api/order/${orderUid}/cancel`,
+
+
+  /* ===== ORDER (ADMIN) ===== */
+  adminOrderList: "/api/admin/orders",
+
+  adminOrderUpdateStatus: (orderUid) =>
+    `/api/admin/orders/${orderUid}/status`,
+
+  adminOrderApproveRefund: (orderUid) =>
+    `/api/admin/orders/${orderUid}/refund/approve`,
+
+  adminOrderUpdateTracking: (orderUid) =>
+    `/api/admin/orders/${orderUid}/tracking`,
+
+  /* ===== PAYMENT ===== */
+  paymentConfirm: "/api/payment",
 };
 
 export default requests;

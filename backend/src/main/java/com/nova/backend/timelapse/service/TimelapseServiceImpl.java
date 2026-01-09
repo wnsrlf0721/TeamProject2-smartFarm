@@ -92,14 +92,8 @@ public class TimelapseServiceImpl implements TimelapseService {
                     if (step == null) {
                         entity.setCaptureInterval(dto.getCaptureInterval());
                     } else if (step != null) {
-                        entity.setCaptureInterval(step.getPeriodDays() * 60 / (dto.getFps() * dto.getDuration()));
-                        System.out.println("=====================================================");
-                        System.out.println("step.getPeriodDays(): " + step.getPeriodDays());
-                        System.out.println("dto.getFps(): " + dto.getFps());
-                        System.out.println("dto.getDuration(): " + dto.getDuration());
-                        System.out.println("entity.getCaptureInterval(): " + entity.getCaptureInterval());
-                        System.out.println("=====================================================");
-                        //entity.setCaptureInterval(step.getPeriodDays() * 86400 / (dto.getFps() * dto.getDuration()));
+//                        entity.setCaptureInterval(step.getPeriodDays() * 60 / (dto.getFps() * dto.getDuration()));
+                        entity.setCaptureInterval(step.getPeriodDays() * 86400 / (dto.getFps() * dto.getDuration()));
                     }
                     entity.setResolution(dto.getResolution());
                     entity.setState(dto.getState());
@@ -135,13 +129,13 @@ public class TimelapseServiceImpl implements TimelapseService {
                 // TimelapseCommand에서 Duration은 촬영 기간을 의미
                 // DB에서는 일(day) 단위로 저장돼 있지만 값을 전달할 때 초로 변환해야 돼서 86400을 곱함
                 // 지금은 테스트 용으로 분 단위로 변경 60을 곱함
-                // 관련 코드들도 동일하게 수정 -> 95라인, 241라인
+                // 관련 코드들도 동일하게 수정 -> 95라인, 246라인
                 String[] widthAndHeight = firstStep.getResolution().split("x");
                 TimelapseCommand command = new TimelapseCommand(
                         "start",
                         firstStep.getCaptureInterval(),
-                        firstStep.getDuration() * 60,
-                        //firstStep.getDuration() * 86400,
+//                        firstStep.getDuration() * 60,
+                        firstStep.getDuration() * 86400,
                         Integer.parseInt(widthAndHeight[0]),
                         Integer.parseInt(widthAndHeight[1]));
                 String payload = objectMapper.writeValueAsString(command);
@@ -249,8 +243,8 @@ public class TimelapseServiceImpl implements TimelapseService {
                     TimelapseCommand command = new TimelapseCommand(
                             "start",
                             nextStep.getCaptureInterval(),
-                            nextStep.getDuration() * 60,
-                            //nextStep.getDuration() * 86400,
+//                            nextStep.getDuration() * 60,
+                            nextStep.getDuration() * 86400,
                             Integer.parseInt(widthAndHeight[0]),
                             Integer.parseInt(widthAndHeight[1])
                             );

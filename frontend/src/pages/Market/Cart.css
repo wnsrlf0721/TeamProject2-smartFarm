@@ -1,0 +1,397 @@
+
+/* =========================
+   전체 페이지 
+========================= */
+.cart-page-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: "Pretendard", sans-serif;
+  color: #253126;
+  background: radial-gradient(
+        circle,
+        rgba(0, 0, 0, 0.035) 1.5px,
+        transparent 1.5px
+      )
+      0 0 / 40px 40px,
+    #f7ffe8;
+}
+
+/* =========================
+   HEADER
+========================= */
+.cart-header {
+  position: sticky;
+  top: 10px;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8 40%,
+    #f4f2e1 100%
+  );
+  padding: 14px 22px;
+  border-radius: 18px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+}
+
+.cart-header-inner {
+  position: relative;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}
+
+.cart-title {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* 왼쪽 뒤로가기 버튼 */
+.cart-back-btn {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #0f2e0f;
+  border: 1px solid #1a4d1a;
+  color: #4ade80;
+  padding: 6px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.25s;
+}
+
+.cart-back-btn:hover {
+  transform: translateY(-50%) scale(1.05);
+  border-color: #22c55e;
+  box-shadow: 0 0 12px #16a34a60;
+}
+
+/* 오른쪽 비우기 버튼 */
+.clear-btn {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(
+    90deg,
+    #ff6b6b,
+    #ff4c4c
+  );
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.25s;
+}
+
+.clear-btn:hover {
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 0 16px rgba(255, 107, 107, 0.5);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.cart-continue-btn,
+.cart-order-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border-radius: 14px;
+  transition: 0.25s;
+  font-weight: 700;
+}
+
+.cart-continue-btn {
+  background: linear-gradient(
+    90deg,
+    #16a34a,
+    #15803d
+  );
+  color: #fff;
+  border: none;
+  padding: 12px 26px;
+}
+
+.cart-continue-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #16a34a80;
+}
+
+.cart-order-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #acda00,
+    #99c200
+  );
+  color: #253126;
+  border: none;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.cart-order-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 24px rgba(172, 218, 0, 0.7);
+}
+
+/* =========================
+   EMPTY STATE 
+========================= */
+.cart-empty-container {
+  min-height: calc(
+    100vh - 140px
+  ); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 20px; 
+  box-sizing: border-box;
+}
+
+.cart-empty-box {
+  width: 100%;
+  max-width: 1200px;
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8
+  );
+  padding: 60px 42px; 
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.1);
+}
+
+.cart-empty-text {
+  font-size: 18px;
+  color: #5c6d5f;
+  margin-bottom: 22px;
+}
+
+/* =========================
+   CONTENT LAYOUT
+========================= */
+.cart-content {
+  max-width: 1200px;
+  margin: 28px auto 0;
+}
+
+.cart-layout {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.cart-items {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+.cart-summary {
+  flex: 1;
+  position: sticky;
+  top: 120px;
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8
+  );
+  padding: 26px;
+  border-radius: 24px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+}
+
+.cart-summary h2 {
+  font-size: 20px;
+  margin-bottom: 18px;
+}
+
+.cart-summary-list div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #5c6d5f;
+  font-weight: 500;
+}
+
+.cart-summary hr {
+  border: none;
+  border-top: 1px solid #e5ecd7;
+  margin: 12px 0;
+}
+
+.cart-summary-total span:first-child {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* =========================
+   CART CARD
+========================= */
+.cart-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8 40%,
+    #f4f2e1 100%
+  );
+  padding: 18px;
+  border-radius: 24px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.cart-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.14);
+}
+
+.cart-card-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.cart-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cart-card-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cart-card-unit {
+  font-size: 14px;
+  color: #6b6b6b;
+}
+
+.cart-qty-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-qty-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f0f3e7;
+  padding: 6px 12px;
+  border-radius: 14px;
+}
+
+.cart-qty-box button {
+  background: none;
+  border: none;
+  color: #16a34a;
+  cursor: pointer;
+}
+
+.cart-card-price {
+  font-weight: 700;
+}
+
+/* =========================
+   REMOVE BUTTON
+========================= */
+.cart-remove-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #253126;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.cart-remove-btn:hover {
+  transform: rotate(-15deg) scale(1.15);
+  background: #182018;
+}
+
+/* =========================
+   ETC
+========================= */
+.free {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+/* 공통 버튼 스타일 */
+.pm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  background: linear-gradient(
+    135deg,
+    #4caf50,
+    #81c784
+  );
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.pm-btn:hover {
+  background: linear-gradient(
+    135deg,
+    #43a047,
+    #66bb6a
+  );
+  transform: translateY(-2px);
+}
+
+.pm-btn:active {
+  transform: translateY(0px);
+}

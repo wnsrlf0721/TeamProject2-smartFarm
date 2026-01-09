@@ -1,0 +1,402 @@
+
+
+/* =========================
+   전체 페이지
+========================= */
+.order-tracking-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px 20px 80px;
+  margin: 0 auto;
+
+  font-family: "Pretendard", sans-serif;
+  color: #253126;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0, 0, 0, 0.035) 1.5px,
+      transparent 1.5px
+    )
+    0 0 / 40px 40px,
+    #f7ffe8;
+}
+
+/* =========================
+   HEADER
+========================= */
+.order-tracking-header {
+  position: sticky;
+  top: 10px;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto 24px;
+
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8 40%,
+    #f4f2e1 100%
+  );
+
+  padding: 14px 22px;
+  border-radius: 18px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+}
+
+.order-tracking-header-inner {
+  display: flex;
+  align-items: center;
+}
+
+.order-tracking-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #253126;
+}
+
+/* =========================
+   공통 카드
+========================= */
+.feature-card,
+.section-card {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding: 24px;
+
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8 40%,
+    #f4f2e1 100%
+  );
+
+  border-radius: 20px;
+  border: 1px solid #dbe7c9;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================
+   hover scale 공통
+========================= */
+.hover-scale {
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* =========================
+   주문 정보
+========================= */
+.order-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.order-info-id {
+  font-size: 20px;
+  font-weight: 700;
+  color: #253126;
+}
+
+.order-info-date {
+  font-size: 14px;
+  color: #5c6d5f;
+}
+
+/* =========================
+   배송 단계 (Progress)
+========================= */
+.tracking-steps-wrapper {
+  position: relative;
+  margin-top: 16px;
+}
+
+.tracking-line-background {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #dbe7c9;
+}
+
+.tracking-line-progress {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #4ade80, #22c55e);
+  transition: 0.25s;
+}
+
+.tracking-steps-flex {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #dbe7c9;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+
+.step-icon-inactive {
+  color: #9aa88f;
+}
+
+.step-label {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #5c6d5f;
+}
+
+.step-label-current {
+  color: #253126;
+  font-weight: 600;
+}
+
+.step-current-dot {
+  margin-top: 4px;
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+}
+
+/* =========================
+   송장번호
+========================= */
+.invoice-wrapper {
+  display: flex;
+  gap: 16px;
+}
+
+.invoice-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #0f2e0f;
+  border: 1px solid #1a4d1a;
+  color: #4ade80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.invoice-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.invoice-code {
+  background: #ffffff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid #dbe7c9;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 18px;
+  color: #166534;
+}
+
+.invoice-help {
+  font-size: 12px;
+  color: #5c6d5f;
+  margin-top: 6px;
+}
+
+/* =========================
+   배송지 정보
+========================= */
+.delivery-info-wrapper {
+  display: flex;
+  gap: 16px;
+}
+
+.delivery-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #dbe7c9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* hover-scale 적용 가능 */
+.delivery-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.delivery-text {
+  font-size: 14px;
+  color: #5c6d5f;
+}
+
+/* =========================
+   주문 상품
+========================= */
+.order-items-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.order-item {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2edd6;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.order-item-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.order-item-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.order-item-desc {
+  font-size: 14px;
+  color: #5c6d5f;
+  margin-bottom: 4px;
+}
+
+.order-item-unit {
+  font-size: 12px;
+  color: #8a9b8d;
+}
+
+.order-item-price {
+  margin-left: auto;
+  font-size: 18px;
+  font-weight: 700;
+  color: #253126;
+}
+
+/* =========================
+   총 결제 금액
+========================= */
+.total-price-row {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #dbe7c9;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-price-label {
+  font-size: 16px;
+  color: #5c6d5f;
+}
+
+.total-price-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #166534;
+}
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.content-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.flex-1 {
+  flex: 1;
+}
+.order-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 16px;
+}
+.step-icon-active {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  border-color: #22c55e;
+  color: #ffffff;
+}
+
+.step-icon-svg {
+  width: 20px;
+  height: 20px;
+}
+.invoice-copy-btn {
+  padding: 6px 8px;
+  height: 36px;
+}
+
+.invoice-copy-icon {
+  width: 16px;
+  height: 16px;
+}
+.delivery-icon-svg {
+  width: 22px;
+  height: 22px;
+  color: #166534;
+}
+.order-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+
+.empty-state-inner {
+  text-align: center;
+}
+
+.empty-message {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.empty-return-btn {
+  padding: 10px 18px;
+}

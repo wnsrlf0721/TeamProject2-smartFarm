@@ -1,0 +1,399 @@
+/* =======================================
+   전체 페이지 느낌 
+======================================= */
+.checkout-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: radial-gradient(
+        circle,
+        rgba(0, 0, 0, 0.05) 2px,
+        transparent 2px
+      )
+      0 0 / 40px 40px,
+    linear-gradient(
+      180deg,
+      #f5ffe8 0%,
+      #ffffff 40%,
+      #f3ffe0 100%
+    );
+}
+
+/* ---------------------------------------
+   헤더
+--------------------------------------- */
+.checkout-header {
+  background: linear-gradient(
+    135deg,
+    #e9ffbf,
+    #ffffff
+  );
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  border-radius: 0 0 26px 26px;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  padding: 0 26px;
+}
+
+.header-back-btn {
+  color: #253126 !important;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #253126;
+}
+
+/* ---------------------------------------
+   Layout
+--------------------------------------- */
+.checkout-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.checkout-grid {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+/* =======================================
+   카드 스타일 
+======================================= */
+.checkout-card {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7fbe8 40%,
+    #f4f2e1 100%
+  );
+  padding: 26px; 
+  border-radius: 24px; 
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: 0.35s ease;
+}
+
+.checkout-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 22px 42px rgba(0, 0, 0, 0.14);
+}
+
+.checkout-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--noise-texture);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.checkout-card-title {
+  font-size: 20px;
+  color: #253126;
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+
+/* ---------------------------------------
+   checkout-form 통일
+--------------------------------------- */
+.checkout-form {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  gap: 18px; 
+}
+
+.checkout-form .checkout-card {
+  width: 100%; 
+}
+
+/* ---------------------------------------
+   Input Fields
+--------------------------------------- */
+.checkout-field {
+  margin-bottom: 18px;
+}
+
+.checkout-label {
+  color: #616e57;
+  font-weight: 600;
+}
+
+.checkout-input {
+  background: #ffffff !important;
+  border-color: #d4deb5 !important;
+  margin-top: 6px;
+  color: #253126 !important;
+}
+
+/* ---------------------------------------
+   결제 수단
+--------------------------------------- */
+.payment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  background: #ffffffcc;
+  border: 2px solid #e4e8d2;
+  transition: 0.3s;
+}
+
+.payment-item:hover {
+  transform: translateY(-3px);
+}
+
+.payment-item.active {
+  background: #acda001c;
+  border-color: #acda00;
+}
+
+.payment-label {
+  color: #253126;
+  font-weight: 600;
+}
+
+/* ---------------------------------------
+   Summary
+--------------------------------------- */
+.summary-items {
+  max-height: 320px; 
+  overflow-y: auto;
+}
+
+.summary-items {
+  max-height: 320px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  display: flex;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #d3ddc1;
+}
+
+.summary-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.summary-info p {
+  margin: 2px 0;
+}
+
+.summary-name {
+  font-size: 14px;
+  color: #253126;
+  font-weight: 600;
+}
+
+.summary-qty {
+  font-size: 12px;
+  color: #6c7b61;
+}
+
+.summary-price {
+  font-size: 14px;
+  color: #253126;
+}
+
+/* ---------------------------------------
+   가격
+--------------------------------------- */
+.summary-price-box {
+  margin-top: 20px;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  color: #616e57;
+  margin-bottom: 10px;
+}
+
+.free {
+  color: #05a833;
+  font-weight: 700;
+}
+
+.summary-total {
+  border-top: 1px solid #cdd8b7;
+  padding-top: 14px;
+  margin-top: 14px;
+
+  display: flex;
+  justify-content: space-between;
+  color: #253126;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ---------------------------------------
+   결제 버튼
+--------------------------------------- */
+.checkout-pay-btn {
+  width: 100%;
+  margin-top: 18px;
+  height: 48px;
+  border-radius: 28px;
+  background: #253126 !important;
+  color: #ffffff !important;
+  transition: 0.25s ease;
+}
+
+.checkout-pay-btn:hover {
+  background: #182018 !important;
+  transform: translateY(-3px);
+}
+
+
+.checkout-card .checkout-field {
+  display: flex;
+  align-items: center;
+  gap: 6px; 
+}
+
+
+.checkout-card .checkout-label {
+  width: 130px; 
+  text-align: right;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  padding-right: 4px; 
+}
+
+
+.checkout-card .checkout-input {
+  flex: 1; 
+}
+
+
+.checkout-card .flex {
+  display: flex;
+  gap: 6px;
+}
+
+.checkout-card .flex .checkout-input {
+  flex: 1;
+}
+
+
+.checkout-card .checkout-field {
+  display: flex;
+  align-items: center;
+  gap: 6px; 
+}
+
+
+.checkout-card .checkout-label {
+  width: 130px; 
+  text-align: right;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  padding-right: 4px;
+}
+
+
+.checkout-card .checkout-input {
+  flex: 1;
+  min-width: 0; 
+}
+
+
+.checkout-card .checkout-field.address-field {
+  gap: 6px;
+}
+
+
+.checkout-card
+  .checkout-field.address-field
+  .flex {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+
+.checkout-card
+  .checkout-field.address-field
+  .checkout-input {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap; 
+  overflow-x: auto; 
+}
+
+.checkout-card
+  .checkout-field.address-field
+  .flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.checkout-address {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+
+.checkout-address-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.checkout-address-row .checkout-input {
+  flex: 1;
+  min-width: 0;
+}
+.checkout-address {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.checkout-address-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.checkout-address-row .checkout-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.checkout-address-row button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}

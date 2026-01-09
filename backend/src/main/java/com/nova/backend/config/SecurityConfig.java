@@ -41,7 +41,11 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
-                        //  CORS preflight 허용 (이게 핵심)
+
+                        // 관리자 API
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        //  CORS preflight 허용
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         //  인증 없이 접근 허용
@@ -55,7 +59,13 @@ public class SecurityConfig {
                                 "/api/users/password/**",
                                 "/alarm/subscribe",
                                 "/alarm/test-send",
-                                "/video-files/**"
+                                "/api/products/**",
+                                "/api/order/**",
+                                "/api/cart/**",
+                                "/api/payment/**",
+                                "/video-files/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
                         ).permitAll()
                         // 나머지는 인증 필요
                         .anyRequest().authenticated()
