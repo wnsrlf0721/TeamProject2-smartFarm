@@ -316,7 +316,10 @@ https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive
 ### 알림 페이지 기능
 추후 넣을 예정 
 ### 마켓 기능 
-추후 넣을 예정 
+https://drive.google.com/file/d/1dEoNapvnkmO5H7oa98LB_k3kLQRPqVdp/view?usp=sharing
+### 곤리자 기능 
+https://drive.google.com/file/d/14NuJ_qxS5mmdt3nCtC64MT_agcD4E9ho/view?usp=sharing
+https://drive.google.com/file/d/1FThUxlqE-uOzjyyixBSN1P4EKIHzbi8V/view?usp=sharing
 
 # 프로젝트 회고
 
