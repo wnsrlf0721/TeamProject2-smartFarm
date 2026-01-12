@@ -247,86 +247,89 @@ export default function ProductManagement() {
         </div>
       </div>
 
-      {/* ================= ADD MODAL ================= */}
-      <Modal
-        open={isAddModal}
-        onClose={() => setIsAddModal(false)}
-        onConfirm={handleAddProduct} 
-        title="새 상품 추가"
+{/* ================= ADD MODAL ================= */}
+<Modal
+  open={isAddModal}
+  onClose={() => setIsAddModal(false)}
+  onConfirm={handleAddProduct} // Add 모달은 confirm 버튼 사용
+  title="새 상품 추가"
+>
+  <div className="pm-dialog-grid">
+    <Label>상품명</Label>
+    <Input
+      value={newProduct.name}
+      onChange={(e) =>
+        setNewProduct({ ...newProduct, name: e.target.value })
+      }
+    />
+
+    <Label>생산지</Label>
+    <Input
+      value={newProduct.farmName}
+      onChange={(e) =>
+        setNewProduct({ ...newProduct, farmName: e.target.value })
+      }
+    />
+
+    <Label>가격</Label>
+    <Input
+      type="number"
+      value={newProduct.price}
+      onChange={(e) =>
+        setNewProduct({
+          ...newProduct,
+          price: Number(e.target.value),
+        })
+      }
+    />
+  </div>
+</Modal>
+
+{/* ================= EDIT MODAL ================= */}
+<Modal
+  open={isEditModal}
+  onClose={() => setIsEditModal(false)}
+  title="상품 수정"
+  // onConfirm 제거 → Modal 기본 확인 버튼 없음
+>
+  {editingProduct && (
+    <div className="pm-dialog-grid">
+      <Label>가격</Label>
+      <Input
+        type="number"
+        value={editingProduct.price}
+        onChange={(e) =>
+          setEditingProduct({
+            ...editingProduct,
+            price: Number(e.target.value),
+          })
+        }
+      />
+
+      <Label>재고</Label>
+      <Input
+        type="number"
+        value={editingProduct.stock}
+        onChange={(e) =>
+          setEditingProduct({
+            ...editingProduct,
+            stock: Number(e.target.value),
+          })
+        }
+      />
+
+      {/* Edit 모달 전용 버튼 */}
+      <Button
+        className="pm-btn"
+        variant="outline"
+        onClick={handleEditProduct}
       >
-        <div className="pm-dialog-grid">
-          <Label>상품명</Label>
-          <Input
-            value={newProduct.name}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, name: e.target.value })
-            }
-          />
+        수정 완료
+      </Button>
+    </div>
+  )}
+</Modal>
 
-          <Label>생산지</Label>
-          <Input
-            value={newProduct.farmName}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, farmName: e.target.value })
-            }
-          />
-
-          <Label>가격</Label>
-          <Input
-            type="number"
-            value={newProduct.price}
-            onChange={(e) =>
-              setNewProduct({
-                ...newProduct,
-                price: Number(e.target.value),
-              })
-            }
-          />
-        </div>
-      </Modal>
-
-      {/* ================= EDIT MODAL ================= */}
-      <Modal
-        open={isEditModal}
-        onClose={() => setIsEditModal(false)}
-        title="상품 수정"
-      >
-        {editingProduct && (
-          <div className="pm-dialog-grid">
-            <Label>가격</Label>
-            <Input
-              type="number"
-              value={editingProduct.price}
-              onChange={(e) =>
-                setEditingProduct({
-                  ...editingProduct,
-                  price: Number(e.target.value),
-                })
-              }
-            />
-
-            <Label>재고</Label>
-            <Input
-              type="number"
-              value={editingProduct.stock}
-              onChange={(e) =>
-                setEditingProduct({
-                  ...editingProduct,
-                  stock: Number(e.target.value),
-                })
-              }
-            />
-
-            <Button
-              className="pm-btn"
-              variant="outline"
-              onClick={handleEditProduct}
-            >
-              수정 완료
-            </Button>
-          </div>
-        )}
-      </Modal>
     </div>
   );
 }
@@ -344,27 +347,24 @@ function Modal({ open, onClose, onConfirm, title, children }) {
         onClick={(e) => e.stopPropagation()}
       >
         {title && <h2 className="modal-title">{title}</h2>}
-
         <div className="modal-body">{children}</div>
 
-        {/* 버튼 영역 */}
         <div className="modal-wrapper-btns">
-          <Button
-            className="modal-btn confirm"
-            onClick={onConfirm} 
-          >
-            확인
-          </Button>
-          <Button
-            className="modal-btn cancel"
-            onClick={onClose}
-          >
+          {onConfirm && (
+            <Button
+              className="modal-btn confirm"
+              onClick={onConfirm}
+            >
+              확인
+            </Button>
+          )}
+          <Button className="modal-btn cancel" onClick={onClose}>
             취소
           </Button>
-
         </div>
       </div>
     </div>
   );
 }
+
 

@@ -331,7 +331,7 @@ export default function OrderManagement() {
                   <Badge className={status.color}>
                     {status.label}
                   </Badge>
-                  주문번호: {order.order_uid}
+
                 </h3>
 
                 <div>
@@ -372,8 +372,8 @@ export default function OrderManagement() {
 
               <div className="om-card-body">
                 <p>
-                  <strong>상품명:</strong>{" "}
-                  {order.item_name}
+                  <strong>주문번호: </strong>{" "}
+                  {order.order_uid}
                 </p>
                 <p>
                   <strong>수령인:</strong>{" "}
