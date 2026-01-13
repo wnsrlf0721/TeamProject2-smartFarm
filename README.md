@@ -288,9 +288,9 @@
 
 
 --------------------------
-# 주요 기능 (영상)
-## 전체영상 
-[전체 영상.mp4](https://drive.google.com/file/d/1juU8FLpaPTpQyk8qM9lvyKKgEAJCKTL0/view?usp=sharing)
+# 서비스 시연영상
+## 슈퍼노바 서비스 전체영상 
+[슈퍼노바 전체영상.mp4](https://drive.google.com/file/d/1juU8FLpaPTpQyk8qM9lvyKKgEAJCKTL0/view?usp=sharing)
 
 ## 기능별 영상
 ### 로그인 기능
