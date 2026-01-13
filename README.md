@@ -95,6 +95,8 @@
 |-------|
 | [FarmModel](https://github.com/user-attachments/assets/b9dca21b-882c-4528-b1f5-3455ebe20272) |
 
+![FarmModel](<img width="2560" height="1334" alt="image" src="https://github.com/user-attachments/assets/b9dca21b-882c-4528-b1f5-3455ebe20272"/>)
+
 ---------------------------
 
 # 요구사항 정의서
