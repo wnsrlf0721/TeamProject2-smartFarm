@@ -79,19 +79,15 @@
     - 기기별·팜별 알림 조회 및 읽음 처리 기능 구현
     - MQTT 기반 실시간 환경 데이터 시각화 구현
 
-#### 3.6. 마켓 페이지
+#### 3.6. 마켓 페이지 및 관리자 대시보드
     - 마켓 상품 및 주문 화면 구현
     - 주문 내역 확인 및 취소 구현
+    - 매출 상품목록 통계 시각화 구현
+    - 주문제어 상품추가 재고추가 구현
     
 #### 3.7. 액추에이터 제어 및 통합 테스트
     - 웹 기반 액추에이터 원격 제어 테스트
     - 스마트팜 + 마켓 기능 통합 검증  
-    
-#### 3.8. 관리자 대시보드
-    - 매출 상품목록 통계 시각화 구현
-    - 주문제어 상품추가 재고추가 구현
-
-
 
     
 ### 시각 자료
@@ -296,7 +292,7 @@
 추후 넣을 예정 
 ## 기능별 영상
 ### 로그인 기능
-https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive_link
+[로그인 기능.mp4](https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive_link)
 
 ### 마이페이지 기능
 [마이페이지 조회 및 정보 수정.mp4](https://drive.google.com/file/d/1_blTPNMUX3x7_n5tpdCmSY5b8yt8AwrZ/view?usp=sharing)
@@ -314,10 +310,10 @@ https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive
 [타임랩스생성.mp4](https://drive.google.com/file/d/1BSTH9gb2QcsDmj2R12R-zhsMMd2O6hlg/view?usp=sharing)
 
 ### 대시보드 및 알림 페이지 기능
-[대시보드 및 알림 페이지 기능](https://drive.google.com/file/d/112P8o76Gm51ewXU6FmbQDLyXrcuKSFcg/view?usp=sharing)
+[대시보드 및 알림 페이지 기능.mp4](https://drive.google.com/file/d/112P8o76Gm51ewXU6FmbQDLyXrcuKSFcg/view?usp=sharing)
 
 ### 주문결제 및 관리자 대시보드
-[주문결제 및 관리자 대시보드](https://drive.google.com/file/d/1dxLjyDXzhAOx9DI-gmOZhonM8nDzchc2/view?usp=sharing)
+[주문결제 및 관리자 대시보드.mp4](https://drive.google.com/file/d/1dxLjyDXzhAOx9DI-gmOZhonM8nDzchc2/view?usp=sharing)
 
 # 프로젝트 회고
 
