@@ -285,6 +285,9 @@
 ## 2. 대시보드
 ![대시보드 스크린샷](<img width="2560" height="1334" alt="image" src="https://github.com/user-attachments/assets/01190ef5-1be9-457f-a7ca-5d722ebf9de2" />)
 
+![대시보드 스크린샷](https://github.com/user-attachments/assets/01190ef5-1be9-457f-a7ca-5d722ebf9de2)
+
+
 --------------------------
 # 주요 기능 (영상)
 ## 전체영상 
