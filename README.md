@@ -297,9 +297,11 @@
 ## 기능별 영상
 ### 로그인 기능
 https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive_link
+
 ### 마이페이지 기능
 [마이페이지 조회 및 정보 수정.mp4](https://drive.google.com/file/d/1_blTPNMUX3x7_n5tpdCmSY5b8yt8AwrZ/view?usp=sharing)
-###식물 관리 기능
+
+### 식물 관리 기능
 [2nd_회원 노바And팜 조회 완성본.mp4](https://drive.google.com/file/d/1lRNiqK3MS1izKkW3WjqSKqH9rWcmRuzX/view?usp=sharing)
 
 [2nd_팜 신규생성 완성본.mp4](https://drive.google.com/file/d/1bMwbJ-wOrNtoBOh_LQoo0fG0Jm7vGS9M/view?usp=sharing)
@@ -311,17 +313,15 @@ https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive
 ### 타임랩스 기능
 [타임랩스생성.mp4](https://drive.google.com/file/d/1BSTH9gb2QcsDmj2R12R-zhsMMd2O6hlg/view?usp=sharing)
 
-### 대시보드 기능
-추후 넣을 예정 
-### 알림 페이지 기능
-추후 넣을 예정 
+### 대시보드 및 알림 페이지 기능
+[대시보드 및 알림 페이지 기능](https://drive.google.com/file/d/112P8o76Gm51ewXU6FmbQDLyXrcuKSFcg/view?usp=sharing)
 
 ### 마켓 결제 흐름
-https://drive.google.com/file/d/1dEoNapvnkmO5H7oa98LB_k3kLQRPqVdp/view?usp=sharing
+[마켓 결제 흐름](https://drive.google.com/file/d/1dEoNapvnkmO5H7oa98LB_k3kLQRPqVdp/view?usp=sharing)
 
 ### 관리자 대시보드 
-https://drive.google.com/file/d/14NuJ_qxS5mmdt3nCtC64MT_agcD4E9ho/view?usp=sharing
-https://drive.google.com/file/d/1FThUxlqE-uOzjyyixBSN1P4EKIHzbi8V/view?usp=sharing
+[관리자 대시보드](https://drive.google.com/file/d/14NuJ_qxS5mmdt3nCtC64MT_agcD4E9ho/view?usp=sharing)
+[관리자 대시보드](https://drive.google.com/file/d/1FThUxlqE-uOzjyyixBSN1P4EKIHzbi8V/view?usp=sharing)
 
 # 프로젝트 회고
 
