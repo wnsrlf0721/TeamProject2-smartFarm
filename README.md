@@ -1,7 +1,7 @@
-# 가정용 스마트팜 올인원 플랫폼 <SUPER NOVA> 시연 영상
+# 가정용 스마트팜 올인원 플랫폼 SUPER NOVA 시연 영상
 
-## 슈퍼노바 시연
-[슈퍼노바 시연.mp4](https://drive.google.com/file/d/1juU8FLpaPTpQyk8qM9lvyKKgEAJCKTL0/view?usp=sharing)
+## SUPER NOVA 시연
+[SUPER NOVA 시연.mp4](https://drive.google.com/file/d/1juU8FLpaPTpQyk8qM9lvyKKgEAJCKTL0/view?usp=sharing)
 
 ## 기능별 영상
 ### 로그인 기능
