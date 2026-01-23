@@ -251,56 +251,64 @@ export default function OrderHistory() {
                 </p>
               </div>
 
-              {/* 액션 */}
-
-                {/* 주문 상세보기는 항상 */}
-                <Button
+              {/* 배송 전/중 */}
+              {(order.status === "pending" ||
+                order.status === "processing" ||
+                order.status === "shipping") && (
+                <button
+                  className="order-confirm-btn"
                   variant="outline"
-                  onClick={() =>
-                    navigate(`/tracking/${order.id}`)
-                  }
+                  onClick={() => navigate(`/tracking/${order.id}`)}
                 >
                   배송현황
-                </Button>
-
-              {order.status === "delivered" && (
-
-                <div className="order-actions">
-                  <Button
-                    variant="outline"
-                    onClick={() =>
-                      navigate(`/tracking/${order.id}`)
-                    }
-                  >
-                    주문 상세보기
-                  </Button>
-
-                  {order.status === "delivered" && (
-                    <>
-                      <Button
-                        onClick={() =>
-                          handleConfirmOrder(order.id)
-                        }
-                      >
-                        <CheckCircle size={16} />
-                        주문 확정
-                      </Button>
-
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          setSelectedOrderId(order.id);
-                          setRefundModalOpen(true);
-                        }}
-                      >
-                        <RotateCcw size={16} />
-                        환불 요청
-                      </Button>
-                    </>
-                  )}
-                </div>
-
+                </button>
               )}
+  {/* 배송 완료 */}
+  {order.status === "delivered" && (
+    <>
+      <button
+        className="order-confirm-btn"
+        variant="outline"
+        onClick={() => navigate(`/tracking/${order.id}`)}
+      >
+        주문 상세
+      </button>
+      <button
+        className="order-confirm-btn"
+        onClick={() => handleConfirmOrder(order.id)}
+      >
+        <CheckCircle size={16} /> 주문 확정
+      </button>
+      <button
+        className="order-refund-btn"
+        variant="outline"
+        onClick={() => {
+          setSelectedOrderId(order.id);
+          setRefundModalOpen(true);
+        }}
+      >
+        <RotateCcw size={16} /> 환불 요청
+      </button>
+    </>
+  )}
+
+  {/* 주문 취소 / 환불 요청 완료 */}
+  {(order.status === "cancelled" ||
+    order.status === "refund_requested" ||
+    order.status === "refunded") && (
+    <span>처리 완료</span>
+  )}
+
+    {/* 주문 확정 상태 */}
+  {order.status === "confirmed" && (
+                    <button
+                  className="order-confirm-btn"
+                  variant="outline"
+                  onClick={() => navigate(`/tracking/${order.id}`)}
+                >
+                  주문상세
+                </button>
+  )}
             </div>
           );
         })

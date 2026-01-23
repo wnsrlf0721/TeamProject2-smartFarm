@@ -1,4 +1,53 @@
-## 1. 프로젝트 정의
+--------------------------
+
+# 가정용 스마트팜 올인원 플랫폼 NOVA 
+- 온도 및 습도 변화 패턴을 시각적으로 확인 가능
+- 환경 조건에 따른 액추에이터 자동 제어 가능성 확인
+- SSE 기반 실시간 대시보드를 통해 센서 데이터 변화 반영
+- 임계값 초과 시 실시간 팝업 알림 및 센서바 그래프의 UI, 액추에이터 상태 표시 정상 동작 확인
+- SSE 미연결 상황에서도 Polling 방식으로 알림 수신 가능함을 검증
+
+# 1. 시각 자료
+
+![대시보드 스크린샷](https://github.com/user-attachments/assets/01190ef5-1be9-457f-a7ca-5d722ebf9de2)
+
+# NOVA 시연 영상
+
+[NOVA 영상.mp4](https://drive.google.com/file/d/1juU8FLpaPTpQyk8qM9lvyKKgEAJCKTL0/view?usp=sharing)
+
+# 기능별 시연
+
+### 로그인 기능
+[로그인 기능.mp4](https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive_link)
+
+### 마이페이지 기능
+[마이페이지 조회 및 정보 수정.mp4](https://drive.google.com/file/d/1_blTPNMUX3x7_n5tpdCmSY5b8yt8AwrZ/view?usp=sharing)
+
+### 식물 관리 기능
+[회원 노바And팜 조회 완성본.mp4](https://drive.google.com/file/d/1lRNiqK3MS1izKkW3WjqSKqH9rWcmRuzX/view?usp=sharing)
+
+[팜 신규생성.mp4](https://drive.google.com/file/d/1bMwbJ-wOrNtoBOh_LQoo0fG0Jm7vGS9M/view?usp=sharing)
+
+[프리셋 자동변경.mp4](https://drive.google.com/file/d/11_yBN19purf_XMGhIxTtD5ylecIgLOkr/view?usp=sharing)
+
+[액추에이터 확인 및 팜별 대시보드 상세보기.mp4](https://drive.google.com/file/d/1TvfONO2HhXcFio3zQSD54-yHBC7A8_iQ/view?usp=sharing)
+
+[팜 삭제.mp4](https://drive.google.com/file/d/1jxLBPN6ZmEsZgjwlw2vBvUZTDrg2W6iY/view?usp=sharing)
+
+### 타임랩스 기능
+[타임랩스생성.mp4](https://drive.google.com/file/d/1BSTH9gb2QcsDmj2R12R-zhsMMd2O6hlg/view?usp=sharing)
+
+### 결제 및 관리자 대시보드기능
+[주문결제 및 관리자 대시보드.mp4](https://drive.google.com/file/d/1dxLjyDXzhAOx9DI-gmOZhonM8nDzchc2/view?usp=sharing)
+
+### 실물 모형
+|실물 모형|
+|-------|
+| ![FarmModel](https://github.com/user-attachments/assets/b9dca21b-882c-4528-b1f5-3455ebe20272) |
+
+--------------------------
+
+# 2. 프로젝트 정의
 - **목표**: IoT 센서와 액추에이터를 활용하여 농작물 재배 환경(온도, 습도, 조도 등)을 실시간으로 모니터링하고,
 자동 및 수동 제어가 가능한 웹 브라우저 스마트팜 관리 시스템을 구축한다.
 - **주요 기능**:
@@ -8,27 +57,32 @@
   - 카메라를 활용한 타임랩스 기능
   - 사용자 로그인 및 권한 기반 접근 제어 (JWT 인증)
   - 스마트팜 온라인 마켓 기능
-## 2. 주요 내용
-- **프로젝트 기간**: 2025-12-08 ~ 2025-12-16
-- **참여 인원**: 조수민, 양준길, 장세종, 최우영, 안창석(총 5명)
+  - 관리자 주문관리 상품관리 기능
+# 3. 프로젝트 개요
+- **프로젝트 기간**: 2025-12-08 ~ 2025-01-09
+- **참여 인원**: 팀장:조수민, 팀원:양준길, 팀원:장세종, 팀원:최우영, 팀원:안창석 (총 5명)
 - **외부 API**: 다음 API(주소), SOLAPI(인증), 포트원 API(결제)
 
-## 3. 일정 계획
-| 작업 항목                  | 시작 날짜   | 종료 날짜   | 기간(일) |
-|---------------------------|------------|------------|---------|
-| 프로젝트 정의 및 계획 수립  | 2025-12-01 | 2025-12-07 | 7      |
-| Reference 조사            | 2025-12-08 | 2025-12-08 | 1       |
-| 아이디어 도출 및 요구사항 작성 | 2025-12-09 | 2025-12-09 | 1       |
-| 프로젝트 설계서 도출       | 2025-12-10 | 2025-12-10 | 1       |
-| 개발 및 검토              | 2025-12-09 | 2025-12-14 | 6       |
-| 최종 검토 및 발표 준비     | 2025-02-15 | 2025-02-15 | 1      |
-| 프로젝트 발표              | 2025-12-16 | 2025-12-16 | 1       |
+# 4. 프로젝트 일정
+
+| 작업 항목 | 시작 날짜 | 종료 날짜 | 기간(일) |
+|----------|----------|----------|----------|
+| 프로젝트 정의 및 요구사항 정리 | 2025-12-01 | 2025-12-07 | 7 |
+| Reference 조사 | 2025-12-08 | 2025-12-08 | 1 |
+| 아이디어 도출 및 요구사항 작성 | 2025-12-09 | 2025-12-09 | 1 |
+| 프로젝트 설계서 도출 | 2025-12-10 | 2025-12-10 | 1 |
+| 개발 및 검토 | 2025-12-09 | 2025-12-14 | 6 |
+| 프로젝트 발표 | 2025-12-16 | 2025-12-16 | 1 |
+| IoT 구조물 조립 및 센서 테스트 | 2025-12-17 | 2026-01-01 | 14 |
+| Web / Backend 기본 기능 구현 | 2025-12-07 | 2026-01-01 | 21 |
+| MQTT 연동 및 장치 제어 | 2025-12-10 | 2025-12-23 | 14 |
+| 통합 테스트 및 시연 준비 | 2025-12-26 | 2026-01-09 | 14 |
+| 최종 시연 | 2026-01-13 | 2026-01-13 | 1 |
 
 -----------------------------
 
-# 작업 분할 구조 (WBS)
+# 5. 단계별 작업 내용
 
-## 단계별 작업 내용
 ### 1. 데이터 정의 및 요구사항 분석
 
 #### 1.1. 스마트팜 환경 데이터 정의
@@ -79,29 +133,20 @@
     - 기기별·팜별 알림 조회 및 읽음 처리 기능 구현
     - MQTT 기반 실시간 환경 데이터 시각화 구현
 
-#### 3.6. 마켓 페이지
+#### 3.6. 마켓 페이지 및 관리자 대시보드
     - 마켓 상품 및 주문 화면 구현
     - 주문 내역 확인 및 취소 구현
+    - 매출 상품목록 통계 시각화 구현
+    - 주문제어 상품추가 재고추가 구현
     
 #### 3.7. 액추에이터 제어 및 통합 테스트
     - 웹 기반 액추에이터 원격 제어 테스트
     - 스마트팜 + 마켓 기능 통합 검증  
-    
-#### 3.8. 관리자 대시보드
-    - 매출 상품목록 통계 시각화 구현
-    - 주문제어 상품추가 재고추가 구현
 
-
-
-    
-### 시각 자료
-|실물 모형|
-|-------|
-| ![FarmModel](https://github.com/user-attachments/assets/b9dca21b-882c-4528-b1f5-3455ebe20272) |
 
 ---------------------------
 
-# 요구사항 정의서
+# 6. 요구사항 정의서
 
 ## 1. 기능 요구사항
 - 스마트팜 센서 데이터를 실시간으로 수집할 수 있어야 한다.
@@ -120,7 +165,7 @@
 
 ---------------------------
 
-# 프로젝트 설계서
+# 7. 프로젝트 설계서
 
 ## 1. 데이터 아키텍처
 - **설계 개요**:
@@ -262,73 +307,25 @@
 - 상품 추가: 새 상품 등록 상품 수정: 기존 상품 정보 수정 상품 삭제: 불필요한 상품 제거
 - 주문 상태 변경: 결제 완료, 배송 준비, 배송 중 등 송장 번호 등록: 배송 정보 입력 배송 완료 처리: 주문 완료 상태 반영
 
-## 4. 설계 이미지
- | **시스템 아키텍처**                        |
+# 8. 시스템 아키텍처
+
+ | **기술 스택**                        |
  |-------------------------------------|
  | <img width="546" height="268" alt="다운로드" src="https://github.com/user-attachments/assets/9b03a8dd-d580-4ee6-9ab5-dca6bbdbd5e3" />              |
 
  | **ERD**                             |
  |-------------------------------------|
  | <img width="1919" height="2043" alt="image" src="https://github.com/user-attachments/assets/f9d7136c-3a0d-4c1b-bc97-bd59a31543ad" />
- |
 
  | **REST API (Swagger)**                        |
  |-------------------------------------|
  |<img width="1456" height="951" alt="Swagger RESTAPI" src="https://github.com/user-attachments/assets/9e14688a-b4a7-44cd-929e-2eb08be98bdb" />
 
 --------------------------
-
-# 시각화 리포트
-
-## 1. 분석 결과 요약
-- 온도 및 습도 변화 패턴을 시각적으로 확인 가능
-- 환경 조건에 따른 액추에이터 자동 제어 가능성 확인
-- SSE 기반 실시간 대시보드를 통해 센서 데이터 변화 반영
-- 임계값 초과 시 실시간 팝업 알림 및 센서바 그래프의 UI, 액추에이터 상태 표시 정상 동작 확인
-- SSE 미연결 상황에서도 Polling 방식으로 알림 수신 가능함을 검증
-
-## 2. 대시보드
-![대시보드 스크린샷](<img width="2560" height="1334" alt="image" src="https://github.com/user-attachments/assets/01190ef5-1be9-457f-a7ca-5d722ebf9de2" />)
-
---------------------------
-# 주요 기능 (영상)
-## 전체영상 
-추후 넣을 예정 
-## 기능별 영상
-### 로그인 기능
-https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive_link
-### 마이페이지 기능
-[마이페이지 조회 및 정보 수정.mp4](https://drive.google.com/file/d/1_blTPNMUX3x7_n5tpdCmSY5b8yt8AwrZ/view?usp=sharing)
-###식물 관리 기능
-[2nd_회원 노바And팜 조회 완성본.mp4](https://drive.google.com/file/d/1lRNiqK3MS1izKkW3WjqSKqH9rWcmRuzX/view?usp=sharing)
-
-[2nd_팜 신규생성 완성본.mp4](https://drive.google.com/file/d/1bMwbJ-wOrNtoBOh_LQoo0fG0Jm7vGS9M/view?usp=sharing)
-
-[2nd_프리셋 자동변경 완성본.mp4](https://drive.google.com/file/d/11_yBN19purf_XMGhIxTtD5ylecIgLOkr/view?usp=sharing)
-
-[2nd_팜 삭제 완성본.mp4](https://drive.google.com/file/d/1jxLBPN6ZmEsZgjwlw2vBvUZTDrg2W6iY/view?usp=sharing)
-
-### 타임랩스 기능
-[타임랩스생성.mp4](https://drive.google.com/file/d/1BSTH9gb2QcsDmj2R12R-zhsMMd2O6hlg/view?usp=sharing)
-
-### 대시보드 기능
-추후 넣을 예정 
-### 알림 페이지 기능
-추후 넣을 예정 
-### 마켓 기능 
-추후 넣을 예정 
-
-# 프로젝트 회고
-
-## 1. 프로젝트 개요
-- **프로젝트 이름**: SuperNova
-- **기간**: 2025-12-08 ~ 2025-12-16
-- **팀 구성원**: 조수민, 양준길, 장세종, 최우영, 안창석
-
+# 9. 프로젝트 회고
 ---
 
-## 2. 회고 주제
-### 2.1. 잘한 점 (What went well)
+### 1. 잘한 점 (What went well)
 - 프로젝트에서 효과적으로 수행된 작업 또는 성공 사례
   - 라즈베리파이와 센서를 연동하여 환경 데이터 수집을 자동화하고, MQTT 기반 실시간 전송을 안정적으로 구현함
   - 웹 대시보드를 통해 센서 데이터와 액추에이터 상태를 직관적으로 확인할 수 있도록 시각화함
@@ -338,7 +335,7 @@ https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive
 
 ---
 
-### 2.2. 개선이 필요한 점 (What could be improved)
+### 2. 개선이 필요한 점 (What could be improved)
 - 프로젝트 과정에서 비효율적이었거나 개선이 필요한 부분
   - 프로젝트 초기에 API 명세와 데이터 구조가 명확히 정리되지 않아, 개발 중간에 수정이 반복적으로 발생함
   - 센서 및 액추에이터와 같은 물리적 하드웨어 구현 과정에서 예상보다 많은 시간이 소요되었으며, 하드웨어 이슈로 인한 테스트 지연이 발생함
@@ -347,7 +344,7 @@ https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive
 
 ---
 
-### 2.3. 배운 점 (Lessons learned)
+### 3. 배운 점 (Lessons learned)
 - 이번 프로젝트를 통해 학습한 내용
   - IoT 시스템은 소프트웨어 설계뿐만 아니라 하드웨어 환경까지 함께 고려해야 함을 체감함
   - 팀원들과의 지속적인 소통을 통해 요구사항을 단계적으로 정리하고, 의견을 하나로 통합하는 과정의 중요성을 배움
@@ -356,7 +353,7 @@ https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive
 
 ---
 
-### 2.4. 다음 단계 (Action items)
+### 4. 다음 단계 (Action items)
 - 향후 프로젝트에 적용할 개선 방안 또는 실행 계획
   - 프로젝트 초기 단계에서 요구사항 정의와 API 설계에 더 많은 시간을 할당하여 개발 과정의 수정 비용을 줄일 계획
   - 하드웨어 테스트를 위한 시뮬레이션 환경 및 테스트 시나리오를 사전에 준비하여, 물리적 장비로 인한 시행착오를 최소화할 예정
@@ -364,7 +361,7 @@ https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive
 
 ---
 
-## 3. 프로젝트 주요 결과 요약
+# 10. 프로젝트 결과 요약
 
 - **성과**:
   - IoT 센서를 활용한 스마트팜 환경 데이터 실시간 수집 및 자동화 시스템 구현
@@ -372,8 +369,5 @@ https://drive.google.com/file/d/1xUre3cH7n7xE1ugdeM7XMvpgJJXjxTge/view?usp=drive
   - 스마트팜 생산 농산물을 판매할 수 있는 마켓 기능 개발 및 연동 완료
   - 작물 성장 과정을 기록하는 타임랩스 기능 구현을 통해 생산 과정의 시각적 검증 가능
   - JWT 기반 사용자 인증 및 권한 관리 기능 적용으로 보안성 강화
-  
-- **결과물**:
-  - [링크]: 프로젝트 산출물 GitHub 저장소
 
 ---
